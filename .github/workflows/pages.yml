@@ -1,0 +1,72 @@
+# LP を GitHub Pages へ配信する。
+#
+# **リポジトリ全体を配信しない。**公開するファイルだけを _site に組む。
+# 理由は2つ ——
+#   1. upload-pages-artifact は `tar --dereference` で固める。このリポジトリの
+#      symlink 15本は共有元（外）を指していて、クローン先には存在しない。
+#      リポジトリ全体を渡すと tar が実体を辿れず exit 1 で落ちる（2026-09-08 に踏んだ。
+#      docs/gotchas/pages-needs-nojekyll.md）。
+#   2. docs/ と design/ は社内向けの記録とカンプ。リポジトリは public だが、
+#      **サイトとして配信する必要はない。**
+#
+# **これは自動でデプロイするワークフローです。**main への push で毎回走ります。
+# いまの index.html は robots noindex で、店舗リンクは未確定。
+# **本番公開（noindex解除・og:image/og:url・独自ドメイン）は、これとは別の、
+# 人が判断する手順です**（AGENTS.md / og-image-and-index-before-release）。
+name: Deploy LP to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # enablement: true で Pages の配信元を「ブランチ」から「Actions」へ切り替える。
+      # 切り替えないと、組み込みの pages-build-deployment が同時に走って毎回落ちる。
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Stage public files
+        shell: bash
+        run: |
+          set -eu
+          mkdir -p _site
+          cp index.html _site/
+          cp -R css img js _site/
+          touch _site/.nojekyll
+          echo "--- 配信するもの ---"
+          find _site -type f | sort
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

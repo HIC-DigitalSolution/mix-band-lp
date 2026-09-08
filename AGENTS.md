@@ -340,6 +340,30 @@ HTMLで別に置きます。**文字なしのバナーが来たらHTMLで組み�
 - **10要素のうち何を欠かすか、その理由**
 - 公開先とドメイン（`og:image` / `og:url` は絶対URLでないとクローラが拾いません）
 
+## 公開（2026-09-08）
+
+**リポジトリは public、GitHub Pages で配信しています** ——
+`https://hic-digitalsolution.github.io/mix-band-lp/`。
+public にしたのは依頼者の指示（GPTに読ませるため）。
+**カンプ・支給素材・`docs/` の社内向け記録も、リポジトリとしては全部公開されています。**
+
+**配信するのは `index.html` / `css/` / `img/` / `js/` だけ**（`.github/workflows/pages.yml`）。
+リポジトリ全体を配信しません。理由は2つ ——
+
+1. `upload-pages-artifact` は **`tar --dereference`** で固める。
+   **symlink 15本は共有元（外）を指していて、クローン先には存在しない。**
+   リポジトリ全体を渡すと tar が実体を辿れず exit 1 で落ちる
+   （`docs/gotchas/pages-needs-nojekyll.md`）。
+2. `docs/` と `design/` はサイトとして配信する必要がない。
+
+**このワークフローは main への push で自動的にデプロイします。**
+AGENTS.md の「push/deploy は自動で走らせない」から**意図的に外れています。**
+外してよいと判断した理由 —— **配信しているのは `noindex` の確認用ページ**で、
+店舗リンクも料金も未確定のまま。**本番公開はこれとは別の手順**です
+（`noindex` 解除・`og:image` / `og:url`・独自ドメイン。
+`og-image-and-index-before-release` が毎回出します）。
+**そこは人が判断してから。**
+
 ## 出口を3つ置いています（2026-09-08・依頼者の指示）
 
 **`lp-design.yaml` の `exit-routes-not-added` は manual で毎回出ますが、外さないでください。**
