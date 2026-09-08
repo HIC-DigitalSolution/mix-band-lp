@@ -29,6 +29,23 @@ window.scrollTo(0, 900);
 const after  = el.getBoundingClientRect().top;   // 効いていれば 0 のまま
 ```
 
+## 直し方は「hidden をやめる」ではなく「clip にする」
+
+`overflow: hidden` を外すと切り抜きが失われる。**`overflow: clip` に変えるのが正解。**
+
+| | スクロールコンテナを作るか | 中の sticky | 装飾の切り抜き |
+| --- | --- | --- | --- |
+| `overflow: hidden` | **作る** | **死ぬ** | できる |
+| `overflow: clip` | 作らない | **生きる** | できる |
+
+2026-09-08、**同じ罠を2回踏んだ** —— ヘッダー（`.page` が hidden）と、
+YOUR NIGHT の重なるカード（セクションが hidden）。
+2回目は参考にした futuretrain.jp が `overflow-x: clip` を使っているのを見て気づいた。
+**向こうが `hidden` を避けているのには理由がある。**
+
+いまは全セクションを `clip` にしてある（`src/scss/_base.scss`）。
+機械の見張りは `stacked-cards-need-overflow-clip`。
+
 ## 同じ日に踏んだ、同じ形の間違い
 
 **タップ領域も「値を読んで満たしていると思った」だけだった。**

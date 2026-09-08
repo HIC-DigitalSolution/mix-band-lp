@@ -340,20 +340,25 @@ HTMLで別に置きます。**文字なしのバナーが来たらHTMLで組み�
 - **10要素のうち何を欠かすか、その理由**
 - 公開先とドメイン（`og:image` / `og:url` は絶対URLでないとクローラが拾いません）
 
-## 「いつもの夜を予定外に」は横スライド（2026-09-08・依頼者の判断）
+## 「いつもの夜を予定外に」はスクロールで重なるカード（2026-09-08・依頼者の指定）
 
-3項目（いつもと違う刺激／関係が動くきっかけ／非日常を体験）を1枚ずつ送る形にしています。
-**縦積みなら3枚とも見えていたものを、操作しないと2枚が見えない形に変えている**ので、
-損を埋める約束が4つあります ——
-**3枚とも常にDOMに置く／次のカードの端を見せる（実測62px）／現在位置を出す／自動再生しない。**
+futuretrain.jp の Future Imagination Course と同じ作りです。**JavaScriptは使いません。**
 
-**横移動はCSSの `scroll-snap` がやります。JSは現在位置と矢印だけ**なので、
-JSが動かなくても3枚とも読めます。仕様は `docs/design-docs/overview-motion-spec.md`、
-機械の見張りは `slider-has-no-autoplay` と `slider-scrolls-without-js`、
-言葉の版は `slider-keeps-every-card-readable`。
+1枚目が `position: sticky` で上に貼り付き、2枚目以降が `clip-path` を持って
+その上をせり上がって覆います。**3枚とも常にDOMに在る**ので、
+読み上げ・検索・JS無効でも全部読めます。
 
-**当初の案（01 WHAT IS MIX → 02 CHIME → 03 CROSS のイベント概要スライド）は採っていません。**
-確定事実は独立したセクションで順に読ませる構成が既に確定していて、重複するためです。
+**セクションを `overflow: hidden` にしないこと。**`hidden` はスクロールコンテナを作るので
+中の `sticky` が死にます。**`clip` を使います**（切り抜きは同じように効きます）。
+このプロジェクトで2回踏んでいます（`docs/gotchas/sticky-was-declared-not-verified.md`）。
+
+カード間に隙間を空けない、カードをビューポート丸ごとの高さにしない（1行＋1文なので白が余る。
+実測 `min(42svh, 268px)`）。仕様は `docs/design-docs/overview-motion-spec.md`、
+機械の見張りは `stacked-cards-need-overflow-clip` と `slider-has-no-autoplay`、
+言葉の版は `stacked-cards-appear-on-scroll`。
+
+**イベント概要（01 WHAT IS MIX → 02 CHIME → 03 CROSS）はスライドにしていません。**
+確定事実は独立したセクションで順に読ませる構成が確定しているので、重複するためです。
 
 ## 公開（2026-09-08）
 

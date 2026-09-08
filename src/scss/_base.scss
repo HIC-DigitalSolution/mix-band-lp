@@ -38,7 +38,10 @@ img { max-width: 100%; }
 // 各セクション共通。背景アートは position:absolute で敷き、本文は .z で上に載せる。
 .hero, .intro, .benefits, .mechanism, .info, .cta {
   position: relative;
-  overflow: hidden;
+  // **hidden ではなく clip。**hidden はスクロールコンテナを作るので、
+  // 中の position:sticky が死ぬ（ヘッダーで一度踏んだ）。
+  // clip は作らないので sticky が生きる。装飾のはみ出しは同じように切れる。
+  overflow: clip;
   padding: 64px 24px;
 }
 

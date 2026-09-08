@@ -248,17 +248,18 @@ invariants:
       forbidden_patterns:
         - 'setInterval'
         - 'autoplay'
-      hint: 'fix: 自動送りを外す。**読んでいる途中に勝手に内容が変わらないことを優先する**（docs/design-docs/overview-motion-spec.md）。カルーセルを回したくなったら、その前に「2枚目と3枚目が読まれているか」を測ること。'
+      hint: 'fix: 自動送りを外す。**読んでいる途中に勝手に内容が変わらないことを優先する**（docs/design-docs/overview-motion-spec.md）。いまカードの送りはスクロールだけで、JSは使っていない。カルーセルを回したくなったら、その前に「2枚目と3枚目が読まれているか」を測ること。'
 
-  - id: slider-scrolls-without-js
-    statement: 横スライドの移動はCSSがやる。JSが死んでもカードは読める。
+  - id: stacked-cards-need-overflow-clip
+    statement: セクションを overflow: hidden にしない。中の position: sticky が死ぬ。
     check:
       type: required-content
       applies_to_paths:
         - ^css/.+\.css$
       required_patterns:
-        - 'scroll-snap-type'
-      hint: 'fix: トラックに overflow-x: auto と scroll-snap-type: x mandatory を持たせる。**JSは現在位置の表示と矢印だけ**にして、横移動そのものはブラウザに任せる。こうしておくと、モバイルのスワイプが素で効き、JSが動かない環境でも3枚とも読める。'
+        - 'overflow: clip'
+        - 'position: sticky'
+      hint: 'fix: セクションの切り抜きは **overflow: clip** で行う。**hidden はスクロールコンテナを作るので、その中の position:sticky が無効になる。**このプロジェクトで2回踏んでいる —— ヘッダー（.page が hidden で貼り付かなかった）と、YOUR NIGHT の重なるカード。装飾のはみ出しは clip でも同じように切れる。詳細は docs/gotchas/sticky-was-declared-not-verified.md。'
 
   # ==== ここから先は機械で判定できない ====
 
@@ -364,8 +365,8 @@ invariants:
       type: manual
       note: '**2026-09-08 の依頼者の指示。**「index.html に記述して、各セクションごとに Sass コンパイルで管理して、自分で見やすくできる形にしたい」。つまり —— **ページの構造は index.html 1枚を上から読めば全部わかる**（include もテンプレートも挟まない）。**セクションごとに区切りコメントを置く**（hero / about / schedule / footer）。**section の class と src/scss/sections/_<名前>.scss を1対1で対応させる。**画像は **img/** に置く。**これは好みではなく、依頼者本人が触るための要件**なので、効率や DRY を理由に崩さないこと。セクションを増やすときは、index.html に区切りコメント付きで足す → 同じ名前の Sass パーシャルを作る → style.scss に @use を足す → npm run build、の順。'
 
-  - id: slider-keeps-every-card-readable
-    statement: 横スライドにしても、3枚とも読めるようにしておく。
+  - id: stacked-cards-appear-on-scroll
+    statement: 「いつもの夜を予定外に」の3枚は、スクロールで重なりながら現れる。JSは使わない。
     check:
       type: manual
-      note: '**2026-09-08、依頼者の判断で「YOUR NIGHT / いつもの夜を予定外に」の3項目を横スライドにした。**縦積みなら3枚とも同時に見えていたものを、操作しないと2枚が見えない形に変えている。**その損を埋める約束が4つある。**① **3枚とも常にDOMに置く**（JSで隠さない。読み上げ・検索・JS無効でも全部読める）② **次のカードの端を見せる**（実測62px。見えないと「続きがある」と分からない）③ **現在位置を出す**（点＋読み上げ用の 1 / 3）④ **自動再生しない**。横移動はCSSの scroll-snap にやらせ、JSは現在位置と矢印だけ持つ。矢印はJSが動くときだけ出す（押しても何も起きないボタンを見せない）。**カードを増やすときは、増やしたぶん読まれない確率が上がることを承知で決めること。**仕様は docs/design-docs/overview-motion-spec.md。'
+      note: '**2026-09-08、依頼者の指定で futuretrain.jp の Future Imagination Course と同じ作りにした。**実物を開いて実装を読んで取った —— **JavaScriptは一切使っていない**（scroll駆動アニメーションのCSSも0件）。**作り方:** ① セクション内にカードを縦に並べる ② **1枚目だけ position: sticky; top で上に貼り付ける** ③ **2枚目以降に clip-path: inset() を持たせる** —— これで後続が前の上をせり上がって覆う ④ **親セクションは overflow: clip**（hidden にすると sticky が死ぬ）。**守ること:** **3枚とも常にDOMに在る**（JSで隠さない。読み上げ・検索・JS無効でも全部読める）。**カード間に隙間を空けない** —— 空けると「覆う」動きが途切れて、ただ並んでいるように見える。**カードをビューポート丸ごとの高さにしない** —— 参考サイトのカードは画像＋本文＋導線で埋まっているが、こちらは1行＋1文なので白が余る。実測で min(42svh, 268px) にしている。**JSを足したくなったら、その前に「JS無しで何が壊れるか」を言えること。**いまは何も壊れない。仕様は docs/design-docs/overview-motion-spec.md。'

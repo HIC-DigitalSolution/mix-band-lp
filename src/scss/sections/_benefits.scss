@@ -22,121 +22,48 @@
 
 .benefits__lead { color: #654d5c; }
 
-// 横スライド。仕様は docs/design-docs/overview-motion-spec.md。
-// 横移動は scroll-snap にやらせる（モバイルのスワイプが素で効く）。
-// **次のカードの端を見せる**のが要点 —— 見えないと2枚が読まれない。
-.slider {
+// スクロールでカードが1枚ずつ現れる。
+// futuretrain.jp の Future Imagination Course と同じ作りで、**JSを使わない**。
+// 1枚目が sticky で上に貼り付き、2枚目以降が clip-path を持って上をせり上がる。
+// **親セクションを overflow:hidden にしないこと** —— sticky が死ぬ。clip なら生きる。
+.stack {
   position: relative;
   z-index: 3;
   margin-top: 28px;
 }
 
-.slider__track {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 78%; // 残り22%で次のカードの端を見せる
-  gap: 12px;
-  margin: 0;
-  padding: 4px 4px 14px;
-  list-style: none;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: 4px;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar { display: none; }
-
-  &:focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; border-radius: var(--radius); }
-
-  > .card { scroll-snap-align: start; height: 100%; }
-}
-
-.slider__foot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 4px;
-}
-
-.slider__arrow {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  font-size: 18px;
-  line-height: 1;
-  color: var(--berry);
-  background: #fff;
-  border: 1px solid rgba(201, 31, 112, .22);
-  border-radius: 50%;
-  cursor: pointer;
-
+.stack__card {
   position: relative;
-
-  &[disabled] { opacity: .3; cursor: default; }
-
-  // 見た目は34pxのまま、当たり判定を44pxにする。
-  &::after { content: ""; position: absolute; inset: -5px; }
-}
-
-.slider__dots {
-  display: flex;
-  gap: 7px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: rgba(141, 27, 88, .22);
-    transition: background .2s, transform .2s;
-
-    &.is-on { background: var(--hot); transform: scale(1.25); }
-  }
-}
-
-// 現在位置は読み上げにだけ渡す。画面には点で出す。
-.slider__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
+  z-index: 1;
   display: grid;
   grid-template-columns: 42px 1fr;
   gap: 13px;
   align-items: center;
-  padding: 20px 18px;
+  // 1行＋1文なので、ビューポート丸ごとにはしない。
+  // 大きくすると白が余り、小さくすると重なる手応えが消える。
+  min-height: min(42svh, 268px);
+  padding: 26px 20px;
   background: #fff;
   border: 1px solid rgba(201, 31, 112, .13);
   border-radius: var(--radius);
-  box-shadow: 0 13px 32px rgba(91, 22, 63, .12);
+  box-shadow: 0 -10px 30px rgba(91, 22, 63, .16);
 
-  &::after {
-    content: "";
-    position: absolute;
-    right: 14px;
-    top: 13px;
-    width: 44px;
-    height: 1px;
-    opacity: .55;
-    background: linear-gradient(90deg, var(--hot), transparent);
+  // 後続のカードが前のカードを覆えるようにする。
+  clip-path: inset(0 round var(--radius));
+
+  &:first-child {
+    position: sticky;
+    top: 12px;
+    clip-path: none;
   }
 
-  h3 { font-size: 14px; line-height: 1.5; margin: 0 0 4px; }
-  p { font-size: 10.5px; line-height: 1.7; margin: 0; color: var(--muted); }
+  // 隙間を空けない。空けると「覆う」動きが途切れて、ただ並んでいるように見える。
+  + .stack__card { margin-top: 0; }
+
+  h3 { font-size: 16px; line-height: 1.5; margin: 0 0 6px; }
+  p { font-size: 12px; line-height: 1.85; margin: 0; color: var(--muted); }
 }
+
 
 .card__num {
   width: 42px;
@@ -150,6 +77,6 @@
   background: var(--raspberry);
   box-shadow: 0 0 0 5px rgba(201, 31, 112, .09), 0 0 18px rgba(201, 31, 112, .23);
 
-  .card:nth-child(2) & { background: var(--violet); }
-  .card:nth-child(3) & { background: var(--berry); }
+  .stack__card:nth-child(2) & { background: var(--violet); }
+  .stack__card:nth-child(3) & { background: var(--berry); }
 }
