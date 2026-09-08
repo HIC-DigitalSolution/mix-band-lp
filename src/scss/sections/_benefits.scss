@@ -35,14 +35,7 @@
 .stack__card {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 13px;
-  align-items: center;
-  // 1行＋1文なので、ビューポート丸ごとにはしない。
-  // 大きくすると白が余り、小さくすると重なる手応えが消える。
-  min-height: min(42svh, 268px);
-  padding: 26px 20px;
+  overflow: hidden; // 写真をカードの角丸で切る。sticky はこのカード自身ではなく親に効く
   background: #fff;
   border: 1px solid rgba(201, 31, 112, .13);
   border-radius: var(--radius);
@@ -59,6 +52,24 @@
 
   // 隙間を空けない。空けると「覆う」動きが途切れて、ただ並んでいるように見える。
   + .stack__card { margin-top: 0; }
+
+}
+
+// 写真はカードの上端いっぱい。4:3 で高さが揃う。
+.stack__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.stack__body {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 13px;
+  align-items: center;
+  padding: 20px;
 
   h3 { font-size: 16px; line-height: 1.5; margin: 0 0 6px; }
   p { font-size: 12px; line-height: 1.85; margin: 0; color: var(--muted); }

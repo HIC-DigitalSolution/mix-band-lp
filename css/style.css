@@ -590,12 +590,7 @@ img {
 .stack__card {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 13px;
-  align-items: center;
-  min-height: min(42svh, 268px);
-  padding: 26px 20px;
+  overflow: hidden;
   background: #fff;
   border: 1px solid rgba(201, 31, 112, 0.13);
   border-radius: var(--radius);
@@ -610,12 +605,28 @@ img {
 .stack__card + .stack__card {
   margin-top: 0;
 }
-.stack__card h3 {
+
+.stack__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.stack__body {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 13px;
+  align-items: center;
+  padding: 20px;
+}
+.stack__body h3 {
   font-size: 16px;
   line-height: 1.5;
   margin: 0 0 6px;
 }
-.stack__card p {
+.stack__body p {
   font-size: 12px;
   line-height: 1.85;
   margin: 0;
