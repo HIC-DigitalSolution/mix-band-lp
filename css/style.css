@@ -738,7 +738,7 @@ img {
   inset: 0;
   z-index: 1;
   mix-blend-mode: multiply;
-  background: linear-gradient(108deg, rgba(23, 8, 31, 0.86) 0%, rgba(36, 16, 46, 0.46) 42%, rgba(99, 56, 212, 0.28) 72%, rgba(201, 31, 112, 0.48) 100%);
+  background: linear-gradient(108deg, rgba(23, 8, 31, 0.52) 0%, rgba(36, 16, 46, 0.26) 42%, rgba(99, 56, 212, 0.2) 72%, rgba(201, 31, 112, 0.34) 100%);
 }
 .chime__photo::after {
   content: "";
@@ -759,9 +759,9 @@ img {
   top: 34px;
   width: 148px;
   height: 148px;
-  border: 1px solid #a879ff;
+  border: 1px solid rgba(168, 121, 255, 0.62);
   border-radius: 50%;
-  box-shadow: 0 0 15px rgba(158, 103, 255, 0.95), inset 0 0 16px rgba(99, 56, 212, 0.18);
+  box-shadow: 0 0 9px rgba(158, 103, 255, 0.5);
 }
 .chime__ring::before, .chime__ring::after {
   content: "";
@@ -773,8 +773,8 @@ img {
   top: 43px;
   width: 142px;
   height: 142px;
-  border: 1px solid #ff72bc;
-  box-shadow: 0 0 17px rgba(255, 45, 149, 0.95), inset 0 0 16px rgba(255, 45, 149, 0.16);
+  border: 1px solid rgba(255, 114, 188, 0.66);
+  box-shadow: 0 0 10px rgba(255, 45, 149, 0.5);
 }
 .chime__ring::after {
   left: 71px;

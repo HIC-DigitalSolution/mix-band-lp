@@ -64,7 +64,10 @@
     inset: 0;
     z-index: 1;
     mix-blend-mode: multiply;
-    background: linear-gradient(108deg, rgba(23, 8, 31, .86) 0%, rgba(36, 16, 46, .46) 42%, rgba(99, 56, 212, .28) 72%, rgba(201, 31, 112, .48) 100%);
+    // 2026-09-08: 支給された実写に差し替えたので、色被せを薄くした。
+    // 元の値（左端 .86）は支給バナーのトリミング向けで、**表情が沈んで読めなかった。**
+    // この写真は表情が主役なので、色は「乗せる」だけにする。
+    background: linear-gradient(108deg, rgba(23, 8, 31, .52) 0%, rgba(36, 16, 46, .26) 42%, rgba(99, 56, 212, .2) 72%, rgba(201, 31, 112, .34) 100%);
   }
 
   // チャイムの光の筋。
@@ -89,9 +92,10 @@
   top: 34px;
   width: 148px;
   height: 148px;
-  border: 1px solid #a879ff;
+  border: 1px solid rgba(168, 121, 255, .62);
   border-radius: 50%;
-  box-shadow: 0 0 15px rgba(158, 103, 255, .95), inset 0 0 16px rgba(99, 56, 212, .18);
+  // 顔の上に乗るので、光を落として「線」だけにする。
+  box-shadow: 0 0 9px rgba(158, 103, 255, .5);
 
   &::before, &::after { content: ""; position: absolute; border-radius: 50%; }
 
@@ -100,8 +104,8 @@
     top: 43px;
     width: 142px;
     height: 142px;
-    border: 1px solid #ff72bc;
-    box-shadow: 0 0 17px rgba(255, 45, 149, .95), inset 0 0 16px rgba(255, 45, 149, .16);
+    border: 1px solid rgba(255, 114, 188, .66);
+    box-shadow: 0 0 10px rgba(255, 45, 149, .5);
   }
 
   &::after {
