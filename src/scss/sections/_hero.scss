@@ -123,38 +123,13 @@
   margin: 16px 16px 0;
 }
 
-.hero__audience {
-  order: 2;
-  margin: 0;
-  padding: 11px 16px 0;
-  background: var(--night);
-  font-size: 9px;
-  letter-spacing: .22em;
-  font-weight: 800;
-  color: #ffd7e8;
-}
-
-.hero__summary { order: 3; position: relative; z-index: 3; margin: 18px 16px 0; }
-
-.hero__date {
-  font-size: 25px;
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: .025em;
-  margin: 0 0 17px;
-  color: #fff1f7;
-
-  small {
-    display: block;
-    font-size: 9px;
-    letter-spacing: .24em;
-    color: #f8a7ca;
-    margin-bottom: 8px;
-    font-weight: 800;
-  }
-}
-
+// 必須訴求3点の短い要約。FV直下に置く枠（pre-code-design-blueprint.md）。
+// 対象文（20〜30代の男女へ）と開催期間の日付は 2026-09-08 の指示で外した。
 .hero__signals {
+  order: 2;
+  position: relative;
+  z-index: 3;
+  margin: 18px 16px 0;
   display: grid;
   grid-template-columns: 1.45fr .9fr 1.15fr;
   margin: 0;
