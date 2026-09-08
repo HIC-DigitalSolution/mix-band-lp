@@ -104,11 +104,25 @@
       <h2 id="benefits-title" class="title">いつもの夜を<br>予定外に</h2>
       <p class="body benefits__lead">このイベントで感じてほしいことを 3つに絞ります。</p>
     </div>
-    <ul class="benefits__cards">
-      <li class="card"><span class="card__num">01</span><div><h3>いつもと違う刺激</h3><p>普段の来店とは違う高揚感を楽しむ。</p></div></li>
-      <li class="card"><span class="card__num">02</span><div><h3>関係が動くきっかけ</h3><p>気持ちが揺れ動く瞬間に出会う。</p></div></li>
-      <li class="card"><span class="card__num">03</span><div><h3>非日常を体験</h3><p>恋愛リアリティショーの中へ入る。</p></div></li>
-    </ul>
+    <!-- 横スライド。仕様は docs/design-docs/overview-motion-spec.md。
+         **3枚とも常にDOMに在る。**JSで隠さないので、読み上げ・検索・JS無効でも全部読める。
+         横移動は CSS の scroll-snap でやる（モバイルのスワイプは素の挙動）。
+         JSは「現在位置の表示」と「矢印」だけ。自動再生はしない。 -->
+    <div class="slider" data-slider>
+      <ul class="slider__track" tabindex="0" role="group" aria-label="このイベントで感じてほしいこと 3件">
+        <li class="card" aria-label="1 / 3"><span class="card__num">01</span><div><h3>いつもと違う刺激</h3><p>普段の来店とは違う高揚感を楽しむ。</p></div></li>
+        <li class="card" aria-label="2 / 3"><span class="card__num">02</span><div><h3>関係が動くきっかけ</h3><p>気持ちが揺れ動く瞬間に出会う。</p></div></li>
+        <li class="card" aria-label="3 / 3"><span class="card__num">03</span><div><h3>非日常を体験</h3><p>恋愛リアリティショーの中へ入る。</p></div></li>
+      </ul>
+
+      <div class="slider__foot">
+        <!-- JSが無いと矢印は出さない（押しても何も起きないボタンを見せないため）。 -->
+        <button class="slider__arrow" type="button" data-slider-prev aria-label="前のカード" hidden>‹</button>
+        <ol class="slider__dots" data-slider-dots aria-hidden="true"><li></li><li></li><li></li></ol>
+        <button class="slider__arrow" type="button" data-slider-next aria-label="次のカード" hidden>›</button>
+        <p class="slider__status" data-slider-status role="status" aria-live="polite">1 / 3</p>
+      </div>
+    </div>
   </section>
 
   <!-- ======================= 04 mechanism / 仕組み ==================== -->
@@ -291,5 +305,6 @@
 </svg>
 
 <script src="js/store-dialog.js" defer></script>
+<script src="js/slider.js" defer></script>
 </body>
 </html>
