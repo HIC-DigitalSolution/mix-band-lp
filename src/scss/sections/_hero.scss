@@ -55,10 +55,13 @@
     display: block;
     width: 100%;
     height: 100%;
+    // 素材（750x583）と枠の比が一致しているので、cover でも1pxも切れない。
+    // **ズームを掛けないこと。**scale(1.07)→1.11 を入れていたときは
+    // 最大9.9%が枠外へ出て、transform-origin が 50% 72% だったため上側に偏って切れた。
+    // 支給バナーの上部を切る判断は素材ファイル側（-fv-crop）で済んでいる。
     object-fit: cover;
-    transform: scale(1.07);
-    transform-origin: 50% 72%;
-    animation: hero-kenburns 10s ease-in-out infinite alternate;
+    // 動きは参考にした Paradox Live と同じ「明るさの呼吸」。拡大しないので何も切れない。
+    animation: hero-breathe 6s ease-in-out infinite alternate;
   }
 }
 
@@ -181,9 +184,9 @@
   }
 }
 
-@keyframes hero-kenburns {
-  0% { transform: scale(1.07) translate3d(-.5%, 0, 0); }
-  100% { transform: scale(1.11) translate3d(.8%, -.4%, 0); }
+@keyframes hero-breathe {
+  0% { filter: brightness(.94) saturate(1); }
+  100% { filter: brightness(1.06) saturate(1.06); }
 }
 @keyframes hero-glow {
   0% { opacity: .45; transform: scale(1); }
