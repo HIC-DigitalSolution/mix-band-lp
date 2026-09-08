@@ -18,6 +18,9 @@
   display: flex;
   align-items: center;
   transition: opacity .2s;
+  // 見た目は20pxのまま、指で押せる高さ44pxを確保する。
+  padding-block: 12px;
+  margin-block: -12px;
 
   &:hover { opacity: .6; }
 
@@ -38,6 +41,7 @@
 }
 
 .site-nav__btn {
+  position: relative;
   display: block;
   padding: 8px;
   border-radius: 4px;
@@ -70,4 +74,12 @@
   30% { transform: rotate(1deg); }
   35% { transform: rotate(-.5deg); }
   40%, 100% { transform: rotate(0deg); }
+}
+
+// 公式HPと同じ見た目（10px・padding 8px）だと高さ26pxでタップ領域が足りない。
+// 背景の大きさは変えず、当たり判定だけ44pxまで広げる。
+.site-nav__btn::after {
+  content: "";
+  position: absolute;
+  inset: -9px -6px;
 }

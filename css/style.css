@@ -59,7 +59,6 @@ img {
   max-width: var(--page-max);
   margin-inline: auto;
   background: var(--smoke);
-  overflow: hidden;
 }
 
 .hero, .intro, .benefits, .mechanism, .info, .cta {
@@ -248,6 +247,8 @@ img {
   display: flex;
   align-items: center;
   transition: opacity 0.2s;
+  padding-block: 12px;
+  margin-block: -12px;
 }
 .site-header__logo:hover {
   opacity: 0.6;
@@ -271,6 +272,7 @@ img {
 }
 
 .site-nav__btn {
+  position: relative;
   display: block;
   padding: 8px;
   border-radius: 4px;
@@ -317,6 +319,12 @@ img {
     transform: rotate(0deg);
   }
 }
+.site-nav__btn::after {
+  content: "";
+  position: absolute;
+  inset: -9px -6px;
+}
+
 .hero {
   display: flex;
   flex-direction: column;
@@ -1020,6 +1028,7 @@ img {
 }
 
 .store-dialog__close {
+  position: relative;
   flex: 0 0 36px;
   width: 36px;
   height: 36px;
@@ -1078,4 +1087,11 @@ img {
   line-height: 1.6;
   color: #957b89;
   margin: 13px 2px 0;
+}
+
+.store-dialog__close::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
 }

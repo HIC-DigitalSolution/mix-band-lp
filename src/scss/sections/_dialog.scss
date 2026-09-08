@@ -28,6 +28,7 @@
 }
 
 .store-dialog__close {
+  position: relative;
   flex: 0 0 36px;
   width: 36px;
   height: 36px;
@@ -85,4 +86,12 @@
   line-height: 1.6;
   color: #957b89;
   margin: 13px 2px 0;
+}
+
+// 見た目は36pxの丸のまま、当たり判定を44pxにする。
+.store-dialog__close::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
 }
