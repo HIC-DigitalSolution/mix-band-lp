@@ -261,6 +261,17 @@ invariants:
         - 'position: sticky'
       hint: 'fix: セクションの切り抜きは **overflow: clip** で行う。**hidden はスクロールコンテナを作るので、その中の position:sticky が無効になる。**このプロジェクトで2回踏んでいる —— ヘッダー（.page が hidden で貼り付かなかった）と、YOUR NIGHT の重なるカード。装飾のはみ出しは clip でも同じように切れる。詳細は docs/gotchas/sticky-was-declared-not-verified.md。'
 
+  - id: pc-layout-exists
+    statement: PC幅のレイアウトを持つ。SP幅のまま中央に置いたままにしない。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^css/.+\.css$
+      required_patterns:
+        - '--page-max-pc'
+        - 'min-width: 900px'
+      hint: 'fix: **これは lp-visual-knowledge §10「PCで横に広げない。カラムはSP幅のまま」から意図的に外れている。**2026-09-09 の依頼者指示で、futuretrain.jp と構造を揃えるためにPC幅のレイアウトを作った。**戻さないこと。**SPの見た目を変えずにPCだけ足す形にしてある（メディアクエリは min-width: 900px、コンテナは --page-max-pc = 1280px、左右 --pc-gutter = 80px）。'
+
   # ==== ここから先は機械で判定できない ====
 
   - id: reference-seen-before-genre
@@ -370,3 +381,9 @@ invariants:
     check:
       type: manual
       note: '**2026-09-08、依頼者の指定で futuretrain.jp の Future Imagination Course と同じ作りにした。**実物を開いて実装を読んで取った —— **JavaScriptは一切使っていない**（scroll駆動アニメーションのCSSも0件）。**作り方:** ① セクション内にカードを縦に並べる ② **1枚目だけ position: sticky; top で上に貼り付ける** ③ **2枚目以降に clip-path: inset() を持たせる** —— これで後続が前の上をせり上がって覆う ④ **親セクションは overflow: clip**（hidden にすると sticky が死ぬ）。**守ること:** **3枚とも常にDOMに在る**（JSで隠さない。読み上げ・検索・JS無効でも全部読める）。**カード間に隙間を空けない** —— 空けると「覆う」動きが途切れて、ただ並んでいるように見える。**カードの中身を埋める。**最初は1行＋1文だけで min-height を持たせたが、**白が余って未完成に見えた。**2026-09-08、依頼者の判断で写真を足した —— 支給された MIXBAND-CHIME01.png（1902x827）から**人物ごとに 660x495 で3枚切り出し**、4:3でカード上端に敷いている。**別々の人・別々の表情を選ぶこと。**カードは重なって1枚ずつ見えるので、同じ場面から切っても並んで見えることはないが、**同じ人が2枚に写ると使い回しに見える**（1枚目に2枚目の主役が入っていて切り直した）。min-height はもう持たせていない。写真が高さを作る。**JSを足したくなったら、その前に「JS無しで何が壊れるか」を言えること。**いまは何も壊れない。仕様は docs/design-docs/overview-motion-spec.md。'
+
+  - id: pc-grammar-comes-from-futuretrain
+    statement: PC幅の組み方は futuretrain から取った文法に従う。節は増やさない。
+    check:
+      type: manual
+      note: '**2026-09-09、依頼者の指示。**「構造は一緒にしたほうがいい」「まずはLPサイズを作ってその後にSPサイズ」。実物を1440幅で開いて数値を取った —— **コンテナ1280px（左右80px）／英字の節見出し96px／和文見出し32px／本文18px・行間1.9・字間0.9px／横並びが基本（2カラムのブロックが69個）**。MIXへの持ち込み方: 英字の kicker を節の見出しとして 58px まで上げる／本文 18px・行間1.9／各節を横並びにする（FVはバナー左＋要約とCTA右、CHIMEは本文左＋写真右、YOUR NIGHTのカードは写真左＋本文右）。**節は増やさない** —— futuretrain には What is New・Station Map・Space・Access・Credit・FAQ があるが、こちらは「実績・声・料金・受付時間・FAQの空枠は置かない」「店舗一覧はダイアログ内だけ」が確定済みで、背骨は既に一致している。**支給バナー（750x583）を原寸より拡大しない** —— PCでは列を720pxで止めている。粗くなる。**メディアクエリは各セクションのパーシャルに書く**（section の class と _<名前>.scss を1対1にする規約を崩さない）。'

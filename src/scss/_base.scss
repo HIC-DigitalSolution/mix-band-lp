@@ -171,3 +171,42 @@ img { max-width: 100%; }
   0% { transform: translate3d(0, 0, 0); opacity: .2; }
   100% { transform: translate3d(-9px, 11px, 0); opacity: .46; }
 }
+
+// ===== PC幅（LPサイズ） =====
+// futuretrain の文法から取った値 —— コンテナ1280 / 左右80 / 英字の節見出しを大きく /
+// 本文18px・行間1.9・字間0.9px / 横並びを基本にする。
+// **節は増やしていない。**6区間のまま、並べ方だけ変えている。
+@media (min-width: 900px) {
+  .page {
+    max-width: var(--page-max-pc);
+  }
+
+  .hero, .intro, .benefits, .mechanism, .info, .cta {
+    padding: 120px var(--pc-gutter);
+  }
+
+  // 英字ラベルが節の見出しになる（futuretrain は96px）。
+  .kicker {
+    font-size: 58px;
+    line-height: 1;
+    letter-spacing: .01em;
+    font-weight: 900;
+    margin-bottom: 22px;
+  }
+
+  .title {
+    font-size: 38px;
+    line-height: 1.45;
+    margin-bottom: 26px;
+  }
+
+  .body {
+    font-size: 18px;
+    line-height: 1.9;
+    letter-spacing: .05em;
+    max-width: 34em;
+  }
+
+  // 巨大なアウトライン文字も画面幅に合わせて大きくする。
+  .outline-word { font-size: 120px; }
+}

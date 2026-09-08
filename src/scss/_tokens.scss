@@ -26,5 +26,10 @@
   --radius-s: 10px;
 
   --jp: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  --page-max: 430px; // PCで横に広げない。余った幅は外周へ（lp-visual-knowledge §10）
+  // SPはこの幅。PCは _base.scss のメディアクエリで 1280 に広げる。
+  // **§10「PCで横に広げない」から意図的に外れている**（2026-09-09 の依頼者指示。
+  // futuretrain と構造を揃えるため）。理由は AGENTS.md。
+  --page-max: 430px;
+  --page-max-pc: 1280px;
+  --pc-gutter: 80px;
 }

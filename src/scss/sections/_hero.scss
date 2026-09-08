@@ -171,3 +171,45 @@
   0% { opacity: .28; transform: translate3d(-10px, 0, 0) rotate(18deg); }
   100% { opacity: .95; transform: translate3d(20px, -5px, 0) rotate(24deg); }
 }
+
+// ===== PC幅 =====
+// 支給バナーは 750x583。**それ以上に引き伸ばさない**（粗くなる）。
+// 右にテキスト列を置いて横並びにする。
+@media (min-width: 900px) {
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 720px) minmax(320px, 1fr);
+    align-items: center;
+    column-gap: 56px;
+    padding: 96px var(--pc-gutter) 104px;
+
+    .outline-word { right: -40px; bottom: 40px; font-size: 96px; }
+  }
+
+  .hero__keyart { order: 0; border-radius: var(--radius); }
+
+  .hero__signals {
+    order: 0;
+    margin: 0;
+    grid-template-columns: 1fr;
+    border: 0;
+
+    li {
+      padding: 16px 0;
+      border-right: 0;
+      border-bottom: 1px solid rgba(255, 245, 247, .22);
+      font-size: 15px;
+
+      + li { padding-left: 0; }
+      &:last-child { border-bottom: 0; }
+    }
+
+    b { font-size: 10px; margin-bottom: 5px; }
+  }
+
+  .hero__act { order: 0; margin: 22px 0 0; grid-column: 2; }
+
+  // 2列目に「要約 → CTA」を縦に積む。
+  .hero__signals, .hero__act { grid-column: 2; }
+  .hero__keyart { grid-column: 1; grid-row: 1 / span 2; }
+}

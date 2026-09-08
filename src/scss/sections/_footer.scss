@@ -6,3 +6,8 @@
   font-size: 9px;
   letter-spacing: .08em;
 }
+
+// ===== PC幅 =====
+@media (min-width: 900px) {
+  .footer { padding: 34px var(--pc-gutter) 44px; font-size: 11px; }
+}

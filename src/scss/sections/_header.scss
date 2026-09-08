@@ -83,3 +83,10 @@
   position: absolute;
   inset: -9px -6px;
 }
+
+// ===== PC幅 =====
+@media (min-width: 900px) {
+  .site-header { padding: 16px var(--pc-gutter); }
+  .site-header__logo { width: 150px; }
+  .site-nav__btn { font-size: 12px; padding: 11px 14px; }
+}

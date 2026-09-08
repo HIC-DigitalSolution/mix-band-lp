@@ -91,3 +91,39 @@
   .stack__card:nth-child(2) & { background: var(--violet); }
   .stack__card:nth-child(3) & { background: var(--berry); }
 }
+
+// ===== PC幅 =====
+// futuretrain のカードは画像と本文が横並び。同じにする。
+// 重なる仕組み（1枚目 sticky ＋ 後続 clip-path）はそのまま。
+@media (min-width: 900px) {
+  .benefits {
+    padding-top: 150px;
+    padding-bottom: 170px;
+
+    .z { max-width: 720px; }
+    .outline-word { right: -34px; top: 96px; font-size: 116px; }
+  }
+
+  .stack { margin-top: 56px; }
+
+  .stack__card {
+    display: grid;
+    grid-template-columns: 46% 1fr;
+    align-items: center;
+
+    &:first-child { top: 96px; }
+  }
+
+  .stack__photo { height: 100%; aspect-ratio: auto; }
+
+  .stack__body {
+    padding: 40px 44px;
+    grid-template-columns: 54px 1fr;
+    gap: 20px;
+
+    h3 { font-size: 24px; margin-bottom: 10px; }
+    p { font-size: 15px; }
+  }
+
+  .card__num { width: 54px; height: 54px; font-size: 14px; }
+}

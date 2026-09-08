@@ -41,3 +41,16 @@
   height: auto;
   pointer-events: none;
 }
+
+// ===== PC幅 =====
+@media (min-width: 900px) {
+  .intro {
+    padding-top: 150px;
+    padding-bottom: 170px;
+
+    .z { max-width: 720px; }
+    .outline-word { right: -30px; top: 90px; font-size: 132px; }
+  }
+
+  .intro__pair { width: 260px; right: 40px; bottom: 40px; }
+}

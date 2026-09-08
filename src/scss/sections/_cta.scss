@@ -79,3 +79,23 @@
 
   small { font-size: 8.5px; margin-top: 4px; }
 }
+
+// ===== PC幅 =====
+@media (min-width: 900px) {
+  .cta {
+    padding-top: 160px;
+    padding-bottom: 170px;
+
+    .body { max-width: 520px; }
+    .outline-word { left: -30px; top: 90px; font-size: 118px; }
+  }
+
+  .cta__button {
+    max-width: 480px;
+    margin-inline: auto;
+    padding: 26px 20px;
+    font-size: 19px;
+
+    small { font-size: 11px; margin-top: 7px; }
+  }
+}
