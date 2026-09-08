@@ -1,0 +1,88 @@
+// 店舗選択ダイアログ —— 本文に店舗一覧を置かず、CTAの操作後だけ出す。
+.store-dialog {
+  width: min(100% - 32px, calc(var(--page-max) - 32px));
+  max-width: none;
+  margin: auto auto 18px;
+  padding: 22px 18px 18px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid rgba(255, 45, 149, .15);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .42);
+
+  &::backdrop {
+    background: rgba(19, 5, 24, .74);
+    backdrop-filter: blur(8px);
+  }
+
+  .kicker { color: #9b235e; margin-bottom: 8px; }
+
+  h2 { font-size: 18px; line-height: 1.45; margin: 0 0 5px; }
+}
+
+.store-dialog__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+
+.store-dialog__close {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #decbd5;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.store-dialog__help {
+  font-size: 10.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  margin: 0 0 17px;
+}
+
+.store-dialog__list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.store {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  text-decoration: none;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid #ead8e2;
+  border-radius: var(--radius);
+
+  b { font-size: 12px; }
+
+  span {
+    font-size: 9.5px;
+    font-weight: 900;
+    color: var(--raspberry);
+
+    &::after { content: "  →"; }
+  }
+}
+
+.store-dialog__note {
+  font-size: 9px;
+  line-height: 1.6;
+  color: #957b89;
+  margin: 13px 2px 0;
+}

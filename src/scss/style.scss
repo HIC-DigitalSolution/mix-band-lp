@@ -1,0 +1,14 @@
+// セクションを足すときは、ここに @use を1行足す。
+// index.html の section の class と、下のパーシャル名を1対1で対応させる。
+@use 'tokens';
+@use 'base';
+
+@use 'sections/header';
+@use 'sections/hero';
+@use 'sections/intro';
+@use 'sections/benefits';
+@use 'sections/mechanism';
+@use 'sections/info';
+@use 'sections/cta';
+@use 'sections/footer';
+@use 'sections/dialog';

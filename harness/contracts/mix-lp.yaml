@@ -1,0 +1,343 @@
+name: mix-lp-contract
+summary: このLPで「間違えると事故になる」箇所だけを、機械が毎回見張る。人の記憶とレビューには頼らない。
+
+# なぜこのLP専用の契約が要るか。
+#
+# 素のHTML/CSSの1ページで、テストもステージングも無い。壊れても差分では見えず、
+# 公開してから気づく。しかもこのLPは Y2K NIGHT LP の `#mix` セクションから
+# 独立させたもので、**あちらで既に踏んだ穴の記録がある。**
+# ここに書くのはそれだけ。想像上のリスクは書かない（誰も直さないので）。
+#
+# 共通ぶんはここに書かない:
+#   - 秘密情報          → harness/contracts/secrets.yaml（symlink・設定不要で有効）
+#   - 計画と検証の作法  → harness/contracts/workflow.yaml（同）
+#   - LPの設計・CVR     → harness/contracts/lp-design.yaml（同・全て manual）
+#
+# 画づくりの判断基準は docs/design-docs/lp-visual-knowledge.md、
+# 何をどの順で言うかは docs/design-docs/lp-cvr-knowledge.md。どちらも symlink。
+
+inputs:
+  - AGENTS.md
+  - design/（カンプ）
+outputs:
+  - カンプの決定が docs/design-docs/ に残っていること
+  - 変更が公開URLで意図どおり見えること
+
+invariants:
+  # ==== ここから機械が判定する ====
+
+  # ---- Y2K の #mix で、支給バナーとページの記述が食い違っていた ----
+  - id: no-superseded-or-invented-facts
+    statement: 依頼者が取り下げた数字と、バナーの言い回しを、事実として本番HTMLに書かない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+      # 2026-09-07 に依頼者が確定させた4点で、旧記述は誤りになった。
+      # 「最大4〜6組」は正しいので、'最大4組' は誤りだけを拾う（〜が挟まると一致しない）。
+      forbidden_patterns:
+        - '最大4組'
+        - '一区切り'
+        - '人数の指定は無い'
+        - '人数指定なし'
+        - '1日限り'
+        - '20歳以上'
+        - '身分証'
+        - 'キャンセル料'
+        - '当日キャンセル'
+      hint: 'fix: 確定情報だけを書く（AGENTS.md「いま決まっていること」と docs/design-docs/content-structure-first-draft.md）。未確定は TODO(依頼者確認) のまま残す。「1日限り」はバナーの言い回しで、意味は「1晩が完結する」。開催曜日の表示文言は「日〜木曜日限定」。'
+
+  # ---- 1ページなので head が壊れると全損 ----
+  - id: head-basics
+    statement: title・description・og:title・lang が実際のタグとして在る。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^index\.html$
+      required_patterns:
+        - '<title'
+        - 'name="description"'
+        - 'property="og:title"'
+        - '<html lang='
+      hint: 'fix: index.html の head に足す。**素の文字列ではなくタグの形で判定している。**2026-09-08 に、この検査が `og:image` という文字列を **TODOコメントの中で拾って pass していた**（タグは0件）。契約が禁じている「何も検査していない green」そのものだった。公開時にだけ真になる og:image と og:url は og-image-and-index-before-release（manual）に移した。'
+
+  # ---- 実測でFVが2.9MBだったことがある（Y2K） ----
+  - id: image-budget
+    statement: 公開する画像は1枚400KBまで。
+    check:
+      type: max-file-size
+      applies_to_paths:
+        - ^(img|assets)/(?!font/).+\.(png|jpg|jpeg|webp|gif|avif)$
+      max_kb: 400
+      hint: 'fix: 表示サイズまで縮めてWebPへ。Y2Kでは 2936KB → 126KB になった例がある。例外を足すなら理由とセットで exempt_paths に書く。'
+
+  # ---- 支給素材はそのままだと重い（MIX-BAND.png は 1.1MB あった） ----
+  - id: video-budget
+    statement: 公開する動画は1本2MBまで。
+    check:
+      type: max-file-size
+      applies_to_paths:
+        - ^video/.+\.(mp4|webm|mov)$
+      max_kb: 2000
+      hint: 'fix: 19歳LPの実績は 179KB（カラオケの短いループ）。SPの回線で先頭が出るまでの時間が体験を決める。長い動画を置くなら poster を必ず付ける。'
+
+  # ---- 開発サーバのURLが残ると本番で壊れる ----
+  - id: no-local-urls
+    statement: localhost や開発用URLを公開ファイルに残さない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+        - ^css/.+\.css$
+        - ^js/.+\.js$
+      forbidden_patterns:
+        - 'http://localhost'
+        - 'https://localhost'
+        - '127\.0\.0\.1'
+        - 'ngrok\.io'
+      hint: 'fix: 相対パスか実URLに置き換える。確認用のポートは .claude/launch.json に閉じ込める。'
+
+  # ---- カンプのダミーは許す。本番HTMLでは許さない ----
+  - id: no-placeholder-copy-in-production
+    statement: 仮の文言が本番HTMLに残らない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+      forbidden_patterns:
+        - 'Lorem ipsum'
+        - 'lorem ipsum'
+        - 'ダミーテキスト'
+        - 'サンプルテキスト'
+        - 'ここに.{0,8}を入れる'
+        - 'XXXXX'
+        - '000-0000-0000'
+        - 'example@example\.com'
+      # design/ を対象に入れていないのは意図です。カンプは仮の文言で組むものなので、
+      # ここで止めると探索そのものが止まります。
+      hint: 'fix: 本文を実物に置き換える。未着手の節があるなら、仮文言を公開するのではなく節ごと隠す。カンプ（design/）では仮の文言のままでよい。'
+
+  - id: images-have-alt
+    statement: img には必ず alt がある。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+      # alt= を1つも持たない <img ...> に当てる。
+      forbidden_patterns:
+        - '<img(?![^>]*\salt=)[^>]*>'
+      hint: 'fix: alt を書く。装飾なら alt="" と書く。空の alt は答えだが、無いのは答えではない。文字が焼き込まれた画像なら、焼き込みの文言を全部 alt に入れる。'
+
+  # ---- 参考にしたKBCのサイトに、この分岐が無かった ----
+  - id: reduced-motion-is-handled
+    statement: 動きを入れるなら、動きを止めたい人のための分岐も入れる。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^css/.+\.css$
+      required_patterns:
+        - 'prefers-reduced-motion'
+      hint: 'fix: @media (prefers-reduced-motion: reduce) を書き、浮遊する装飾の animation を止める。装飾は止めても情報が減らない設計にする。**このLPはCSS1枚と決めている。**2枚目を足すとこの検査が2枚目にも同じ要求を出すので、そこで一度立ち止まること。参考にした kbc.co.jp/70th はこの分岐を持っていなかった（docs/design-docs/reference-sites.md）。'
+
+  # ---- futuretrain から取った原則を、名前の存在だけ機械で担保する ----
+  - id: color-ramp-tokens-exist
+    statement: セクションの色は1本のランプから取る。ランプはトークンとして定義されている。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^css/.+\.css$
+      required_patterns:
+        - '--ramp-01'
+        - '--ramp-02'
+        - '--ramp-03'
+        - '--ramp-04'
+        - '--ramp-05'
+        - '--ramp-06'
+      hint: 'fix: :root に --ramp-01 から --ramp-06 を定義する。最新値はカンプ10（#24102E / #5B163F / #8D1B58 / #C91F70 / #E52683 / #FF2D95）。**機械が見られるのは名前が在ることだけで、各セクションが本当にランプから色を取っているかは見られない** —— そちらは section-colors-come-from-one-ramp（manual）。'
+
+  # ---- 2026-09-08 の依頼者の指示。ページの持ち方を固定する ----
+  - id: index-html-is-written-by-hand
+    statement: index.html は手で書く。生成物にしない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+      forbidden_patterns:
+        - 'Generated from'
+        - 'Do not edit directly'
+        - '<!-- include:'
+      hint: 'fix: index.html を手書きに戻す。**依頼者が自分で開いて上から読める形にしておくのが要件**（2026-09-08の指示）。以前はここを src/index.html と src/sections/*.html から生成していたが、ページ1枚を見るのに5ファイル開く必要があり、しかも index.html を直しても次のビルドで消えていた。生成するのは css/style.css だけ。'
+
+  - id: styles-are-per-section-sass
+    statement: スタイルはセクションごとの Sass に分けて、style.scss がまとめる。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^src/scss/style\.scss$
+      required_patterns:
+        - '@use .sections/'
+      hint: 'fix: セクションを足したら src/scss/sections/_<名前>.scss を作り、src/scss/style.scss に @use を1行足す。**index.html の section の class と1対1で対応させる**（.hero なら _hero.scss）。判定パターンの . は引用符に当たる（YAML内で引用符を書くのを避けているだけ）。'
+
+  - id: css-is-compiled-not-handwritten
+    statement: css/ は Sass の出力。手で書かない。
+    check:
+      type: required-content
+      applies_to_paths:
+        - ^css/.+\.css$
+      required_patterns:
+        - 'Generated from src/scss/style\.scss'
+      hint: 'fix: css/style.css を手で編集しない。直すのは src/scss/。npm run build（node scripts/build.mjs）で吐き直す。**この見出し行が消えているのは、手で書き換えたか、別の経路で生成した合図。**'
+
+  - id: sass-change-ships-its-css
+    statement: Sass を変えたら、コンパイル済みの css も同じ差分に入れる。
+    check:
+      type: companion-required
+      trigger_paths:
+        - ^src/scss/
+      companion_paths:
+        - ^css/.+\.css$
+      hint: 'fix: npm run build を走らせてから commit する。**入れ忘れると、公開されるのは古いCSSのまま。**しかも css/style.css を見ている検査（styles-are-per-section-sass 以外の css 系）は古い出力に対して pass するので、**気づけない。**'
+
+  - id: production-images-live-in-img
+    statement: 本番が参照する画像は img/ から参照する。design/ を参照しない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+        - ^css/.+\.css$
+        - ^src/scss/.+\.scss$
+      # コメントで design/ に言及するのは許す（決定の出どころを書くのは正しい）。
+      # 禁じるのは「参照」の形だけ —— CSS/Sass は url()、HTML は src/href/poster/srcset/content。
+      forbidden_patterns:
+        - 'url\(\s*.?[^)]*design/'
+        - '(src|href|poster|srcset|content)\s*=\s*.[^"'']*design/'
+      hint: 'fix: 使う画像を img/ にコピーして、img/ から参照する（2026-09-08の指示）。**design/ はカンプの作業場で、公開対象ではない。**そこを本番から参照すると、画像予算の検査（image-budget は ^(img|assets)/ しか見ない）がすり抜けるうえ、カンプを整理した瞬間に404になる。**コメントで design/ の資料を引くのは問題ない** —— 判定しているのは url() と src/href の形だけ。'
+
+  - id: image-files-live-in-img
+    statement: 画像ファイルの置き場は img/ と design/ だけ。
+    check:
+      type: forbidden-path
+      forbidden_paths:
+        - ^src/.+\.(png|jpe?g|webp|gif|avif|svg)$
+        - ^css/.+\.(png|jpe?g|webp|gif|avif|svg)$
+        - ^[^/]+\.(png|jpe?g|webp|gif|avif|svg)$
+      hint: 'fix: 本番で使うものは img/ へ、カンプの素材と書き出しは design/ へ。**リポジトリのルートや src/ に画像を置かない**（2026-09-08の指示）。どこに何があるか分からなくなると、公開時にどれを載せるのかが判断できない。'
+
+  # ---- 実装引き継ぎ用の書き出しを、本番素材として誤参照しない ----
+  - id: design-reference-artifacts-are-not-production-dependencies
+    statement: カンプ確認用のPDF・WebPを、本番HTML・CSS・JSから参照しない。
+    check:
+      type: forbidden-content
+      applies_to_paths:
+        - ^index\.html$
+        - ^src/index\.html$
+        - ^css/.+\.css$
+        - ^src/scss/.+\.scss$
+        - ^js/.+\.js$
+      forbidden_patterns:
+        - 'mix-lp-content-design-reference\.(pdf|webp)'
+      hint: 'fix: `img/mix-lp-content-design-reference.{pdf,webp}` はClaude Codeへ見た目を渡すための確認資料で、公開ページの画像ではない。本番で必要な写真・SVGは個別の実素材を `img/` から参照する。確認資料は公開前に `img/` から外すか、公開対象から除外する。'
+
+  # ==== ここから先は機械で判定できない ====
+
+  - id: reference-seen-before-genre
+    statement: 依頼者が参考にしている実物を見るまで、ジャンルと世界観を決めない。
+    check:
+      type: manual
+      note: '**このプロジェクトで一度やっている。**「ラブ上等というネトフリ作品のパロディ感で」と言われたのに実物を見ず、「上等」の一語から「特攻服 → 金の刺繍 → ヤンキー漫画」と決めつけて実装した（Reggae One・金の二重縁取り・傾き・墨紫＋金）。実物は写真主体のキーアートで、金の刺繍も傾いた字も1つも無かった。全部捨てた。**作品名・店名・商品名が出たら、画像を1枚もらう。**「たぶんこういう系」で手を動かし始めない。推測でやったなら、コメントに「未確認」と書く。断定的なコメントは、次の人がそれを検証済みの事実として扱う。**ただし「ド派手ピンクとゼブラ柄の女子部屋」は参照ではない。**2026-09-07 に依頼者が「特定の部屋・作品を指しているわけではない」と明言した。**探しに行かないこと。**原本が無い以上、突き合わせる相手は依頼者の頭の中の像しかない。**その場合は突き合わせを入力側ではなく出力側でやる** —— コピーを入れず面積比だけの配色見本を先に1枚見せて、世界観をそこで決める。カンプ本体まで進んでから世界観がずれると、Y2K と同じ量を捨てることになる。'
+
+  - id: facts-are-client-confirmed-only
+    statement: 依頼者が確定させた事実だけを書く。それ以外は空欄で残す。
+    check:
+      type: manual
+      note: 'イベントの核4点（2026-09-07）: ① 最大4〜6組のグループが交差する ② 金・土以外は開催期間中ずっと ③ チャイムが鳴り、そこからお題が出される ④ 恋愛リアリティ体験と言ってよい。追加情報（2026-09-08）: 対象は20〜30代の男女、来店前の期待は「いつもと違う刺激／関係が動くきっかけ／非日常」、ASOBIBARで恋愛リアリティショーを行っている、開催期間は2026年10月1日〜31日、参加条件はオレンジバンド、全店開催、CTAは店舗選択ダイアログから選んだ店舗の公式LINEへ移動する。店舗一覧は本文へ置かずダイアログ内だけに表示する。料金・受付時間・実績・お客さまの声は載せない。**依頼者指定の必須訴求は「恋愛リアリティ体験」「最大4〜6組」「日〜木曜日限定」の3語。**バナー内だけで済ませず、HTMLの読める文字として掲載する。カップル成立は保証せず「関係が動くきっかけ」として表現し、再来店は参加者のメリットではなく運営側の成果として扱う。**イベントの中身は依頼者の判断であえて伏せている。**「チャイムが鳴るまで分からない」が訴求の軸で、中身を書くと軸ごと壊れる。'
+
+  - id: parody-stays-generic
+    statement: パロディの記号はジャンル一般のものだけ。実在番組の固有物は使わない。
+    check:
+      type: manual
+      note: '使ってよい: 白抜き太ゴシックのテロップ帯、エピソード表記、ナレーション調のコピー。使わない: 実在番組のロゴ・タイトルの字組み・キーアート・配信社のマーク。商用ページで実在ブランドを流用すると、パロディの意図でも商標の問題になる。**この線引きは実装側の判断で、法務確認は取っていない。**公開前に依頼者に一度通すこと。'
+
+  - id: rejected-directions-not-reproposed
+    statement: 却下済みの案を作り直さない。
+    check:
+      type: manual
+      note: '却下済み: **方向A「全部ウィンドウの中」**（2026-09-04・MIXで先行実装 → 同日「デザインがダメすぎる」で差し戻し。原因はウィンドウ枠・シークバーがデスクトップの言語で、寄せたかったバナーの言語ではなかったこと。1画面に2つの文法が入って寄せたい側が負けた）／**Reggae One と金の刺繍表現**（推測が出発点だった）／傾けた詰めた字。地に `#003ed6` をべた塗りで広げるのも駄目で、実測 彩度×明度 = 0.839（Y2KのCTAバー平均 0.449）。**べた塗りの面はCTAのために取っておく**（lp-visual-knowledge §2・§5）。'
+
+  - id: key-art-is-a-supplied-banner
+    statement: 支給バナーは現段階の仮置き素材で、最終キーアートは未決定。焼き込み文字を二重にしない。
+    check:
+      type: manual
+      note: '支給物は `MIX-BAND.png`（1.1MB）で、Y2Kでは `mix-band-key.webp`（132KB）に変換して使った。**2026-09-07の依頼者指示で、現段階ではFVへ仮置きする。最終キーアートとして残すかは未決定。**仮置きでも生成画像内の再現を切り出さず、支給ファイルそのものを使う。ロゴもコピーも焼き込まれているので、HTML側に同じ文字段を重ねると二重になる。焼き込みの文言はaltへ全部入れる。SPでは焼き込みの小さい2行が約8pxで読めないため、判断に必要な確定事実だけ後続HTMLで再掲する。配色はバナーへの一致だけで固定せず、バナーを外してもページ側に高揚感が残るか確認する。'
+
+  - id: comp-decisions-are-recorded
+    statement: カンプで決めたことが docs/design-docs/ に文章で残っている。カンプの画だけを残さない。
+    check:
+      type: manual
+      note: '残すのは「世界観の1つの決定」「彩度をどこに割り当てたか」「書体と字送り」「動きの物理法則」「情報の説得順」「捨てた案とその理由」。**2026-09-08の現在の情報順は、WHO / HERO → 共感・イベント理解 → 得られる体験 → 仕組み → 開催情報 → CTA。**実績・証拠、お客さまの声、独立した限定性は外す。料金・受付時間・店舗一覧も載せない。詳細は docs/design-docs/content-structure-first-draft.md。キャンバスだけが残ると、次に触る人は画から意図を逆算するしかない。`node scripts/harness/new-plan.mjs design-doc <slug> --title "..."`。'
+
+  - id: implementation-handoff-is-versioned
+    statement: 実装へ渡すカンプ・書き出し・決定文書の版を明記し、古い書き出しを最新版として扱わない。
+    check:
+      type: manual
+      note: '**2026-09-08、依頼者はカンプ作業を一旦止め、Claude Codeで実装へ進むと決めた。実装基準は `design/mix-lp-content-design-comp-17.dc.html`。** `img/mix-lp-content-design-reference.{pdf,webp}` は、現環境でカンプ17を一枚へ書き出せなかったため、既存のカンプ10 PNGから作った引き継ぎ用資料である。全体の構成と配色を見る補助には使えるが、最新版そのものではない。FVは `content-design-comp-11.md`、端装飾は `content-design-comp-15.md`、人物SVGは `content-design-comp-16.md`、チャイム写真は `content-design-comp-17.md`、概要スライドの動きは `overview-motion-spec.md` を併読する。**書き出しファイル名だけでは版が分からない。**引き継ぎ時は元カンプ名と差分文書を `design/README.md` に必ず書く。確認資料は依頼者の指定で一時的に `img/` へ置いているため、公開前に除外または移動を確認する。'
+
+  - id: implementation-respects-the-frozen-comp
+    statement: カンプ停止後の実装で、決定済みの世界観・配色・情報順を独自に組み替えない。
+    check:
+      type: manual
+      note: 'カンプ停止は、実装者が画を再設計してよいという意味ではない。実装ではレスポンシブ、操作、`prefers-reduced-motion`、可読性をコードへ翻訳しつつ、**比較06の配色役割、SOUND TRIPの構成文法、横幅いっぱいのFV、支給された乾杯SVG、チャイム写真、Future Trainから翻訳した3枚の概要スライド、リボン不採用、ネオンピンクのCTA、オレンジを点・火花・短い罫に限る判断、確定済みの内容順**を保つ。変更が必要なら、本番コードだけで黙って変えず、カンプ工程へ戻して決定文書とハーネスを更新する。'
+
+  - id: floating-objects-follow-one-physics
+    statement: 浮いているものを採用する場合は、1つの物理法則に従う。形と数には意味がある。
+    check:
+      type: manual
+      note: '依頼者が挙げた kbc.co.jp/70th を実際に読んで取った技法（docs/design-docs/reference-sites.md）。**3層に分ける** —— div が配置、span/em が動き、svg/img が絵。1層1役で、混ぜると位置と動きが干渉する。**振幅は translateY / translateX で ±3〜5% だけ。**大きく動かすと浮遊ではなく移動になる。**duration を全部違う値にして（1.8s〜2.9s）、delay は振らない。**alternate-reverse と組むと、勝手に位相がずれ続けて二度と揃わない。素のCSS keyframesで足り、KBCもGSAPを使っていない。**2026-09-07の新しい設計ではリボンを採用しない方向。**過去の「リボン1本＝1組」は新案へ持ち込まない。浮遊物を置く場合は、ヤンキーネオンの世界観と関係する形を静止画で先に決め、飾りとして数を増やさない。浮遊物自体を置かない場合はこの項目は該当なし。焼き込み文字のあるバナー中央には重ねない。**CSSだけ読んで形を決めないこと。**形・塗り・質感・スケールは素材にしか無い。自分の出力も必ず描画して見る。'
+
+  - id: section-colors-come-from-one-ramp
+    statement: 新しい色を足さない。セクションの色は1本のランプの上から取る。
+    check:
+      type: manual
+      note: '依頼者が挙げた futuretrain.jp を実際に読んで取った原則（docs/design-docs/reference-sites.md）。あちらは端点 #2b469c と #cf3792 の2つだけを決めて、中間色を全部その補間の上から取っていた。**移り変わりに見えるのは色を増やしたからではなく、色を1本に絞ったから。**比較05のコバルトブルー・ピンク・オレンジは同じ強さで競合した。**2026-09-08、依頼者が比較06を最も良いと判断した。現在の採用方向は濃紫 #24102E → 電気的な紫 #6338D4 → ラズベリーピンク #C91F70。**ネオンピンク #FF2D95 はCTAと細線、オレンジ #FF8A1F は小さな火花・点・短い罫だけに使う。比較07の広いブルーバイオレット面と大きなオレンジの光は採用しない。**読ませる面は強い色の流れに乗せない** —— 淡いピンク #F2D6DF と白 #FFF7FA のカードはページを通して不変。'
+
+  - id: futuretrain-course-slide-grammar
+    statement: イベント概要は、Future Trainの選択肢レールと詳細パネルの流れをMIXの3枚へ翻訳する。
+    check:
+      type: manual
+      note: '依頼者が2026-09-08に指定した futuretrain.jp の Visitor Guide / Future Imagination Course を実際に確認した。借りるのは固有の文章・画像・ロゴ・色ではなく、**選択肢のレール → 同じ枠の詳細パネル → 次のカードへ進む流れ**だけ。MIXでは `01 WHAT IS MIX`（恋愛リアリティ体験）→ `02 CHIME`（チャイムからお題）→ `03 CROSS`（最大4〜6組が交差する）の3枚にする。後で実装する場合はカード幅を基準に1枚ずつ横へ進み、画像・見出し・本文を同期させる。デスクトップは矢印またはホイール、モバイルはスワイプ、次カードの端を少し見せ、自動再生はしない。詳細は docs/design-docs/overview-motion-spec.md。'
+
+  - id: sound-trip-composition-frames-the-page
+    statement: SOUND TRIPの構成文法を使い、色面と図形の大小・位置でページを組む。
+    check:
+      type: manual
+      note: '依頼者が2026-09-07に構成ベースとして指定した on-the-trip.com/sound-trip を、1280px幅とナビが折り畳まれる703px幅で実際に確認した（docs/design-docs/reference-sites.md §3）。**借りるのは構成文法だけ。**① 1色の広い地に、隣接色の巨大な有機形を1つ置く ② セクション境界へ10〜25%ほど食い込ませ、直線で切らない ③ 中央を可読域として空け、装飾は左右端・四隅・境界へ寄せる ④ 図形は大1＋小1を基本単位にし、同種情報は同じ輪郭で反復する ⑤ 終盤でFVの濃紫へ戻してCTAを独立した面にする。**SOUND TRIPのシアン #26C7D1、赤 #CF264A、ロゴ、人物イラスト、SVGの輪郭は流用しない。**2026-09-08に採用方向となった比較06の濃紫 #24102E、電気的な紫 #6338D4、ラズベリーピンク #C91F70を地と光へ割り当てる。オレンジ #FF8A1F は小さな火花・点・短い罫だけに使う。ゼブラ柄は端から入る形の一部へクリップし、本文や仮置きバナーの焼き込み文字の背面へ置かない。固定CTAは単一CV確定後に採否を決める。**静止カンプ04の外周のざらつきは仮表現。実装ではセクション専用SVGで滑らかな外形を作り、CSSは配置・色・重なりを担当する。**CSSのborder-radiusだけで汎用的なblobにしない。質感を残す場合も輪郭を荒らさず、SVG内へクリップする。SPで本文へ干渉する場合は配置用SVGを切り替える。**2026-09-08の背景見直しでは、区間ごとに専用SVGを1枚ずつ置き、大きな色面・中間の輪郭線またはゼブラ・小さな火花または点の3段階を持たせる。巨大なアウトライン文字は画面外で切り、本文中央を空ける。**実装カンプでは375px幅で描画し、中央の可読域、図形の食い込み、輪郭のジャギー、横スクロールを目視する。'
+
+  - id: paradox-live-fv-translation
+    statement: 全面FVのレイヤーと動きを参考サイトから読み、MIX向けに翻訳する。
+    check:
+      type: manual
+      note: '依頼者が2026-09-08に指定した https://paradoxlive.jp/5thanniversary/ を実画面で確認した（docs/design-docs/content-design-comp-11.md）。参考FVは横幅いっぱいの背景・メインビジュアル・手前の装飾・端のロゴを別レイヤーで重ね、背景は3秒周期のbrightness変化、観客は0.3秒の小さな上下動を使っていた。導入には音のON/OFFとSKIPがあるが、MIXでは初回から内容を読ませるため導入画面と音声許可は採用しない。借りるのは全面ビジュアル、端のロゴ、複数レイヤー、控えめなループだけ。Paradox Liveのロゴ、写真、色、チケットや紙片の素材は流用しない。MIXでは支給バナーの上部44pxを決定的にカットし、左上のASOBIBARロゴ、写真の微細なズーム、光の呼吸、端の光線を採用する。人物・メインタイトル・下部コピーは変更せず、画面を覆う演出にしない。'
+
+  - id: human-motif-keeps-the-scene-human
+    statement: 幾何学背景へ人のモチーフを1組だけ加え、交流が始まる意味を伝える。
+    check:
+      type: manual
+      note: '依頼者が2026-09-08に追加した方向。カンプ12の単純な塊と、カンプ13の大きな上半身ポーズは採用しない。カンプ14・15でスケールと端装飾を調整した後、依頼者支給の `design/assets/mix-toast-couple.svg` をカンプ16へ1組の装飾レイヤーとして採用する。SOUND TRIPのように大きな有機形の端へ小さな人物・波線・記号をまとめ、2人の向きと中央のオレンジのグラスで「交流が始まる」ことを示す。素材の形・色・重なりを再描画せず、本文中央・焼き込みタイトル・日付・CTAから離す。人物記号は静止させ、動くのは既存の写真・光・端の光線だけ。決定と配置理由は docs/design-docs/content-design-comp-16.md に残す。'
+
+  - id: output-is-rendered-and-seen
+    statement: 見た目の成果物は、人に見せる前に画像へ描画して自分の目で見る。
+    check:
+      type: manual
+      note: '**2026-09-07 に依頼者から明示的に指示された。**同日、描画を確認せずに publish して3回続けて差し戻している —— ① 平面を積んだだけでコンセプトが画に出ていない ② リボンが「ぐみみたい」（CSSは正確に読んだのに素材画像を一度も開いていなかった）③ CTAが支給バナーの「全員オレンジバンド」バッジと同じオレンジのピルで、FVにボタンが2つ縦に並んでいた（バナーの絵を見ずに数値だけで決めていた）。**どれも一度描画すれば即座に分かるもので、数値やコードを読むだけでは絶対に出てこない。**手順は tools/render.sh <file> [幅]。経路は qlmanage で、**この環境のヘッドレスChromeは45秒で返ってこない**（フィルタの有無に無関係・原因未特定）。**Artifact形式の .dc.html は doctype も charset も持たないので、付けずに描画すると UTF-8 が化けて「見たつもりで何も読めない」**（render.sh が包む）。**ブラウザペインは隠れていると白く写るので確認に使えない。**描画を見たら、配色や構成を変えたあとに**古い記述がボードや注記に残っていないか**も確かめる。詳細は docs/gotchas/read-the-css-not-the-artwork.md。'
+
+  - id: og-image-and-index-before-release
+    statement: 公開の前に、og:image と og:url を絶対URLで入れて noindex を外す。
+    check:
+      type: manual
+      note: '**機械では判定しない。**「絶対URLとして正しいか」「もう公開してよいか」は機械に見えないし、開発中ずっと落ち続ける検査はいずれ --no-verify で外される。**og:image が無いとSNSの共有カードが真っ白になる**。og:image と og:url は**絶対URLでないとクローラが拾わない**（19歳LPで踏んだ）。いまの index.html は robots noindex で、head に TODO(依頼者確認) が残っている。**公開先が決まったら3つ同時にやること** —— og:image を足す・og:url を足す・noindex を外す。**2026-09-08 に、この項目を機械検査に書いていたら TODOコメントの文字列を拾って pass していた。**判断が要るものを機械に持たせるとこうなる。'
+
+  - id: page-structure-is-readable-by-the-client
+    statement: 依頼者が自分で開いて読める形を保つ。
+    check:
+      type: manual
+      note: '**2026-09-08 の依頼者の指示。**「index.html に記述して、各セクションごとに Sass コンパイルで管理して、自分で見やすくできる形にしたい」。つまり —— **ページの構造は index.html 1枚を上から読めば全部わかる**（include もテンプレートも挟まない）。**セクションごとに区切りコメントを置く**（hero / about / schedule / footer）。**section の class と src/scss/sections/_<名前>.scss を1対1で対応させる。**画像は **img/** に置く。**これは好みではなく、依頼者本人が触るための要件**なので、効率や DRY を理由に崩さないこと。セクションを増やすときは、index.html に区切りコメント付きで足す → 同じ名前の Sass パーシャルを作る → style.scss に @use を足す → npm run build、の順。'

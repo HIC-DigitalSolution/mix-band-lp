@@ -1,0 +1,28 @@
+name: static-html-scenario
+summary: 公開前に、HTMLが構文として読めることと、参照しているファイルが実在して追跡対象であることを確かめる。
+stage: pre-push
+
+# ビルドは Sass のコンパイルだけで、HTML は手書き。**HTMLを見てくれるコンパイラが居ない。**
+# 閉じ忘れた要素と404は、差分では見えず公開してから気づく類。両方とも過去に踏んでいる。
+
+match:
+  paths:
+    - \.html$
+    - \.css$
+    - ^img/
+    - ^video/
+
+requires:
+  - type: command
+    command: python3
+    hint: 'python3 が無いと確認できない。macOS なら xcode-select --install で入る。'
+
+steps:
+  # push されるのは css/style.css。src/scss/ を直して build し忘れると古いCSSが公開される。
+  # commit 時は sass-change-ships-its-css が見ているが、ここでも吐き直して確かめる。
+  - name: Sass をコンパイルし直して、公開されるCSSを最新にする
+    run: node scripts/build.mjs
+  - name: html が構文として読める
+    run: 'python3 -c "import glob,html.parser as p;fs=[f for f in glob.glob(''**/*.html'',recursive=True) if ''node_modules'' not in f];[p.HTMLParser(convert_charrefs=True).feed(open(f,encoding=''utf-8'').read()) for f in fs];print(f''html ok: {len(fs)} 件'')"'
+  - name: 参照しているファイルが実在し、gitignore で除外されていない
+    run: python3 tools/check-local-assets.py

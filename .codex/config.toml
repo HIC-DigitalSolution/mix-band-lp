@@ -1,0 +1,6 @@
+# Codex repo-scoped config. The working contract is AGENTS.md, which Codex reads
+# natively — this file only carries Codex-specific runtime settings.
+
+[agents]
+max_threads = 4
+max_depth = 2

@@ -1,0 +1,17 @@
+{
+  "name": "mix-band-lp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "watch": "node scripts/build.mjs --watch",
+    "serve": "python3 -m http.server 8770",
+    "check": "npm run build && node scripts/harness/harness-check.mjs && python3 tools/check-local-assets.py"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "sass": "1.77.8"
+  }
+}

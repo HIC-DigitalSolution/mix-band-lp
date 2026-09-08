@@ -1,0 +1,43 @@
+// 02 intro / 体験 —— WHAT IS MIX
+.intro {
+
+  color: var(--light);
+  padding-top: 88px;
+  padding-bottom: 118px;
+  background: linear-gradient(145deg, #5a208d 0%, #a61368 46%, #c91f70 100%);
+
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    right: -18px;
+    top: 176px;
+    width: 96px;
+    height: 128px;
+    opacity: .36;
+    background-image: radial-gradient(circle, rgba(255, 214, 235, .92) 1px, transparent 1.5px);
+    background-size: 10px 10px;
+    pointer-events: none;
+    animation: dot-drift 11s ease-in-out infinite alternate;
+  }
+
+  .kicker { color: #ffd0e4; }
+  .body { color: #ffe9f3; }
+  strong { color: #fff; }
+
+  .outline-word { right: -34px; top: 50px; transform: rotate(-7deg); }
+
+  // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
+  .art-layer { animation-duration: 23s; }
+}
+
+// 依頼者支給の乾杯SVG。1枚の静的な装飾として置く（カンプ16の決定）。
+.intro__pair {
+  position: absolute;
+  right: -8px;
+  bottom: 18px;
+  z-index: 2;
+  width: 120px;
+  height: auto;
+  pointer-events: none;
+}

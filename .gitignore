@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# Claude Code のローカル権限。書き込み権限は共有しない（.claude/settings.json は
+# 読み取り専用のぶんだけ。commit されるファイルに write 権限を入れないこと）
+.claude/settings.local.json
+
+# 一時作業。カンプの書き出し・実測スクリプト・スクリーンショット
+tmp/
+
+# 素材の原本（.ai / .psd / 未圧縮の書き出し）。重いのでリポジトリには入れない。
+# 置き場は別途決める（いまは Desktop）
+_src/
+
+node_modules/
+.vercel/

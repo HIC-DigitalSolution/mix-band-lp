@@ -1,0 +1,12 @@
+{
+  "$comment": "カンプも本番HTMLもビルド工程が無いので、静的サーバを1本だけ。file:// では fetch と一部の CSS が本番と違う挙動になるため、確認は必ず http:// で。",
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mix-lp",
+      "autoPort": true,
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "python3 -m http.server ${PORT:-8770}"]
+    }
+  ]
+}

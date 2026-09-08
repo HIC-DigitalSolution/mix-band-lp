@@ -1,0 +1,30 @@
+// 配色。カンプ17の最終ブロック（comparison 06 direction）から取っています。
+// 端点だけ決めて中間は補間するという原則は futuretrain.jp から。
+// 出どころと実測値は docs/design-docs/reference-sites.md。
+:root {
+  --ramp-01: #24102e; // 夜の紫みの墨
+  --ramp-02: #5b163f;
+  --ramp-03: #8d1b58;
+  --ramp-04: #c91f70;
+  --ramp-05: #e52683;
+  --ramp-06: #ff2d95; // CTAだけ
+
+  --night: var(--ramp-01);
+  --wine: var(--ramp-02);
+  --berry: var(--ramp-03);
+  --raspberry: var(--ramp-04);
+  --hot: var(--ramp-06);
+  --violet: #6338d4;
+  --orange: #ff8a1f; // 火花・点・細線だけ。広い色面には使わない
+  --smoke: #f2d6df;
+  --paper: #fff7fa;
+  --ink: #26102a;
+  --light: #fff1f7;
+  --muted: #735d6c;
+
+  --radius: 18px;
+  --radius-s: 10px;
+
+  --jp: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --page-max: 430px; // PCで横に広げない。余った幅は外周へ（lp-visual-knowledge §10）
+}
