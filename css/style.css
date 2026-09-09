@@ -43,7 +43,7 @@
   --header-h-pc: 66px;
   --pc-content: calc(var(--page-max-pc) - var(--pc-gutter) * 2);
   --pc-edge: max(var(--pc-gutter), calc((100% - var(--pc-content)) / 2));
-  --sp-edge: max(var(--sp-6), calc((100% - var(--page-max)) / 2));
+  --sp-edge: max(var(--sp-4), calc((100% - var(--page-max)) / 2));
 }
 
 *, *::before, *::after {
@@ -621,14 +621,71 @@ img {
   animation-duration: 23s;
 }
 
-.intro__scene {
+.intro {
+  --q: 0;
+}
+
+.intro__stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .intro.is-cuts {
+    min-height: 300vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .intro.is-cuts .intro__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+}
+.intro__cuts {
   position: absolute;
   inset: 0;
   z-index: 0;
+  pointer-events: none;
+}
+
+.intro__cut {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.intro__cut img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  pointer-events: none;
+  display: block;
+}
+
+.intro:not(.is-cuts) .intro__cut {
+  display: none;
+}
+
+.intro:not(.is-cuts) .intro__cut:first-child {
+  display: block;
+}
+
+.intro.is-cuts .intro__cut {
+  opacity: 0;
+}
+
+.intro.is-cuts[data-cut="0"] .intro__cut:nth-child(1),
+.intro.is-cuts[data-cut="1"] .intro__cut:nth-child(2),
+.intro.is-cuts[data-cut="2"] .intro__cut:nth-child(3),
+.intro.is-cuts[data-cut="3"] .intro__cut:nth-child(4) {
+  opacity: 1;
+}
+
+.intro.is-cuts .intro__cut img {
+  transform: scale(calc(1.04 + var(--q) * 0.07));
+  transform-origin: center 45%;
 }
 
 .intro__wash {
@@ -636,49 +693,79 @@ img {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(36, 16, 46, 0.58) 0%, rgba(36, 16, 46, 0.78) 55%, rgba(36, 16, 46, 0.88) 100%);
+  background: linear-gradient(180deg, rgba(36, 16, 46, 0.5) 0%, rgba(36, 16, 46, 0.34) 42%, rgba(36, 16, 46, 0.82) 100%);
 }
 
-@media (min-width: 900px) {
-  .intro {
-    padding-top: var(--sp-40);
-    padding-bottom: var(--sp-40);
-  }
-  .intro .z {
-    max-width: 720px;
-    margin-inline: auto;
-  }
-  .intro .outline-word {
-    right: -30px;
-    top: 90px;
-    font-size: 132px;
-  }
+.intro .z {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
 }
+
+.intro__telop {
+  grid-area: 1/1;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: var(--sp-2) var(--sp-5);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(36, 16, 46, 0.72);
+  border-left: 4px solid var(--hot);
+}
+
 .intro__logo {
-  margin: 0 0 var(--sp-5);
+  grid-area: 1/1;
+  margin: 0;
 }
 .intro__logo img {
   display: block;
-  width: min(100%, 320px);
+  width: min(78vw, 420px);
   height: auto;
-  margin-inline: auto;
 }
 
-[data-reveal].is-armed > * {
-  opacity: 0;
-  transform: translateY(14px);
+.intro .body {
+  grid-area: 2/1;
+  margin-top: var(--sp-5);
+  color: #fff;
+  line-height: 2;
+  letter-spacing: 0.08em;
 }
 
-[data-reveal].is-armed.is-in > * {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.5s ease calc(var(--reveal-i, 0) * 0.09s), transform 0.5s ease calc(var(--reveal-i, 0) * 0.09s);
+.intro.is-cuts [data-cut-at] {
+  visibility: hidden;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal].is-armed > * {
-    opacity: 1;
+.intro.is-cuts[data-cut="0"] [data-cut-at="0"],
+.intro.is-cuts[data-cut="1"] [data-cut-at="1"],
+.intro.is-cuts[data-cut="2"] [data-cut-at="2"],
+.intro.is-cuts[data-cut="3"] [data-cut-at="3"] {
+  visibility: visible;
+  animation: telop-in 0.18s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+
+@keyframes telop-in {
+  from {
+    transform: translate3d(-14px, 0, 0);
+  }
+  to {
     transform: none;
+  }
+}
+@media (min-width: 900px) {
+  .intro__telop {
+    font-size: 30px;
+    padding: var(--sp-3) var(--sp-8);
+  }
+  .intro__logo img {
+    width: min(52vw, 560px);
   }
 }
 .benefits {
@@ -764,8 +851,8 @@ img {
 .stack__text p + p {
   margin-top: var(--sp-3);
 }
-.stack__text .br-pc {
-  display: none;
+.stack__text .u {
+  display: inline-block;
 }
 
 .card__num {
@@ -842,9 +929,6 @@ img {
   }
   .stack__text p {
     font-size: 18px;
-  }
-  .stack__text .br-pc {
-    display: inline;
   }
   .card__num {
     width: 54px;

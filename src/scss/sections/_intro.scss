@@ -49,74 +49,146 @@
   .art-layer { animation-duration: 23s; }
 }
 
-// 全面写真。節いっぱいに敷き、上に被せを重ねて白文字を読ませる。
-.intro__scene {
+// ===== 予告編のカット割り =====
+// カット番号は JS が data-cut で、カット内の進み具合は --q で渡す
+// （js/scroll-scene.js）。**JSが無ければ is-cuts が付かず、1枚目と全文が出る。**
+.intro {
+  --q: 0;
+}
+
+.intro__stage {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-content: center;
+  overflow: clip;
+}
+
+// JSが動くときだけ貼り付ける。動きを減らす設定でも貼り付かない。
+@media (prefers-reduced-motion: no-preference) {
+  .intro.is-cuts {
+    min-height: 300vh;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .intro.is-cuts .intro__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+}
+
+.intro__cuts {
   position: absolute;
   inset: 0;
   z-index: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   pointer-events: none;
 }
 
-// 被せ。**黒ではなくランプの端点の濃紫。**黒だと写真が灰色に寄ってネオンが死ぬ。
-// 下へ向かって濃くして、本文のあたりで一番コントラストが出るようにする。
+.intro__cut {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// JSが無いときは1枚目だけ出す。
+.intro:not(.is-cuts) .intro__cut { display: none; }
+.intro:not(.is-cuts) .intro__cut:first-child { display: block; }
+
+// **カットは即時切り替え。transition を書かないこと。**
+// フェードにすると上品になり、狙っている予告編の荒さから離れる。
+.intro.is-cuts .intro__cut { opacity: 0; }
+.intro.is-cuts[data-cut="0"] .intro__cut:nth-child(1),
+.intro.is-cuts[data-cut="1"] .intro__cut:nth-child(2),
+.intro.is-cuts[data-cut="2"] .intro__cut:nth-child(3),
+.intro.is-cuts[data-cut="3"] .intro__cut:nth-child(4) { opacity: 1; }
+
+// カットの中では写真をゆっくり寄せる。**切り替わりは速く、中はじわっと。**
+// これが無いとカットの間が完全な静止画になり、紙芝居に見える。
+.intro.is-cuts .intro__cut img {
+  transform: scale(calc(1.04 + var(--q) * .07));
+  transform-origin: center 45%;
+}
+
 .intro__wash {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(36, 16, 46, .58) 0%, rgba(36, 16, 46, .78) 55%, rgba(36, 16, 46, .88) 100%);
+  background: linear-gradient(180deg, rgba(36, 16, 46, .5) 0%, rgba(36, 16, 46, .34) 42%, rgba(36, 16, 46, .82) 100%);
 }
 
+.intro .z {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  // **必ず上下左右とも中央にする。**`justify-items` だけだと縦は stretch のままで、
+  // 同じセルに重ねた要素が引き伸ばされ、文字が枠の上に張り付く
+  // （2026-09-09 に実測: 上13px / 下41px）。
+  // harness: boxes-center-on-both-axes
+  place-items: center;
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: var(--sp-6);
+}
+
+// テロップ。**角から入って止まる。**フェードしない。
+.intro__telop {
+  grid-area: 1 / 1;
+  // 箱の中でも中央に置く。親が中央でも、箱自身が伸びれば同じことが起きる。
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: var(--sp-2) var(--sp-5);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.5;
+  letter-spacing: .06em;
+  color: #fff;
+  background: rgba(36, 16, 46, .72);
+  border-left: 4px solid var(--hot);
+}
+
+.intro__logo {
+  grid-area: 1 / 1;
+  margin: 0;
+
+  img { display: block; width: min(78vw, 420px); height: auto; }
+}
+
+.intro .body {
+  grid-area: 2 / 1;
+  margin-top: var(--sp-5);
+  color: #fff;
+  line-height: 2;
+  letter-spacing: .08em;
+}
+
+// JSが動いているときだけ、そのカットの行だけ出す。
+.intro.is-cuts [data-cut-at] { visibility: hidden; }
+.intro.is-cuts[data-cut="0"] [data-cut-at="0"],
+.intro.is-cuts[data-cut="1"] [data-cut-at="1"],
+.intro.is-cuts[data-cut="2"] [data-cut-at="2"],
+.intro.is-cuts[data-cut="3"] [data-cut-at="3"] {
+  visibility: visible;
+  animation: telop-in .18s cubic-bezier(.2, .9, .3, 1) both;
+}
+
+@keyframes telop-in {
+  from { transform: translate3d(-14px, 0, 0); }
+  to { transform: none; }
+}
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
-  .intro {
-    padding-top: var(--sp-40);
-    padding-bottom: var(--sp-40);
-
-    .z { max-width: 720px; margin-inline: auto; }
-    .outline-word { right: -30px; top: 90px; font-size: 132px; }
-  }
-
-}
-
-// タイトルのロゴ。FVと同じ字形。
-.intro__logo {
-  margin: 0 0 var(--sp-5);
-
-  img {
-    display: block;
-    width: min(100%, 320px);
-    height: auto;
-    margin-inline: auto;
-  }
-}
-
-// 1つずつ遅らせて出す。**既定は「見える」** —— 隠すのは JS が `is-armed` を
-// 付けたときだけ。こうしないと JS が落ちた瞬間に本文が消える。
-// 実際に動かすのは opacity と translateY だけ（レイアウトを動かさない）。
-[data-reveal].is-armed > * {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-[data-reveal].is-armed.is-in > * {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity .5s ease calc(var(--reveal-i, 0) * .09s),
-    transform .5s ease calc(var(--reveal-i, 0) * .09s);
-}
-
-// **動きを止める設定のときは、隠したままにしない。**
-// 全体の reduce ルールが transition を消すので、そのままだと opacity:0 で固まる。
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal].is-armed > * {
-    opacity: 1;
-    transform: none;
-  }
+  .intro__telop { font-size: 30px; padding: var(--sp-3) var(--sp-8); }
+  .intro__logo img { width: min(52vw, 560px); }
 }

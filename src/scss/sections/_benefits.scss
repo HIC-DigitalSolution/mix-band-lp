@@ -103,10 +103,13 @@
   p { font-size: 15px; line-height: 1.9; margin: 0; color: var(--muted); text-wrap: pretty; }
   p + p { margin-top: var(--sp-3); }
 
-  // **支給された改行はPCの行取り。**375px幅では1行が入り切らず、
-  // 「〜驚いたり。」が2文字だけ次の行に落ちるなど、かえって読みにくくなる
-  // （2026-09-09、3箇所で確認）。SPでは改行を無効にして自然に流す。
-  .br-pc { display: none; }
+  // **文の単位で折る。**`<span class="u">` の中身は必ず行頭から始まる。
+  // 2026-09-09、SPで「ドキッとすることも。「もう少し話してみた / い」そんな…」と
+  // 文が行の途中から始まり、鉤括弧まで割れていた（依頼者の指摘「改行の位置がキモすぎる」）。
+  // inline-block にすると、入り切らない単位は丸ごと次の行へ送られる。
+  // **幅に関係なく効く**ので、PC用の <br> を持つ必要がなくなった。
+  // harness: japanese-line-breaks-follow-sentence-units
+  .u { display: inline-block; }
 }
 
 
@@ -202,11 +205,7 @@
 
   .stack__head { font-size: 28px; gap: var(--sp-4); }
 
-  .stack__text {
-    p { font-size: 18px; }
-    // PCは支給された改行のとおりに折る（全行が列幅に収まることを確認済み）。
-    .br-pc { display: inline; }
-  }
+  .stack__text p { font-size: 18px; }
 
   .card__num { width: 54px; height: 54px; font-size: 14px; }
 }

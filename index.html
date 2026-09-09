@@ -106,31 +106,38 @@
 
   <!-- ========================= 02 intro / 体験 ======================== -->
   <section class="intro" aria-labelledby="intro-title">
-    <!-- **全面写真＋被せ＋白文字**（2026-09-09、依頼者が指定した mememe-official.jp の
-         concept セクションの文法。docs/design-docs/reference-sites.md §4）。
-         **黒の乗算ではない** —— 実物はブランド色を30%かぶせている。黒を乗せると写真が
-         灰色に寄ってネオンが死ぬので、ランプの端点の濃紫 #24102E を重ねている。
-         文字は白・影なし。影で読ませようとせず、被せ側でコントラストを作る。
-         harness: mememe-full-bleed-panel-grammar -->
-    <img class="intro__scene" src="img/intro-scene.webp" alt="" aria-hidden="true" width="1672" height="941">
-    <span class="intro__wash" aria-hidden="true"></span>
-    <span class="outline-word" aria-hidden="true">REALITY<br>NIGHT</span>
+    <!-- **予告編のカット割り**（2026-09-09、依頼者の選択A）。
+         スクロールに連動して写真が**ハードカット**で切り替わる。フェードは使わない ——
+         何を重ねても上品になり、「安全にまとまりすぎ」という指摘の方向へ寄るため。
+         文字はテレビのテロップのように角から入る。恋愛リアリティ番組の予告の文法。
+         参考にした mememe は canvas(WebGL) の3D世界で、CSSでは再現できない。
+         写真素材でできる翻訳としてこれを選んだ
+         （harness: reference-motion-is-watched-not-inferred）。
 
-    <div class="z" data-reveal>
-      <!-- タイトルは依頼者支給のロゴ画像（FVと同じ字形）。**別の字形を起こさない** ——
-           ページに2つ目の視覚言語が増えると、レビューで最大の問題とされた
-           「パーツ同士の不一致」が悪化する。見出しの文字情報は alt が持つ。 -->
-      <h2 id="intro-title" class="intro__logo">
-        <img src="img/mix-logo.webp" alt="MIX交流上等" width="853" height="216">
-      </h2>
-      <!-- **1行につき1要素**（mememe の concept と同じ）。1行ずつ遅らせて出すため。
-           harness: mememe-full-bleed-panel-grammar -->
-      <p class="intro__lead">見るだけじゃない</p>
-      <p class="intro__lead">あなたが参加する</p>
-      <p class="intro__lead">恋愛リアリティショー</p>
-      <!-- **「恋愛リアリティ体験」はこの1文にしか無い。**依頼者指定の必須訴求3語の1つ。
-           言い換えたり消したりしない。harness: facts-are-client-confirmed-only -->
-      <p class="body">ASOBIBARで実際に参加できる、恋愛リアリティ体験です。</p>
+         カット番号は JS が data-cut で渡す。**JSが無ければ 1枚目＋全文が出るだけ**で壊れない。 -->
+    <div class="intro__stage">
+      <div class="intro__cuts" aria-hidden="true">
+        <div class="intro__cut"><img src="img/intro-scene.webp" alt="" width="1672" height="941"></div>
+        <div class="intro__cut"><img src="img/night-01-pc.webp" alt="" width="1188" height="876"></div>
+        <div class="intro__cut"><img src="img/night-02-pc.webp" alt="" width="1188" height="876"></div>
+        <div class="intro__cut"><img src="img/intro-scene-close.webp" alt="" width="1672" height="941"></div>
+      </div>
+      <span class="intro__wash" aria-hidden="true"></span>
+
+      <div class="z">
+        <!-- テロップ。1枚のカットに1行。 -->
+        <p class="intro__telop" data-cut-at="0">見るだけじゃない</p>
+        <p class="intro__telop" data-cut-at="1">あなたが参加する</p>
+        <p class="intro__telop" data-cut-at="2">恋愛リアリティショー</p>
+
+        <!-- 最後は題字。FVと同じ字形のロゴ。 -->
+        <h2 id="intro-title" class="intro__logo" data-cut-at="3">
+          <img src="img/mix-logo.webp" alt="MIX交流上等" width="853" height="216">
+        </h2>
+        <!-- **「恋愛リアリティ体験」はこの1文にしか無い。**依頼者指定の必須訴求3語の1つ。
+             言い換えたり消したりしない。harness: facts-are-client-confirmed-only -->
+        <p class="body" data-cut-at="3">ASOBIBARで実際に参加できる、恋愛リアリティ体験です。</p>
+      </div>
     </div>
   </section>
 
@@ -162,8 +169,8 @@
         <div class="stack__body">
           <h3 class="stack__head"><span class="card__num">01</span>いつもと違う刺激</h3>
           <div class="stack__text">
-            <p>いつものように飲んで話す夜に<br class="br-pc">「次はどうなる？」というワクワクを。</p>
-            <p>思わず笑ったり 予想外の展開に驚いたり。<br class="br-pc">先が読めないからこそ夢中になる<br class="br-pc">いつもとひと味違う夜をASOBIBARで。</p>
+            <p><span class="u">いつものように飲んで話す夜に</span><span class="u">「次はどうなる？」というワクワクを。</span></p>
+            <p><span class="u">思わず笑ったり 予想外の展開に驚いたり。</span><span class="u">先が読めないからこそ夢中になる</span><span class="u">いつもとひと味違う夜をASOBIBARで。</span></p>
           </div>
         </div>
       </article>
@@ -176,8 +183,8 @@
         <div class="stack__body">
           <h3 class="stack__head"><span class="card__num">02</span>関係が動くきっかけ</h3>
           <div class="stack__text">
-            <p>一緒に笑った瞬間や<br class="br-pc">ふと見えた相手の意外な表情。</p>
-            <p>何気ない会話だけでは気づかなかった魅力に<br class="br-pc">ドキッとすることも。<br class="br-pc">「もう少し話してみたい」<br class="br-pc">そんな気持ちが生まれるきっかけに。</p>
+            <p><span class="u">一緒に笑った瞬間や</span><span class="u">ふと見えた相手の意外な表情。</span></p>
+            <p><span class="u">何気ない会話だけでは気づかなかった魅力に</span><span class="u">ドキッとすることも。</span><span class="u">「もう少し話してみたい」</span><span class="u">そんな気持ちが生まれるきっかけに。</span></p>
           </div>
         </div>
       </article>
@@ -190,8 +197,8 @@
         <div class="stack__body">
           <h3 class="stack__head"><span class="card__num">03</span>非日常を体験</h3>
           <div class="stack__text">
-            <p>画面越しに見ていた恋愛リアリティショー。<br class="br-pc">今夜は あなた自身がその中へ。</p>
-            <p>誰かの展開を見守るドキドキを<br class="br-pc">自分の気持ちが動くドキドキへ。<br class="br-pc">いつもの日常から少し離れて<br class="br-pc">思わず誰かに話したくなる一夜を。</p>
+            <p><span class="u">画面越しに見ていた恋愛リアリティショー。</span><span class="u">今夜は あなた自身がその中へ。</span></p>
+            <p><span class="u">誰かの展開を見守るドキドキを</span><span class="u">自分の気持ちが動くドキドキへ。</span><span class="u">いつもの日常から少し離れて</span><span class="u">思わず誰かに話したくなる一夜を。</span></p>
           </div>
         </div>
       </article>
@@ -388,6 +395,6 @@
 
 <script src="js/store-dialog.js" defer></script>
 <script src="js/sticky-cta.js" defer></script>
-<script src="js/reveal.js" defer></script>
+<script src="js/scroll-scene.js" defer></script>
 </body>
 </html>
