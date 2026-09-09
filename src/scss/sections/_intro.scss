@@ -1,10 +1,12 @@
 // 02 intro / 体験 —— WHAT IS MIX
 .intro {
-
+  // 全面写真の上に読ませるパネル。文字は白・中央揃え。
   color: var(--light);
+  text-align: center;
   padding-top: var(--sp-20);
   padding-bottom: var(--sp-20);
-  background: linear-gradient(145deg, #5a208d 0%, #a61368 46%, #c91f70 100%);
+  // 写真が読めない環境でも地が破綻しないよう、下地は残す。
+  background: linear-gradient(145deg, #3a1358 0%, #6b0f45 46%, #24102e 100%);
 
   &::after {
     content: "";
@@ -21,7 +23,24 @@
     animation: dot-drift 11s ease-in-out infinite alternate;
   }
 
-  .body { color: #ffe9f3; }
+  // MEMEME の concept 実測値: 行間2.0・字間0.08em・白・影なし。
+  .body, .intro__lead {
+    color: #fff;
+    line-height: 2;
+    letter-spacing: .08em;
+    margin-inline: auto;
+  }
+
+  .intro__lead {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .body {
+    margin-top: var(--sp-5);
+    opacity: .88;
+  }
   strong { color: #fff; }
 
   .outline-word { right: -34px; top: 50px; transform: rotate(-7deg); }
@@ -30,16 +49,28 @@
   .art-layer { animation-duration: 23s; }
 }
 
-// 依頼者支給の乾杯SVG。1枚の静的な装飾として置く（カンプ16の決定）。
-.intro__pair {
+// 全面写真。節いっぱいに敷き、上に被せを重ねて白文字を読ませる。
+.intro__scene {
   position: absolute;
-  right: -8px;
-  bottom: 18px;
-  z-index: 2;
-  width: 120px;
-  height: auto;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   pointer-events: none;
 }
+
+// 被せ。**黒ではなくランプの端点の濃紫。**黒だと写真が灰色に寄ってネオンが死ぬ。
+// 下へ向かって濃くして、本文のあたりで一番コントラストが出るようにする。
+.intro__wash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(36, 16, 46, .58) 0%, rgba(36, 16, 46, .78) 55%, rgba(36, 16, 46, .88) 100%);
+}
+
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
@@ -47,9 +78,45 @@
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
 
-    .z { max-width: 720px; }
+    .z { max-width: 720px; margin-inline: auto; }
     .outline-word { right: -30px; top: 90px; font-size: 132px; }
   }
 
-  .intro__pair { width: 260px; right: 40px; bottom: 40px; }
+}
+
+// タイトルのロゴ。FVと同じ字形。
+.intro__logo {
+  margin: 0 0 var(--sp-5);
+
+  img {
+    display: block;
+    width: min(100%, 320px);
+    height: auto;
+    margin-inline: auto;
+  }
+}
+
+// 1つずつ遅らせて出す。**既定は「見える」** —— 隠すのは JS が `is-armed` を
+// 付けたときだけ。こうしないと JS が落ちた瞬間に本文が消える。
+// 実際に動かすのは opacity と translateY だけ（レイアウトを動かさない）。
+[data-reveal].is-armed > * {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+[data-reveal].is-armed.is-in > * {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity .5s ease calc(var(--reveal-i, 0) * .09s),
+    transform .5s ease calc(var(--reveal-i, 0) * .09s);
+}
+
+// **動きを止める設定のときは、隠したままにしない。**
+// 全体の reduce ルールが transition を消すので、そのままだと opacity:0 で固まる。
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal].is-armed > * {
+    opacity: 1;
+    transform: none;
+  }
 }

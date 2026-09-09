@@ -48,8 +48,10 @@
     <span class="outline-word" aria-hidden="true">AFTER<br>DARK</span>
 
     <figure class="hero__keyart">
-      <!-- 2026-09-09、依頼者からPC用の 1920x1080 が支給された。SPは従来の 750x583 の
-           クロップのまま（PC版は16:9で、SP幅だと帯のように潰れて焼き込み文字が読めない）。
+      <!-- 2026-09-09、依頼者から新しいFV（1672x941）が支給された。**PCとSPで同じ写真を使う。**
+           以前はPC版とSP版で撮影が別で、幅を変えると出演者が入れ替わっていた。
+           SPは同じ原本から 1210x941（旧SPと同じ 750/583 の比）で切り出しており、
+           焼き込みのタイトルと3行のコピーが全部入る位置にしてある。
            alt は焼き込み文字の逐語ではありません。PC版の上部一行にある期間の言い回しは
            **1晩が完結するという意味**で、開催頻度ではありません（AGENTS.md「いま決まって
            いること」）。実際の開催は 2026年10月1日〜31日の日〜木曜日限定なので、
@@ -58,8 +60,8 @@
            それが正しい挙動なので、検査ではなくこちらの書き方を変えること）。
            harness: no-superseded-or-invented-facts / key-art-is-a-supplied-banner -->
       <picture>
-        <source media="(min-width: 900px)" srcset="img/mix-band-key-pc.webp" width="1920" height="1080">
-        <img src="img/mix-band-key-fv-crop.webp" width="750" height="583"
+        <source media="(min-width: 900px)" srcset="img/mix-band-key-pc.webp" width="1672" height="941">
+        <img src="img/mix-band-key-fv-crop.webp" width="1210" height="941"
              alt="ASOBIBARの店内で、オレンジのリストバンドを付けた8人が集まっている。焼き込みの文字は「MIX交流上等」「今日出会った最大4〜6組のグループが交差する」「ゲームで指名。気持ちが揺れ動く。」「全員オレンジバンド」">
       </picture>
       <!-- 写真の手前で動く火花と粒。**写真そのものは動かさない。**
@@ -104,16 +106,30 @@
 
   <!-- ========================= 02 intro / 体験 ======================== -->
   <section class="intro" aria-labelledby="intro-title">
-    <svg class="art-layer" viewBox="0 0 375 650" preserveAspectRatio="none" aria-hidden="true"><use href="#art-intro"></use></svg>
-    <img class="intro__pair" src="img/mix-toast-couple.svg" alt="" aria-hidden="true" width="120" height="120">
+    <!-- **全面写真＋被せ＋白文字**（2026-09-09、依頼者が指定した mememe-official.jp の
+         concept セクションの文法。docs/design-docs/reference-sites.md §4）。
+         **黒の乗算ではない** —— 実物はブランド色を30%かぶせている。黒を乗せると写真が
+         灰色に寄ってネオンが死ぬので、ランプの端点の濃紫 #24102E を重ねている。
+         文字は白・影なし。影で読ませようとせず、被せ側でコントラストを作る。
+         harness: mememe-full-bleed-panel-grammar -->
+    <img class="intro__scene" src="img/intro-scene.webp" alt="" aria-hidden="true" width="1672" height="941">
+    <span class="intro__wash" aria-hidden="true"></span>
     <span class="outline-word" aria-hidden="true">REALITY<br>NIGHT</span>
 
-    <div class="z">
-      <h2 id="intro-title" class="title">見るだけじゃない<br>あなたが参加する<br>恋愛リアリティショー</h2>
-      <!-- **「恋愛リアリティ体験」はこの1文にしか無い。**依頼者指定の必須訴求3語の1つで、
-           2026-09-09 にFVの3点要約を削除した結果、読める文字としてはここだけになった。
-           言い換えたり消したりしない（sr-onlyの見出しとmetaは読める文字に数えない）。
-           harness: facts-are-client-confirmed-only -->
+    <div class="z" data-reveal>
+      <!-- タイトルは依頼者支給のロゴ画像（FVと同じ字形）。**別の字形を起こさない** ——
+           ページに2つ目の視覚言語が増えると、レビューで最大の問題とされた
+           「パーツ同士の不一致」が悪化する。見出しの文字情報は alt が持つ。 -->
+      <h2 id="intro-title" class="intro__logo">
+        <img src="img/mix-logo.webp" alt="MIX交流上等" width="853" height="216">
+      </h2>
+      <!-- **1行につき1要素**（mememe の concept と同じ）。1行ずつ遅らせて出すため。
+           harness: mememe-full-bleed-panel-grammar -->
+      <p class="intro__lead">見るだけじゃない</p>
+      <p class="intro__lead">あなたが参加する</p>
+      <p class="intro__lead">恋愛リアリティショー</p>
+      <!-- **「恋愛リアリティ体験」はこの1文にしか無い。**依頼者指定の必須訴求3語の1つ。
+           言い換えたり消したりしない。harness: facts-are-client-confirmed-only -->
       <p class="body">ASOBIBARで実際に参加できる、恋愛リアリティ体験です。</p>
     </div>
   </section>
@@ -139,8 +155,8 @@
            （2026-09-09、左端0のつもりが中央が出てきて、1枚目と2枚目がほぼ同じ絵になった）。 -->
       <article class="stack__card">
         <picture>
-          <source media="(min-width: 900px)" srcset="img/night-01-pc.webp" width="786" height="827">
-          <img class="stack__photo" src="img/night-01.webp" width="660" height="495"
+          <source media="(min-width: 900px)" srcset="img/night-01-pc.webp" width="1188" height="876">
+          <img class="stack__photo" src="img/night-01.webp" width="900" height="675"
              alt="ASOBIBARのカウンターで、オレンジのリストバンドを付けた男性がカードを手に笑みを浮かべている">
         </picture>
         <div class="stack__body">
@@ -153,8 +169,8 @@
       </article>
       <article class="stack__card">
         <picture>
-          <source media="(min-width: 900px)" srcset="img/night-02-pc.webp" width="786" height="827">
-          <img class="stack__photo" src="img/night-02.webp" width="660" height="495"
+          <source media="(min-width: 900px)" srcset="img/night-02-pc.webp" width="1188" height="876">
+          <img class="stack__photo" src="img/night-02.webp" width="900" height="675"
              alt="声を上げて笑う男性と、口を手で覆って驚く女性。ふたりともオレンジのリストバンドを付けている">
         </picture>
         <div class="stack__body">
@@ -167,8 +183,8 @@
       </article>
       <article class="stack__card">
         <picture>
-          <source media="(min-width: 900px)" srcset="img/night-03-pc.webp" width="786" height="827">
-          <img class="stack__photo" src="img/night-03.webp" width="660" height="495"
+          <source media="(min-width: 900px)" srcset="img/night-03-pc.webp" width="1188" height="876">
+          <img class="stack__photo" src="img/night-03.webp" width="900" height="675"
              alt="カウンターで頬づえをついて微笑む女性。背景にダーツボードのネオン">
         </picture>
         <div class="stack__body">
@@ -372,5 +388,6 @@
 
 <script src="js/store-dialog.js" defer></script>
 <script src="js/sticky-cta.js" defer></script>
+<script src="js/reveal.js" defer></script>
 </body>
 </html>
