@@ -60,14 +60,18 @@
   // 後続のカードが前のカードを覆えるようにする。
   clip-path: inset(0 round var(--radius));
 
-  &:first-child {
-    position: sticky;
-    top: 12px;
-    clip-path: none;
-  }
+  // **1枚目だけでなく全部を貼り付ける。**1枚目しか sticky にしないと、
+  // 3枚目は2枚目の上へせり上がらず、ただ後ろに続くだけになる
+  // （2026-09-09 の指摘「3も同じアニメーションを入れてください」）。
+  position: sticky;
+  top: 12px;
 
-  // 隙間を空けない。空けると「覆う」動きが途切れて、ただ並んでいるように見える。
-  + .stack__card { margin-top: 0; }
+  &:first-child { clip-path: none; }
+
+  // **重なり始めを早める。**間を空けずに置くと、次のカードが画面に入るまでに
+  // 1枚ぶんスクロールが要り、2枚目が出るのが遅く感じる
+  // （2026-09-09 の指摘「２が出てくるのが遅い」）。
+  + .stack__card { margin-top: -22vh; }
 
 }
 
@@ -190,7 +194,9 @@
     box-shadow: none;
     clip-path: inset(0);
 
-    &:first-child { top: var(--header-h-pc); clip-path: none; }
+    top: var(--header-h-pc);
+
+    &:first-child { clip-path: none; }
   }
 
   // 写真は右。カードの高さいっぱいに、端まで。**配置は picture に効かせる。**

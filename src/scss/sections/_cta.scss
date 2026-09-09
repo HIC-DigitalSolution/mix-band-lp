@@ -51,6 +51,11 @@
   .art-layer { animation-duration: 18s; }
 }
 
+// **CTAはロゴと同じ色**（2026-09-09 の依頼者指示）。
+// ロゴは オレンジ地 #F09000 ＋ 濃い赤の縁 #B42400。
+// **オレンジ単色にはしない** —— 支給バナーに焼き込まれた「全員オレンジバンド」の
+// ピルと同じ色の面が2つ並ぶ（harness: banner-measurements-decide-the-cta）。
+// 明→暗のグラデーションと濃色の文字で、ロゴの立体感の側に寄せて区別する。
 .cta__button {
   position: relative;
   display: block;
@@ -60,18 +65,20 @@
   font-family: inherit;
   font-size: 15px;
   font-weight: 900;
-  color: var(--ink);
-  background: linear-gradient(110deg, var(--hot), #ec1f83);
-  border: 1px solid #ff9ccb;
+  // オレンジ地なので白文字だとコントラストが落ちる。ロゴと同じく濃色の文字にする。
+  color: #2a0f06;
+  background: linear-gradient(180deg, #ffbe2e 0%, #f59000 46%, #e2540c 100%);
+  border: 1px solid #b42400;
   border-radius: var(--radius-s);
   cursor: pointer;
-  box-shadow: 0 0 0 2px rgba(255, 45, 149, .2), 0 0 22px rgba(255, 45, 149, .78), 0 0 48px rgba(255, 45, 149, .32);
+  // 縁はロゴと同じ濃い赤。光はオレンジで、ピンクのネオンとは別物として置く。
+  box-shadow: 0 2px 0 #b42400, 0 0 0 2px rgba(180, 36, 0, .28), 0 0 26px rgba(245, 144, 0, .6), 0 0 54px rgba(245, 144, 0, .28);
 
   &::before {
     content: "";
     position: absolute;
     inset: -7px;
-    border: 1px solid rgba(255, 125, 190, .5);
+    border: 1px solid rgba(255, 176, 48, .55);
     border-radius: 14px;
     pointer-events: none;
   }

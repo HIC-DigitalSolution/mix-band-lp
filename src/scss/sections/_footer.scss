@@ -11,3 +11,22 @@
 @media (min-width: 900px) {
   .footer { padding: var(--sp-8) var(--pc-edge) var(--sp-10); font-size: 11px; }
 }
+
+// ロゴは公式HPへのリンク。**当たり判定を44pxにする**（見た目は小さいまま）。
+.footer__logo {
+  display: inline-flex;
+  align-items: center;
+  padding-block: var(--sp-3);
+  margin-block: calc(var(--sp-3) * -1);
+  transition: opacity .2s;
+
+  &:hover { opacity: .6; }
+
+  img { display: block; width: 116px; height: auto; }
+}
+
+.footer__note { display: block; margin-top: var(--sp-3); }
+
+@media (min-width: 900px) {
+  .footer__logo img { width: 140px; }
+}

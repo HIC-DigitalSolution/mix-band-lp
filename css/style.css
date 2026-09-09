@@ -774,14 +774,14 @@ img {
   border-radius: var(--radius);
   box-shadow: 0 -10px 30px rgba(91, 22, 63, 0.16);
   clip-path: inset(0 round var(--radius));
-}
-.stack__card:first-child {
   position: sticky;
   top: 12px;
+}
+.stack__card:first-child {
   clip-path: none;
 }
 .stack__card + .stack__card {
-  margin-top: 0;
+  margin-top: -22vh;
 }
 
 .stack__card > picture {
@@ -869,9 +869,9 @@ img {
     border-radius: 0;
     box-shadow: none;
     clip-path: inset(0);
+    top: var(--header-h-pc);
   }
   .stack__card:first-child {
-    top: var(--header-h-pc);
     clip-path: none;
   }
   .stack__card > picture {
@@ -1257,18 +1257,18 @@ img {
   font-family: inherit;
   font-size: 15px;
   font-weight: 900;
-  color: var(--ink);
-  background: linear-gradient(110deg, var(--hot), #ec1f83);
-  border: 1px solid #ff9ccb;
+  color: #2a0f06;
+  background: linear-gradient(180deg, #ffbe2e 0%, #f59000 46%, #e2540c 100%);
+  border: 1px solid #b42400;
   border-radius: var(--radius-s);
   cursor: pointer;
-  box-shadow: 0 0 0 2px rgba(255, 45, 149, 0.2), 0 0 22px rgba(255, 45, 149, 0.78), 0 0 48px rgba(255, 45, 149, 0.32);
+  box-shadow: 0 2px 0 #b42400, 0 0 0 2px rgba(180, 36, 0, 0.28), 0 0 26px rgba(245, 144, 0, 0.6), 0 0 54px rgba(245, 144, 0, 0.28);
 }
 .cta__button::before {
   content: "";
   position: absolute;
   inset: -7px;
-  border: 1px solid rgba(255, 125, 190, 0.5);
+  border: 1px solid rgba(255, 176, 48, 0.55);
   border-radius: 14px;
   pointer-events: none;
 }
@@ -1338,6 +1338,32 @@ img {
   .footer {
     padding: var(--sp-8) var(--pc-edge) var(--sp-10);
     font-size: 11px;
+  }
+}
+.footer__logo {
+  display: inline-flex;
+  align-items: center;
+  padding-block: var(--sp-3);
+  margin-block: calc(var(--sp-3) * -1);
+  transition: opacity 0.2s;
+}
+.footer__logo:hover {
+  opacity: 0.6;
+}
+.footer__logo img {
+  display: block;
+  width: 116px;
+  height: auto;
+}
+
+.footer__note {
+  display: block;
+  margin-top: var(--sp-3);
+}
+
+@media (min-width: 900px) {
+  .footer__logo img {
+    width: 140px;
   }
 }
 .store-dialog {
