@@ -781,7 +781,7 @@ img {
   clip-path: none;
 }
 .stack__card + .stack__card {
-  margin-top: -22vh;
+  margin-top: 0;
 }
 
 .stack__card > picture {
