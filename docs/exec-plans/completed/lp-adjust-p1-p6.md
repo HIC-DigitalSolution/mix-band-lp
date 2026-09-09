@@ -186,6 +186,30 @@
   削除し、**節の顔は和文見出し**に変更。`stacked-cards-appear-on-scroll` ほか、
   旧見出し名を書いていた箇所も直した。
 
+**追加対応（受け取った解析資料の検証）**
+
+2026-09-09、依頼者から `future-train-harness.md`（外部で作られた futuretrain.jp の
+解析資料）を受け取った。**そのまま取り込まず、1440pxで実物に当てて確かめた。**
+
+| 資料の主張 | 実測 |
+| --- | --- |
+| CSS Scroll Snap | `scroll-snap-type` / `scroll-snap-align` を持つ要素は **0件** |
+| GSAP ScrollTrigger でピン留め | `gsap` / `ScrollTrigger` / `Swiper` は **すべて undefined** |
+| Swiper Vertical | 読み込まれている js は Next.js のチャンク、`three.min.js`、`splide-shader-carousel.min.js`（別の横カルーセル用）、計測タグのみ |
+| 100vh のカード | **正しい。**`md:h-svh` で実測900px = ビューポート高 |
+
+スクロール駆動CSS（`animation-timeline` / `scroll()` / `view()`）も0ルール。
+実際の作りは `section.overflow-x-clip` ＞ 1枚目 `md:h-svh md:sticky md:top-0`、
+2枚目以降 `md:h-svh mt-14 md:[clip-path:inset(0)]` の全5枚で、**当LPの実装と同じ**。
+
+- 検証結果を `docs/design-docs/reference-sites.md` §2 と、ハーネスの
+  `stacked-cards-appear-on-scroll` に記録した。**資料そのものはリポジトリに置かない**
+  （誤りが次に触る人へ再輸入されるため）。
+- **自分の記述も1つ訂正した。**「カード間に隙間を空けない」と書いていたが、実物は
+  `mt-14`（56px）を空けている。推測で書いていた。当LPは隙間0のままで重なっているので
+  実装は変えないが、根拠が誤っていた。
+- LPの見た目は変更していない（依頼者の選択「A」）。100vh化は見送り。
+
 **検査結果**
 
 - harness-check: 機械検査は全て pass（`exec-plan-required` はこの文書で解消）。

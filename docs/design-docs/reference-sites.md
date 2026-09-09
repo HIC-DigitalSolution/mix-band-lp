@@ -104,6 +104,41 @@ CSS（372KB・3枚）から拾った実際の色。**宣言されているグラ
 **読ませる面はランプに乗せない。**淡いピンク `#F2D6DF` と白 `#FFF7FA` のカードを
 ページを通して不変の可読面として使う。ランプが動かすのは色の付いた面だけ。
 
+### 重なるカードの実装 —— 2026-09-09 に1440pxで実測
+
+依頼者から `future-train-harness.md`（外部で作られた解析資料）を受け取ったので、
+**書いてあることを実物に当てて確かめた。結論から言うと、中心の技術説明が間違っている。**
+
+| 資料の主張 | 実測 |
+| --- | --- |
+| CSS Scroll Snap で吸い付く | **0件。**`scroll-snap-type` を持つ要素も `scroll-snap-align` を持つ要素も無い |
+| もしくは GSAP ScrollTrigger でピン留め | **読み込まれていない。**`window.gsap` / `ScrollTrigger` / `Swiper` はいずれも undefined |
+| Swiper Vertical Mousewheel | 同上。読み込まれている js は Next.js のチャンクと `three.min.js`・`splide-shader-carousel.min.js`（**別の横カルーセル用**）と計測タグだけ |
+| 100vh のカード構造 | **これは合っている。**`md:h-svh` で、実測 900px = ビューポート高 |
+
+スクロール駆動のCSS（`animation-timeline` / `scroll()` / `view()`）も **0ルール**。
+**JavaScriptは一切使っていない。**
+
+実際のDOM ——
+
+```
+section.relative.overflow-x-clip          ← overflow-x: clip
+├ div      （見出しブロック / relative）
+├ article  md:h-svh md:sticky md:top-0            ← 1枚目だけ貼り付く
+├ article  md:h-svh mt-14 md:[clip-path:inset(0)] ← 2枚目以降が上をせり上がって覆う
+├ article  （同上）
+├ article  （同上）
+└ article  （同上）                                ← 全5枚
+```
+
+**訂正が1つある。**このLPのハーネスには「カード間に隙間を空けない」と書いていたが、
+実物には `mt-14`（56px）が入っている。実測して初めて分かった。
+
+**この資料の扱い:** 検証済みの上記だけを採用する。GSAP・scroll-snap・Swiper は
+**入れない**（このLPの「JSは使わない」という確定事項と衝突するうえ、そもそも
+実物が使っていない）。資料そのものはリポジトリに置かない —— 誤った記述が
+次に触る人へ再輸入されるため。
+
 ### Future Imagination Course —— イベント概要の見せ方
 
 2026-09-08、依頼者から「Future Imagination Courseのレイアウトと、スライドしたときの流れを
