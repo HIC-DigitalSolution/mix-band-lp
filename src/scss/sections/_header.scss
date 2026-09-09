@@ -8,8 +8,8 @@
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-edge);
   background: #fff;
 }
 
@@ -19,8 +19,8 @@
   align-items: center;
   transition: opacity .2s;
   // 見た目は20pxのまま、指で押せる高さ44pxを確保する。
-  padding-block: 12px;
-  margin-block: -12px;
+  padding-block: var(--sp-3);
+  margin-block: calc(var(--sp-3) * -1);
 
   &:hover { opacity: .6; }
 
@@ -32,7 +32,7 @@
 
   ul {
     display: flex;
-    gap: 8px;
+    gap: var(--sp-2);
     align-items: center;
     margin: 0;
     padding: 0;
@@ -43,7 +43,7 @@
 .site-nav__btn {
   position: relative;
   display: block;
-  padding: 8px;
+  padding: var(--sp-2);
   border-radius: 4px;
   font-size: 10px;
   font-weight: 700;
@@ -86,7 +86,7 @@
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
-  .site-header { padding: 16px var(--pc-edge); }
+  .site-header { padding: var(--sp-4) var(--pc-edge); }
   .site-header__logo { width: 150px; }
-  .site-nav__btn { font-size: 12px; padding: 11px 14px; }
+  .site-nav__btn { font-size: 12px; padding: var(--sp-3) var(--sp-4); }
 }

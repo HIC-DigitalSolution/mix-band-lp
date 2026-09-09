@@ -69,20 +69,10 @@ SHOT="$TMP/$(basename "$TARGET").png"
 cp "$SHOT" "$OUT"
 
 if [ "$SLICES" -gt 1 ]; then
-  DIMS="$(python3 -c "
-import struct,sys
-d=open(sys.argv[1],'rb').read(33)
-w,h=struct.unpack('>II', d[16:24]); print(w,h)" "$OUT")"
-  IW="$(echo "$DIMS" | cut -d' ' -f1)"
-  IH="$(echo "$DIMS" | cut -d' ' -f2)"
-  SH=$(( IH / SLICES ))
-  i=1
-  while [ "$i" -le "$SLICES" ]; do
-    OFF=$(( (i - 1) * SH ))
-    sips -c "$SH" "$IW" --cropOffset "$OFF" 0 "$OUT" --out "$OUT_DIR/$NAME-$i.png" >/dev/null 2>&1
-    echo "$OUT_DIR/$NAME-$i.png"
-    i=$(( i + 1 ))
-  done
+  # **sips の --cropOffset は使わない。**`--cropOffset 0 0` は左上ではなく中央を切り、
+  # 非ゼロのときだけ左上からの絶対座標になる（2026-09-09 に PIL と突き合わせて確定）。
+  # 1枚目だけ中央が出るという分かりにくい壊れ方をするので、分割は tools/slice.py に任せる。
+  python3 "$(dirname "$0")/slice.py" "$OUT" "$OUT_DIR" "$NAME" "$SLICES"
   exit 0
 fi
 

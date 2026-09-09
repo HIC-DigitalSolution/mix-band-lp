@@ -7,7 +7,7 @@
   right: 0;
   bottom: 0;
   z-index: 30;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  padding: var(--sp-3) var(--sp-edge) calc(var(--sp-3) + env(safe-area-inset-bottom));
   // FVと同じ濃紫。下から立ち上がる帯にして、本文の面と混ざらないようにする。
   background: linear-gradient(180deg, rgba(36, 16, 46, 0) 0%, rgba(36, 16, 46, .92) 42%, rgba(36, 16, 46, .98) 100%);
   // 既定は下に隠しておく。JSが `is-in` を付けたら上がってくる。
@@ -23,27 +23,37 @@
 
 .cta__button--sticky {
   margin-top: 0;
-  padding: 15px 12px;
+  padding: var(--sp-4) var(--sp-3);
   font-size: 15px;
   border-radius: 8px;
 
   &::before { inset: -4px; border-radius: 11px; }
 
-  small { font-size: 11.5px; margin-top: 4px; }
+  small { font-size: 11.5px; margin-top: var(--sp-1); }
 }
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
+  // **PCでは帯にしない。**幅いっぱいの帯だと、読んでいる本文の上に
+  // グラデーションとボタンが重なる（2026-09-09 のレビュー指摘）。
+  // 本文の列は中央に来るので、右下の小さなピルにして列から外す。
   .sticky-cta {
-    padding: 16px var(--pc-edge) 20px;
+    left: auto;
+    right: var(--pc-edge);
+    bottom: var(--sp-5);
+    padding: 0;
+    background: none;
   }
 
   .cta__button--sticky {
-    max-width: 420px;
-    margin-inline: auto;
-    padding: 18px 16px;
-    font-size: 17px;
+    width: auto;
+    max-width: none;
+    padding: var(--sp-3) var(--sp-6);
+    font-size: 15px;
+    border-radius: 999px;
 
-    small { font-size: 12px; margin-top: 5px; }
+    &::before { inset: -4px; border-radius: 999px; }
+
+    small { font-size: 12px; margin-top: var(--sp-1); }
   }
 }

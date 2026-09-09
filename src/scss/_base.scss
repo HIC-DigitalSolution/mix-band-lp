@@ -32,7 +32,10 @@ img { max-width: 100%; }
 
 // PCで横に広げず、SP幅のまま中央に置く。
 .page {
-  max-width: var(--page-max);
+  // **max-width を戻さないこと。**430px で切ると、それより広い画面の左右に
+  // body の地色（--ramp-01）が帯で出る（768pxで左右169px、899pxで234px）。
+  // 背景は全幅に走らせ、中身の列は各節の --sp-edge / --pc-edge が留める。
+  max-width: none;
   margin-inline: auto;
   background: var(--smoke);
   // **overflow: hidden を置かないこと。**祖先に overflow:hidden があると
@@ -53,7 +56,7 @@ img { max-width: 100%; }
   // 中の position:sticky が死ぬ（ヘッダーで一度踏んだ）。
   // clip は作らないので sticky が生きる。装飾のはみ出しは同じように切れる。
   overflow: clip;
-  padding: 64px 24px;
+  padding: var(--sp-20) var(--sp-edge);
 }
 
 .z { position: relative; z-index: 3; }
@@ -63,7 +66,7 @@ img { max-width: 100%; }
   line-height: 1.38;
   letter-spacing: .015em;
   font-weight: 900;
-  margin: 0 0 18px;
+  margin: 0 0 var(--sp-4);
 }
 
 .body {
@@ -73,7 +76,7 @@ img { max-width: 100%; }
   margin: 0;
   color: inherit;
 
-  + .body { margin-top: 12px; }
+  + .body { margin-top: var(--sp-3); }
 }
 
 // ---- 背景アート（装飾） ----
@@ -190,13 +193,13 @@ img { max-width: 100%; }
   }
 
   .hero, .intro, .benefits, .mechanism, .info, .cta {
-    padding: 120px var(--pc-edge);
+    padding: var(--sp-40) var(--pc-edge);
   }
 
   .title {
     font-size: 38px;
     line-height: 1.45;
-    margin-bottom: 26px;
+    margin-bottom: var(--sp-6);
   }
 
   .body {

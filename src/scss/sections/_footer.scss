@@ -1,7 +1,7 @@
 // footer
 .footer {
   background: var(--smoke);
-  padding: 23px 24px 27px;
+  padding: var(--sp-6) var(--sp-edge);
   color: #745b6c;
   font-size: 11px;
   letter-spacing: .08em;
@@ -9,5 +9,5 @@
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
-  .footer { padding: 34px var(--pc-edge) 44px; font-size: 11px; }
+  .footer { padding: var(--sp-8) var(--pc-edge) var(--sp-10); font-size: 11px; }
 }

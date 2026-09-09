@@ -2,8 +2,8 @@
 .info {
 
   background: var(--smoke);
-  padding-top: 108px;
-  padding-bottom: 108px;
+  padding-top: var(--sp-20);
+  padding-bottom: var(--sp-20);
 
   .outline-word {
     right: -42px;
@@ -20,7 +20,7 @@
 .info__card {
   position: relative;
   z-index: 3;
-  padding: 25px 20px;
+  padding: var(--sp-6) var(--sp-5);
   background: var(--paper);
   border: 1px solid rgba(201, 31, 112, .12);
   border-radius: var(--radius);
@@ -33,14 +33,14 @@
   font-weight: 900;
   letter-spacing: -.025em;
   color: var(--raspberry);
-  margin: 0 0 17px;
+  margin: 0 0 var(--sp-4);
 
   small {
     display: block;
     font-size: 10.5px;
     letter-spacing: .18em;
     color: #9d7188;
-    margin-bottom: 7px;
+    margin-bottom: var(--sp-2);
     font-weight: 800;
   }
 }
@@ -52,8 +52,8 @@
   > div {
     display: grid;
     grid-template-columns: 86px 1fr;
-    gap: 12px;
-    padding: 14px 0;
+    gap: var(--sp-3);
+    padding: var(--sp-4) 0;
     border-bottom: 1px solid #eadce3;
   }
 
@@ -64,8 +64,8 @@
 // ===== PC幅 =====
 @media (min-width: 900px) {
   .info {
-    padding-top: 150px;
-    padding-bottom: 170px;
+    padding-top: var(--sp-40);
+    padding-bottom: var(--sp-40);
 
     .outline-word { right: -36px; top: 90px; font-size: 124px; }
   }
@@ -73,17 +73,17 @@
   .info__card {
     max-width: 620px;
     margin-inline: auto;
-    padding: 44px 48px;
+    padding: var(--sp-10) var(--sp-12);
   }
 
   .info__period {
     font-size: 44px;
 
-    small { font-size: 11px; margin-bottom: 10px; }
+    small { font-size: 11px; margin-bottom: var(--sp-3); }
   }
 
   .info__facts {
-    > div { grid-template-columns: 140px 1fr; padding: 20px 0; }
+    > div { grid-template-columns: 140px 1fr; padding: var(--sp-5) 0; }
     dt { font-size: 12px; }
     dd { font-size: 16px; }
   }

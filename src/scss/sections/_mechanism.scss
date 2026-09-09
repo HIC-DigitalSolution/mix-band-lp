@@ -2,8 +2,8 @@
 .mechanism {
 
   color: var(--light);
-  padding-top: 102px;
-  padding-bottom: 102px;
+  padding-top: var(--sp-20);
+  padding-bottom: var(--sp-20);
   background:
     radial-gradient(circle at -10% 70%, rgba(99, 56, 212, .76) 0 18%, transparent 42%),
     radial-gradient(circle at 105% 10%, rgba(201, 31, 112, .5) 0 14%, transparent 38%),
@@ -27,7 +27,7 @@
   position: relative;
   z-index: 2;
   height: 238px;
-  margin: 18px -24px 22px;
+  margin: var(--sp-4) -24px var(--sp-6);
 }
 
 .chime__photo {
@@ -169,8 +169,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: center;
-    column-gap: 64px;
-    padding: 150px var(--pc-edge) 170px;
+    column-gap: var(--sp-16);
+    padding: var(--sp-40) var(--pc-edge);
 
     .body { max-width: none; }
     .outline-word { right: -30px; top: 100px; font-size: 150px; }

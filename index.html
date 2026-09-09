@@ -62,6 +62,27 @@
         <img src="img/mix-band-key-fv-crop.webp" width="750" height="583"
              alt="ASOBIBARの店内で、オレンジのリストバンドを付けた8人が集まっている。焼き込みの文字は「MIX交流上等」「今日出会った最大4〜6組のグループが交差する」「ゲームで指名。気持ちが揺れ動く。」「全員オレンジバンド」">
       </picture>
+      <!-- 写真の手前で動く火花と粒。**写真そのものは動かさない。**
+           支給素材は人物もタイトルも焼き込まれた1枚の平画像で、人物だけを動かすことは
+           できない（2026-09-09 に確認。レイヤー付きの元データが無い）。
+           動かせるのは手前に重ねたものだけなので、ここで賄っている。
+           **中央（焼き込みタイトルの上）には置かない。**左右の端と上に寄せる。
+           duration は全部違う値・delay は振らない（KBCから取った物理法則。
+           harness: floating-objects-follow-one-physics）。 -->
+      <span class="hero__sparks" aria-hidden="true">
+        <i style="--x: 5%;  --y: 18%; --s: 3px; --d: 4.3s"></i>
+        <i style="--x: 11%; --y: 44%; --s: 5px; --d: 5.6s; --c: var(--hot)"></i>
+        <i style="--x: 8%;  --y: 71%; --s: 3px; --d: 3.7s"></i>
+        <i style="--x: 17%; --y: 12%; --s: 2px; --d: 6.1s"></i>
+        <i style="--x: 23%; --y: 86%; --s: 4px; --d: 4.9s"></i>
+        <i style="--x: 33%; --y: 8%;  --s: 2px; --d: 5.2s; --c: var(--hot)"></i>
+        <i style="--x: 68%; --y: 10%; --s: 3px; --d: 3.4s"></i>
+        <i style="--x: 79%; --y: 32%; --s: 2px; --d: 6.7s"></i>
+        <i style="--x: 86%; --y: 58%; --s: 5px; --d: 4.1s; --c: var(--hot)"></i>
+        <i style="--x: 92%; --y: 24%; --s: 3px; --d: 5.9s"></i>
+        <i style="--x: 95%; --y: 79%; --s: 2px; --d: 3.1s"></i>
+        <i style="--x: 74%; --y: 90%; --s: 4px; --d: 6.4s"></i>
+      </span>
       <span class="hero__glow" aria-hidden="true"></span>
       <span class="hero__beam hero__beam--one" aria-hidden="true"></span>
       <span class="hero__beam hero__beam--two" aria-hidden="true"></span>
@@ -114,7 +135,7 @@
            **SPとPCで枠の比が違うので2種類持つ。**SPはカード上端に敷く 660x495（4:3）、
            PCは1枚＝画面高の右列に入る 786x827。どちらも **別々の人が主役**になる位置で
            切っている（01 カードを持つ男性 / 02 笑う男性 / 03 右の女性）。
-           切り出しは PIL で座標指定。**sips の --cropOffset は中央基準で効くので使わない**
+           切り出しは PIL で座標指定。**sips の --cropOffset は使わない**（`--cropOffset 0 0` は左上ではなく中央を切る）
            （2026-09-09、左端0のつもりが中央が出てきて、1枚目と2枚目がほぼ同じ絵になった）。 -->
       <article class="stack__card">
         <picture>
@@ -158,7 +179,6 @@
           </div>
         </div>
       </article>
-    </div>
     </div>
   </section>
 
