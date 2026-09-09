@@ -5,14 +5,6 @@
   padding-top: var(--sp-20);
   padding-bottom: var(--sp-20);
 
-  .outline-word {
-    right: -42px;
-    top: 42px;
-    font-size: 46px;
-    transform: rotate(-6deg);
-    -webkit-text-stroke-color: rgba(141, 27, 88, .14);
-  }
-
   // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
   .art-layer { animation-duration: 24s; }
 }
@@ -67,7 +59,6 @@
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
 
-    .outline-word { right: -36px; top: 90px; font-size: 124px; }
   }
 
   .info__card {

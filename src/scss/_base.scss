@@ -125,21 +125,6 @@ img { max-width: 100%; }
 .lower-field { fill: #24102e; fill-opacity: .58; }
 .lower-ring { fill: none; stroke: var(--smoke); stroke-width: 1; opacity: .58; vector-effect: non-scaling-stroke; }
 
-// 画面外へ切れる巨大なアウトライン文字。本文の中央域は空けたまま。
-.outline-word {
-  position: absolute;
-  z-index: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 242, 248, .23);
-  font-family: Arial, sans-serif;
-  font-size: 49px;
-  line-height: .82;
-  font-weight: 900;
-  letter-spacing: -.055em;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
 // 動きは全部「止められる」こと。装飾なので止めても情報は減らない。
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -209,6 +194,4 @@ img { max-width: 100%; }
     max-width: 34em;
   }
 
-  // 巨大なアウトライン文字も画面幅に合わせて大きくする。
-  .outline-word { font-size: 120px; }
 }

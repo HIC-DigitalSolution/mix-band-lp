@@ -11,14 +11,6 @@
 
   .body { color: #f6ddea; max-width: 300px; }
 
-  .outline-word {
-    right: -28px;
-    top: 48px;
-    font-size: 54px;
-    transform: rotate(-5deg);
-    -webkit-text-stroke-color: rgba(255, 182, 219, .13);
-  }
-
   // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
   .art-layer { animation-duration: 21s; }
 }
@@ -85,10 +77,13 @@
 }
 
 // 交差する2つの輪。中心のオレンジの点がチャイム。
+// **顔に重ねない。**2つの輪が交差する記号であって、人を狙う照準ではない
+// （2026-09-09 のレビュー指摘「顔をターゲットしているUIに見える」）。
+// 写真の下半分（卓とグラスの帯）へ置く。harness: chime-rings-stay-off-faces
 .chime__ring {
   position: absolute;
-  left: 18px;
-  top: 34px;
+  left: 8%;
+  top: 52%;
   width: 148px;
   height: 148px;
   border: 1px solid rgba(168, 121, 255, .62);
@@ -173,7 +168,6 @@
     padding: var(--sp-40) var(--pc-edge);
 
     .body { max-width: none; }
-    .outline-word { right: -30px; top: 100px; font-size: 150px; }
   }
 
   .mechanism > .z:first-of-type { grid-column: 1; }
@@ -187,9 +181,9 @@
   }
 
   .chime__photo { left: 0; right: 0; top: 0; bottom: 0; border-radius: 40px 14px 34px 16px; }
-  .chime__ring { left: 34px; top: 60px; width: 210px; height: 210px; }
-  .chime__ring::before { left: 118px; top: 62px; width: 200px; height: 200px; }
-  .chime__ring::after { left: 100px; top: 100px; width: 11px; height: 11px; }
+  .chime__ring { left: 12%; top: 46%; width: 190px; height: 190px; }
+  .chime__ring::before { left: 105px; top: 55px; width: 180px; height: 180px; }
+  .chime__ring::after { left: 92px; top: 92px; width: 11px; height: 11px; }
   .chime__telop { left: 28px; right: 150px; bottom: 96px; font-size: 27px; }
   .chime__cross b { font-size: 62px; }
   .chime__cross span { font-size: 12px; }

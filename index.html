@@ -45,7 +45,6 @@
   <!-- ========================= 01 hero / 対象 ========================= -->
   <section class="hero">
     <svg class="art-layer" viewBox="0 0 375 620" preserveAspectRatio="none" aria-hidden="true"><use href="#art-hero"></use></svg>
-    <span class="outline-word" aria-hidden="true">AFTER<br>DARK</span>
 
     <figure class="hero__keyart">
       <!-- 2026-09-09、依頼者から新しいFV（1672x941）が支給された。**PCとSPで同じ写真を使う。**
@@ -210,7 +209,6 @@
   <!-- ======================= 04 mechanism / 仕組み ==================== -->
   <section class="mechanism" aria-labelledby="mechanism-title">
     <svg class="art-layer" viewBox="0 0 375 720" preserveAspectRatio="none" aria-hidden="true"><use href="#art-mechanism"></use></svg>
-    <span class="outline-word" aria-hidden="true">CHIME</span>
 
     <div class="z">
       <h2 id="mechanism-title" class="title">チャイムが鳴ったら<br>物語が動き出す</h2>
@@ -241,7 +239,6 @@
   <!-- ======================== 05 info / 開催情報 ====================== -->
   <section class="info" aria-labelledby="info-title">
     <svg class="art-layer" viewBox="0 0 375 560" preserveAspectRatio="none" aria-hidden="true"><use href="#art-info"></use></svg>
-    <span class="outline-word" aria-hidden="true">OCT<br>2026</span>
 
     <div class="info__card">
       <h2 id="info-title" class="title">開催情報</h2>
@@ -258,7 +255,10 @@
   <!-- ======================= 06 cta / 公式LINE ======================== -->
   <section class="cta" aria-labelledby="cta-title">
     <svg class="art-layer" viewBox="0 0 375 430" preserveAspectRatio="none" aria-hidden="true"><use href="#art-cta"></use></svg>
-    <span class="outline-word" aria-hidden="true">STEP<br>IN</span>
+    <!-- **最後に店内の余韻を戻す**（2026-09-09 のレビュー指摘「余白が余韻ではなく
+         情報が足りない空間に見える」「FVほどの熱量が戻らないまま終わる」）。
+         濃紫を強くかぶせて、ネオンピンクのCTAが最強面であることは崩さない。 -->
+    <img class="cta__scene" src="img/intro-scene.webp" alt="" aria-hidden="true" width="1672" height="941">
 
     <div class="z">
       <h2 id="cta-title" class="title">今夜の舞台へ</h2>
@@ -290,16 +290,39 @@
     </div>
     <button class="store-dialog__close" type="button" data-close-dialog aria-label="閉じる">×</button>
   </div>
-  <p class="store-dialog__help">選んだ店舗の公式LINEが開きます。</p>
+  <p class="store-dialog__help">店舗を選ぶと、その店舗の公式LINEが開きます。<br>LINEのトークから予約してください。</p>
 
-  <!-- TODO(依頼者確認): 店舗名と各店舗の公式LINE URL。表示数は店舗数に合わせます。 -->
+  <!-- TODO(依頼者確認): 店舗名・エリア・各店舗の公式LINE URL。
+       **推測で埋めないこと。**行数は店舗数に合わせて増減する。
+       置き換えるのは <b> の店舗名、<i> のエリア、<a> の href の3つだけ。
+       harness: facts-are-client-confirmed-only -->
   <ul class="store-dialog__list">
-    <li><a class="store" href="#"><b>店舗名</b><span>公式LINEへ</span></a></li>
-    <li><a class="store" href="#"><b>店舗名</b><span>公式LINEへ</span></a></li>
-    <li><a class="store" href="#"><b>店舗名</b><span>公式LINEへ</span></a></li>
-    <li><a class="store" href="#"><b>店舗名</b><span>公式LINEへ</span></a></li>
+    <li>
+      <a class="store" href="#">
+        <span class="store__name"><b>店舗名</b><i>エリア</i></span>
+        <span class="store__go">公式LINE</span>
+      </a>
+    </li>
+    <li>
+      <a class="store" href="#">
+        <span class="store__name"><b>店舗名</b><i>エリア</i></span>
+        <span class="store__go">公式LINE</span>
+      </a>
+    </li>
+    <li>
+      <a class="store" href="#">
+        <span class="store__name"><b>店舗名</b><i>エリア</i></span>
+        <span class="store__go">公式LINE</span>
+      </a>
+    </li>
+    <li>
+      <a class="store" href="#">
+        <span class="store__name"><b>店舗名</b><i>エリア</i></span>
+        <span class="store__go">公式LINE</span>
+      </a>
+    </li>
   </ul>
-  <p class="store-dialog__note">店舗名とリンク先は支給後に置き換えます。表示数は店舗数に合わせます。</p>
+  <p class="store-dialog__note">開催期間中の 日〜木曜日 が対象です。店舗名とリンクは支給後に置き換えます。</p>
 </dialog>
 
 <!-- ===================== 背景アート（装飾・読み飛ばして可） ===================== -->

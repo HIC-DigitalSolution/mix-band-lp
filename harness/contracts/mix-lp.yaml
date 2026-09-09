@@ -437,6 +437,18 @@ invariants:
       type: manual
       note: '**2026-09-09、依頼者から2度目の指摘。**「ボックスに対して上下の余白が違う＝中央じゃない」「この前も同じ現象が起きていました」。**原因はいつも同じで、片方の軸しか指定していないこと。** 実測した例 —— テロップを `display: grid; justify-items: center;`（横だけ）で1つのセルに重ねていた。縦は既定の `stretch` のままなので箱が引き伸ばされ、文字が上に張り付いた。**上13px / 下41px**。`place-items: center` にして 上13 / 下13（差0）になった。 **決まり** —— ① grid / flex で中央に置くときは **`place-items: center` か `place-content: center`** を使う。`justify-*` だけ、`align-*` だけを書かない。 ② 同じセルに要素を重ねる（`grid-area: 1 / 1`）ときは特に注意。**一番背の高い要素に合わせて全部が伸びる。** ③ 親を中央にしても、**箱自身が伸びれば同じことが起きる**ので、箱側にも `place-content: center` を置く。 ④ `line-height` と `padding` を左右対称に書いても中央にはならない。**箱が伸びているかどうかが本体。** **確かめ方（目視で決めない）** —— 要素の矩形と、中の文字の行ボックスを取って上下の差を測る。差が1px以内でなければ中央ではない。 ```js const b=el.getBoundingClientRect(); const r=document.createRange(); r.selectNodeContents(el); const t=r.getBoundingClientRect(); ({上:Math.round(t.top-b.top), 下:Math.round(b.bottom-t.bottom)}) ``` **中央に置いたと報告する前に、この数字を出すこと。**'
 
+  - id: chime-rings-stay-off-faces
+    statement: チャイムの同心円は人の顔に重ねない。交差の記号であって照準ではない。
+    check:
+      type: manual
+      note: '**2026-09-09 のレビュー指摘「人物の顔に円が重なりすぎている。交流の交差という意味より、顔をターゲットしているUIに見える」。**それまで円は写真の 左7% / 上14% から36%幅で、上半分の顔の位置に乗っていた。**写真の下半分（卓とグラスの帯）へ移した** —— 実測で 上46% 〜 下85%、写真からのはみ出し0。位置は px ではなく % で持たせている（写真の大きさが幅で変わるため）。**顔の位置は素材が変わると動く。写真を差し替えたら測り直すこと。**'
+
+  - id: dialog-rows-are-choices-not-links
+    statement: 店舗選択の行は「選ぶ面」として作る。文字のリンクにしない。
+    check:
+      type: manual
+      note: '**2026-09-09、依頼者の指定でリンクより先にダイアログのデザインを固めた。**構造は 左に `店舗名` と `エリア`、右に「公式LINE」のピル。行全体が `<a>` で、高さ79px（タップ領域44px以上）。**置き換えるのは3つだけ** —— `<b>` の店舗名、`<i>` のエリア、`<a href>`。行数は店舗数に合わせて増減する。**推測で埋めない**（harness: facts-are-client-confirmed-only）。 **`.store span` のような要素セレクタを書かないこと** —— 中に span が増えると全部に当たる。実際、旧ルールの `color` と `::after { content: " →" }` が新しい構造の両方の span に効き、**ピルの文字がピンク地にピンク文字で消え、矢印が余分に出た**。クラスで指定する。 **ダイアログの高さは画面に収まること**（SP 390x844 で 540px）。店舗数が増えたらスクロールの要否を測り直す。'
+
   - id: intro-is-a-trailer-of-cuts
     statement: 導入は予告編のカット割り。1カット目は動きのある絵から始める。
     check:

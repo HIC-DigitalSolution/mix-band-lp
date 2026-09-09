@@ -43,8 +43,6 @@
   }
   strong { color: #fff; }
 
-  .outline-word { right: -34px; top: 50px; transform: rotate(-7deg); }
-
   // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
   .art-layer { animation-duration: 23s; }
 }

@@ -68,15 +68,6 @@
   border: 1px solid #ead8e2;
   border-radius: var(--radius);
 
-  b { font-size: 13.5px; }
-
-  span {
-    font-size: 11px;
-    font-weight: 900;
-    color: var(--raspberry);
-
-    &::after { content: "  →"; }
-  }
 }
 
 .store-dialog__note {
@@ -92,4 +83,37 @@
   position: absolute;
   inset: -4px;
   border-radius: 50%;
+}
+
+// 店舗の行の中身。**名前とエリアを左、「公式LINE」を右のピルに。**
+// 2026-09-09、依頼者の指定でダイアログのデザインを先に固めた（リンクは後日）。
+// **`.store span` のような要素セレクタを書かないこと** —— 中に span が増えると
+// 全部に当たる。実際、旧ルールの色と `::after { content: " →" }` が
+// 新しい構造の両方の span に効き、ピルの文字が消えて矢印が二重に出た。
+
+.store__name {
+  display: grid;
+  gap: var(--sp-1);
+  text-align: left;
+
+  b { display: block; font-size: 15px; line-height: 1.4; }
+  i { display: block; font-style: normal; font-size: 11px; opacity: .66; }
+}
+
+.store__go {
+  flex: 0 0 auto;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: #fff;
+  background: var(--raspberry);
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .store__name b { font-size: 17px; }
+  .store__name i { font-size: 12px; }
+  .store__go { font-size: 12px; padding: var(--sp-2) var(--sp-4); }
 }

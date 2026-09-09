@@ -13,14 +13,6 @@
   // em なら文字サイズに追従するので、SP24px でもPC38px でも同じ2行になる。
   .title { max-width: 9.5em; }
 
-  .outline-word {
-    right: -38px;
-    top: 46px;
-    font-size: 45px;
-    transform: rotate(-6deg);
-    -webkit-text-stroke-color: rgba(201, 31, 112, .16);
-  }
-
   // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
   .art-layer { animation-duration: 26s; }
 }
@@ -138,7 +130,6 @@
     padding-bottom: 0;
 
     .z { max-width: 720px; }
-    .outline-word { right: -34px; top: 96px; font-size: 116px; }
   }
 
   // **構成を futuretrain の Future Imagination Course に合わせる**（2026-09-09 の指示）。

@@ -27,16 +27,6 @@
     animation: dot-drift 9s ease-in-out infinite alternate;
   }
 
-  .outline-word {
-    // 開催情報を外したので、下の余白がなくなった。端に少し覗かせるだけにする。
-    right: -26px;
-    bottom: -10px;
-    z-index: 5;
-    font-size: 32px;
-    transform: rotate(-5deg);
-    -webkit-text-stroke-color: rgba(255, 242, 248, .18);
-  }
-
   // 背景の漂いはセクションごとに速さを変える（揃って動くと機械っぽくなる）
   .art-layer { animation-duration: 19s; }
 }
@@ -183,7 +173,6 @@
     justify-items: center;
     padding: 0 var(--pc-edge) var(--sp-20);
 
-    .outline-word { right: -40px; bottom: 40px; font-size: 96px; }
   }
 
   .hero__keyart {
