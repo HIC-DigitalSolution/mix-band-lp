@@ -12,6 +12,14 @@
 }
 
 .cta {
+  // 【見出しの役割: 締め】**ページで一番大きい見出し。**
+  // 仕組みより一段強いグロー。ここが最後の山になる。
+  .title {
+    font-size: 28px;
+    letter-spacing: -.01em;
+    text-shadow: 0 0 26px rgba(255, 45, 149, .6);
+  }
+
 
   color: var(--light);
   text-align: center;
@@ -86,6 +94,8 @@
 // ===== PC幅 =====
 @media (min-width: 900px) {
   .cta {
+    .title { font-size: 48px; }
+
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
 

@@ -738,6 +738,21 @@ img {
   padding-bottom: var(--sp-16);
 }
 .benefits .title {
+  position: relative;
+  padding-left: var(--sp-4);
+  letter-spacing: 0.01em;
+}
+.benefits .title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.34em;
+  width: 4px;
+  height: 1.1em;
+  background: var(--orange);
+  border-radius: 2px;
+}
+.benefits .title {
   max-width: 9.5em;
 }
 .benefits .art-layer {
@@ -894,6 +909,10 @@ img {
   padding-bottom: var(--sp-20);
   background: radial-gradient(circle at -10% 70%, rgba(99, 56, 212, 0.76) 0 18%, transparent 42%), radial-gradient(circle at 105% 10%, rgba(201, 31, 112, 0.5) 0 14%, transparent 38%), linear-gradient(160deg, #1a0823 0%, #351032 58%, #5b163f 100%);
 }
+.mechanism .title {
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 22px rgba(255, 45, 149, 0.45);
+}
 .mechanism .body {
   color: #f6ddea;
   max-width: 300px;
@@ -1033,6 +1052,9 @@ img {
     column-gap: var(--sp-16);
     padding: var(--sp-40) var(--pc-edge);
   }
+  .mechanism .title {
+    font-size: 42px;
+  }
   .mechanism .body {
     max-width: none;
   }
@@ -1090,6 +1112,10 @@ img {
   background: var(--smoke);
   padding-top: var(--sp-20);
   padding-bottom: var(--sp-20);
+}
+.info .title {
+  font-size: 20px;
+  letter-spacing: 0.12em;
 }
 .info .art-layer {
   animation-duration: 24s;
@@ -1150,6 +1176,9 @@ img {
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
   }
+  .info .title {
+    font-size: 26px;
+  }
   .info__card {
     max-width: 620px;
     margin-inline: auto;
@@ -1190,6 +1219,11 @@ img {
   padding-top: var(--sp-20);
   padding-bottom: var(--sp-20);
   background: radial-gradient(circle at 104% 4%, rgba(201, 31, 112, 0.8) 0 16%, transparent 35%), radial-gradient(circle at -12% 100%, rgba(99, 56, 212, 0.72) 0 16%, transparent 36%), linear-gradient(150deg, #17081f, #24102e 58%, #3d0e36);
+}
+.cta .title {
+  font-size: 28px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 26px rgba(255, 45, 149, 0.6);
 }
 .cta::after {
   content: "";
@@ -1265,6 +1299,9 @@ img {
   .cta {
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
+  }
+  .cta .title {
+    font-size: 48px;
   }
   .cta .body {
     max-width: 520px;

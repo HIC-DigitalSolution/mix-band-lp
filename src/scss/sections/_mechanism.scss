@@ -1,5 +1,12 @@
 // 04 mechanism / 仕組み —— THE CHIME。訴求の中心。
 .mechanism {
+  // 【見出しの役割: 仕組み】暗い面。**事実を言い切る場所なので、詰めて強くする。**
+  // ネオンのごく薄いグローだけ足す。縁取りはしない（読みにくくなる）。
+  .title {
+    letter-spacing: -.01em;
+    text-shadow: 0 0 22px rgba(255, 45, 149, .45);
+  }
+
 
   color: var(--light);
   padding-top: var(--sp-20);
@@ -161,6 +168,8 @@
 // ===== PC幅 =====
 @media (min-width: 900px) {
   .mechanism {
+    .title { font-size: 42px; }
+
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: center;

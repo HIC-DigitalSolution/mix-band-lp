@@ -1,5 +1,12 @@
 // 05 info / 開催情報 —— 読ませる面。世界観を持ち込まない白いカードに逃がす。
 .info {
+  // 【見出しの役割: 事務情報】**読ませる面なので一番静かにする。**
+  // 小さく、字間を広げてラベルに寄せる。グローも罫も付けない。
+  .title {
+    font-size: 20px;
+    letter-spacing: .12em;
+  }
+
 
   background: var(--smoke);
   padding-top: var(--sp-20);
@@ -56,6 +63,8 @@
 // ===== PC幅 =====
 @media (min-width: 900px) {
   .info {
+    .title { font-size: 26px; }
+
     padding-top: var(--sp-40);
     padding-bottom: var(--sp-40);
 

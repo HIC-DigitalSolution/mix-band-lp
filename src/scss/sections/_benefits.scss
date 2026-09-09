@@ -1,5 +1,26 @@
 // 03 benefits / 価値 —— YOUR NIGHT。読ませる面なので明るい紙の色。
 .benefits {
+  // 【見出しの役割: 体験価値】明るい紙の面。**気持ちの話なので締めない。**
+  // 行頭にオレンジの短い罫を1本だけ置く —— オレンジは点・火花・短い罫にしか
+  // 使わないという決まりの、唯一の見出しでの使い道
+  // （harness: heading-weight-follows-its-role / section-colors-come-from-one-ramp）。
+  .title {
+    position: relative;
+    padding-left: var(--sp-4);
+    letter-spacing: .01em;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .34em;
+      width: 4px;
+      height: 1.1em;
+      background: var(--orange);
+      border-radius: 2px;
+    }
+  }
+
 
   background: var(--paper);
   // 2026-09-09: 390px幅で節が約1400pxあり長かったので上下を詰めた。
