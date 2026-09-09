@@ -186,7 +186,7 @@ invariants:
         - ^css/.+\.css$
       required_patterns:
         - 'Generated from src/scss/style\.scss'
-      hint: 'fix: css/style.css を手で編集しない。直すのは src/scss/。npm run build（node scripts/build.mjs）で吐き直す。**この見出し行が消えているのは、手で書き換えたか、別の経路で生成した合図。**'
+      hint: 'fix: css/style.css を手で編集しない。直すのは src/scss/。npm run build（node scripts/build.mjs）で吐き直す。**この見出し行が消えているのは、手で書き換えたか、別の経路で生成した合図。** **出力先は css/ だけ。**2026-09-09、`assets/css/style.css` と `.map` が湧いていた（依頼者も自分も作っていない）。中身は src/scss/ のコンパイル物だが1時間半古く、削除済みの .kicker がまだ8件残っていた。`scripts/build.mjs` は .map を書かないので、出所はエディタのSassコンパイラ拡張（Live Sass Compiler 等）のグローバル設定。**この検査は css/ しか見ないので、二つ目の出力が静かに食い違っていても気づけない。**見つけたら消す（`assets/` は .gitignore 済み）。拡張を使うなら出力先を css/ に向ける。'
 
   - id: sass-change-ships-its-css
     statement: Sass を変えたら、コンパイル済みの css も同じ差分に入れる。

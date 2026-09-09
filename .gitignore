@@ -14,3 +14,12 @@ _src/
 
 node_modules/
 .vercel/
+
+# **このプロジェクトのCSSの出力先は css/ だけ。**assets/css/ に style.css と
+# style.css.map が出ていることがある（2026-09-09。依頼者も自分も作っていない）。
+# scripts/build.mjs は .map を書かないので、出所はエディタのSassコンパイラ拡張
+# （Live Sass Compiler 等）のグローバル設定。**中身は src/scss/ の古いコンパイル物で、
+# 放っておくと本物の css/style.css と静かに食い違う。**
+# harness の css-is-compiled-not-handwritten は css/ しか見ていないので気づけない。
+# 見つけたら消す。拡張を使うなら出力先を css/ に向けるか、このリポジトリでは切る。
+assets/
