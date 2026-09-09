@@ -9,7 +9,14 @@
   <meta property="og:title" content="MIX交流上等バンド | ASOBIBAR">
   <meta property="og:description" content="最大4〜6組のグループが交差する恋愛リアリティ体験。2026年10月、日〜木曜日限定。">
   <meta property="og:type" content="website">
-  <!-- TODO(依頼者確認): 公開先が決まったら OG画像とOG URL を絶対URLで入れて、noindex を外す。
+  <!-- **OG画像とOG URLは絶対URLでないとクローラが拾わない**（19歳LPで踏んだ）。
+       いまの値は GitHub Pages の暫定URL。**本番ドメインが決まったら3つとも直す。** -->
+  <meta property="og:url" content="https://hic-digitalsolution.github.io/mix-band-lp/">
+  <meta property="og:image" content="https://hic-digitalsolution.github.io/mix-band-lp/img/ogp.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO(依頼者確認): **noindex はまだ外していない。**本番ドメインが決まったら、og:url と og:image を差し替えたうえで外す。
        harness の og-image-and-index-before-release（manual）で毎回出ます。 -->
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -293,6 +300,8 @@
   <p class="store-dialog__help">店舗を選ぶと、その店舗の公式LINEが開きます。<br>LINEのトークから予約してください。</p>
 
   <!-- 店舗名・エリア・公式LINEは asobibar.net/shops/ から取った（2026-09-09）。
+       **ここは「全店」ではなく「この施策をやる店」の一覧。**2026-09-09、依頼者の指示で
+       梅田茶屋町店を外した（この施策は実施しない）。**店舗一覧を機械的に写さないこと。**
        **推測で書いた項目は無い。**エリア区分も公式の「東京エリア」等をそのまま使っている。
        `lin.ee/fpDqfH8` が4店舗（名古屋栄錦通り・心斎橋・梅田お初天神・神戸三宮）で
        重複しているが、**公式サイト側がそうなっている**（カード単位で2通りの方法で確認）。
@@ -337,12 +346,6 @@
     <li>
       <a class="store" href="https://lin.ee/fpDqfH8" target="_blank" rel="noopener">
         <span class="store__name"><b>梅田お初天神店</b><i>大阪エリア</i></span>
-        <span class="store__go">公式LINE</span>
-      </a>
-    </li>
-    <li>
-      <a class="store" href="https://lin.ee/Zazotjy" target="_blank" rel="noopener">
-        <span class="store__name"><b>梅田茶屋町店</b><i>大阪エリア</i></span>
         <span class="store__go">公式LINE</span>
       </a>
     </li>
