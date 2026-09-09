@@ -110,22 +110,34 @@
          その上をせり上がって覆う。**3枚とも常にDOMに在る。**
          親セクションは overflow:hidden にしないこと（sticky が死ぬ）。 -->
     <div class="stack">
-      <!-- 写真は支給された MIXBAND-CHIME01.png（1902x827）から、人物ごとに
-           660x495 で切り出したもの。**別々の人・別々の表情**を選んでいる。
-           カードは重なって1枚ずつ見えるので、同じ場面から切っても並んで見えることがない。 -->
+      <!-- 写真は支給された MIXBAND-CHIME01.png（1902x827）からの切り出し。
+           **SPとPCで枠の比が違うので2種類持つ。**SPはカード上端に敷く 660x495（4:3）、
+           PCは1枚＝画面高の右列に入る 786x827。どちらも **別々の人が主役**になる位置で
+           切っている（01 カードを持つ男性 / 02 笑う男性 / 03 右の女性）。
+           切り出しは PIL で座標指定。**sips の --cropOffset は中央基準で効くので使わない**
+           （2026-09-09、左端0のつもりが中央が出てきて、1枚目と2枚目がほぼ同じ絵になった）。 -->
       <article class="stack__card">
-        <img class="stack__photo" src="img/night-01.webp" width="660" height="495"
-             alt="ASOBIBARのカウンターで、オレンジのリストバンドを付けた男性が声を上げて笑っている">
+        <picture>
+          <source media="(min-width: 900px)" srcset="img/night-01-pc.webp" width="786" height="827">
+          <img class="stack__photo" src="img/night-01.webp" width="660" height="495"
+             alt="ASOBIBARのカウンターで、オレンジのリストバンドを付けた男性がカードを手に笑みを浮かべている">
+        </picture>
         <div class="stack__body"><span class="card__num">01</span><div><h3>いつもと違う刺激</h3><p>普段の来店とは違う高揚感を楽しむ。</p></div></div>
       </article>
       <article class="stack__card">
-        <img class="stack__photo" src="img/night-02.webp" width="660" height="495"
-             alt="口を手で覆って驚いている女性。手首にオレンジのリストバンド">
+        <picture>
+          <source media="(min-width: 900px)" srcset="img/night-02-pc.webp" width="786" height="827">
+          <img class="stack__photo" src="img/night-02.webp" width="660" height="495"
+             alt="声を上げて笑う男性と、口を手で覆って驚く女性。ふたりともオレンジのリストバンドを付けている">
+        </picture>
         <div class="stack__body"><span class="card__num">02</span><div><h3>関係が動くきっかけ</h3><p>気持ちが揺れ動く瞬間に出会う。</p></div></div>
       </article>
       <article class="stack__card">
-        <img class="stack__photo" src="img/night-03.webp" width="660" height="495"
-             alt="頬づえをついて微笑む女性。背景にダーツボードのネオン">
+        <picture>
+          <source media="(min-width: 900px)" srcset="img/night-03-pc.webp" width="786" height="827">
+          <img class="stack__photo" src="img/night-03.webp" width="660" height="495"
+             alt="カウンターで頬づえをついて微笑む女性。背景にダーツボードのネオン">
+        </picture>
         <div class="stack__body"><span class="card__num">03</span><div><h3>非日常を体験</h3><p>恋愛リアリティショーの中へ入る。</p></div></div>
       </article>
     </div>

@@ -33,6 +33,10 @@
   --page-max: 430px;
   --page-max-pc: 1280px;
   --pc-gutter: 80px;
+  // PCのヘッダーの実測高さ（padding 16 + ロゴ 34 + padding 16）。
+  // **YOUR NIGHT のカード高さがこの値に依存している**（1枚＝画面高 − ヘッダー）。
+  // ヘッダーの padding かロゴ幅を変えたら、ここも測り直すこと。
+  --header-h-pc: 66px;
   // 中身の列幅。コンテナ1280 から左右80を引いた値（= 1120px）。
   --pc-content: calc(var(--page-max-pc) - var(--pc-gutter) * 2);
   // 節の左右余白。**背景は全幅に走らせ、中身だけ --pc-content で中央に留めるための値。**

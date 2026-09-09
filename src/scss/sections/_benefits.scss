@@ -58,6 +58,15 @@
 
 }
 
+// **<picture> はグリッドの子になる。**中の img ではなくこちらへ配置と高さを効かせること。
+// 既定は inline なので、そのままだと高さ100%が効かず、写真が画像本来の比で
+// カードからはみ出す（2026-09-09、1920px幅で97pxはみ出していた。1440では
+// たまたま一致していて気づけなかった）。
+.stack__card > picture {
+  display: block;
+  min-width: 0;
+}
+
 // 写真はカードの上端いっぱい。4:3 で高さが揃う。
 .stack__photo {
   display: block;
@@ -101,31 +110,71 @@
 @media (min-width: 900px) {
   .benefits {
     padding-top: 150px;
-    padding-bottom: 170px;
+    padding-bottom: 0;
 
     .z { max-width: 720px; }
     .outline-word { right: -34px; top: 96px; font-size: 116px; }
   }
 
-  .stack { margin-top: 56px; }
+  // **構成を futuretrain の Future Imagination Course に合わせる**（2026-09-09 の指示）。
+  // 実物を1440pxで見て取った構成 —— 1枚＝画面高、左に細い文字の列、右に大きな写真、
+  // 写真は画面の右端まで届く。カードの枠・角丸・影は無い。
+  // 重なる仕組み（1枚目 sticky ＋ 後続 clip-path）はそのまま。
+  .stack {
+    margin-top: 56px;
+    // カードを画面幅いっぱいにする。FVと同じ手（50% は自分の領域幅、50vw は画面幅）。
+    margin-inline: calc(50% - 50vw);
+  }
 
   .stack__card {
     display: grid;
-    grid-template-columns: 46% 1fr;
-    align-items: center;
+    // 左が読む列、右が写真。**向こうも左3割・右7割。**
+    // **向こうは左3割・右7割だが、こちらは左45%・右55%にしている。**
+    // 支給写真が4人の集合写真1枚（1902x827）しかなく、写真枠を7割（950px）にすると
+    // 切り出し幅が942px必要になり、3枚が重なって1枚目と2枚目がほぼ同じ絵になった
+    // （2026-09-09、実際に切って並べて確認）。55%なら786px幅で3人を割り当てられて、
+    // かつ原寸ほぼ等倍で出せる。**写真が増えたら7割へ寄せてよい。**
+    grid-template-columns: 45% 1fr;
+    // **行を明示すること。**暗黙の auto 行だと高さが内容依存になり、
+    // 子の height:100% が auto に落ちて写真が画像本来の比で伸びる
+    // （2026-09-09、1920px幅でカードから97pxはみ出していた）。
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+    height: calc(100svh - var(--header-h-pc));
+    // 画面が低いときの下限。これを下回るとカードの中身が潰れる。
+    min-height: 480px;
+    // 画面端まで届かせるので、枠・角丸・影は持たせない。
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: inset(0);
 
-    &:first-child { top: 96px; }
+    &:first-child { top: var(--header-h-pc); clip-path: none; }
   }
 
-  .stack__photo { height: 100%; aspect-ratio: auto; }
+  // 写真は右。カードの高さいっぱいに、端まで。**配置は picture に効かせる。**
+  .stack__card > picture {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 0;
+  }
 
+  .stack__photo {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  // 文字は左。ページの左余白に合わせて、本文の頭を他の節と揃える。
   .stack__body {
-    padding: 40px 44px;
+    grid-column: 1;
+    grid-row: 1;
+    align-content: center;
     grid-template-columns: 54px 1fr;
-    gap: 20px;
+    gap: 20px 22px;
+    padding: 0 48px 0 var(--pc-edge);
 
-    h3 { font-size: 24px; margin-bottom: 10px; }
-    p { font-size: 15px; }
+    h3 { font-size: 28px; margin-bottom: 14px; }
+    p { font-size: 16px; }
   }
 
   .card__num { width: 54px; height: 54px; font-size: 14px; }
