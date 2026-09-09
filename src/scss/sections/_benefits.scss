@@ -2,11 +2,16 @@
 .benefits {
 
   background: var(--paper);
-  padding-top: 96px;
-  padding-bottom: 100px;
+  // 2026-09-09: 390px幅で節が約1400pxあり長かったので上下を詰めた。
+  // カードの大きさと重なる動きは変えていない。
+  padding-top: 72px;
+  padding-bottom: 76px;
 
-  .kicker { color: var(--raspberry); }
-  .title { max-width: 280px; }
+  // **px で切らないこと。**280px は旧コピー「いつもの夜を／予定外に」に合わせた値で、
+  // 2026-09-09 に「いつもと違う夜に／物語を」へ変えたら、PC（38px）で
+  // 8文字が入らず「いつもと違う夜 / に / 物語を」と3行に割れた。
+  // em なら文字サイズに追従するので、SP24px でもPC38px でも同じ2行になる。
+  .title { max-width: 9.5em; }
 
   .outline-word {
     right: -38px;
@@ -20,8 +25,6 @@
   .art-layer { animation-duration: 26s; }
 }
 
-.benefits__lead { color: #654d5c; }
-
 // スクロールでカードが1枚ずつ現れる。
 // futuretrain.jp の Future Imagination Course と同じ作りで、**JSを使わない**。
 // 1枚目が sticky で上に貼り付き、2枚目以降が clip-path を持って上をせり上がる。
@@ -29,7 +32,7 @@
 .stack {
   position: relative;
   z-index: 3;
-  margin-top: 28px;
+  margin-top: 20px;
 }
 
 .stack__card {
@@ -72,7 +75,7 @@
   padding: 20px;
 
   h3 { font-size: 16px; line-height: 1.5; margin: 0 0 6px; }
-  p { font-size: 12px; line-height: 1.85; margin: 0; color: var(--muted); }
+  p { font-size: 13px; line-height: 1.8; margin: 0; color: var(--muted); }
 }
 
 

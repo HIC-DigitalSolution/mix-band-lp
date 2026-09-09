@@ -1,5 +1,7 @@
 # 内容デザインカンプ16の決定
 
+> **canvas は 2026-09-09 に削除済みです。**この文書は判断の記録として残しています。
+
 - **Date:** 2026-09-08
 - **Status:** 依頼者支給の乾杯SVGを採用。375pxのHTTP表示確認待ち
 - **Comp:** `design/mix-lp-content-design-comp-16.dc.html`

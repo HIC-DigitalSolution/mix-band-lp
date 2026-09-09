@@ -1,5 +1,7 @@
 # 内容デザインカンプ14の決定
 
+> **canvas は 2026-09-09 に削除済みです。**この文書は判断の記録として残しています。
+
 - **Date:** 2026-09-08
 - **Status:** SOUND TRIPの人物スケールへ寄せた比較案。375pxのHTTP表示確認待ち
 - **Comp:** `design/mix-lp-content-design-comp-14.dc.html`

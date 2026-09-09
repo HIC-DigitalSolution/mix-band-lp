@@ -1,5 +1,7 @@
 # 内容デザインカンプ11の決定
 
+> **canvas は 2026-09-09 に削除済みです。**この文書は判断の記録として残しています。
+
 - **Date:** 2026-09-08
 - **Status:** Paradox Live型の全面FVを反映。375pxブラウザ表示の最終確認待ち
 - **Comp:** `design/mix-lp-content-design-comp-11.dc.html`

@@ -3,11 +3,11 @@
   background: var(--smoke);
   padding: 23px 24px 27px;
   color: #745b6c;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: .08em;
 }
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
-  .footer { padding: 34px var(--pc-gutter) 44px; font-size: 11px; }
+  .footer { padding: 34px var(--pc-edge) 44px; font-size: 11px; }
 }

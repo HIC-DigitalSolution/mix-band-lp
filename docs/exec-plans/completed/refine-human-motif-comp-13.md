@@ -43,7 +43,13 @@
 - [x] `node scripts/harness/harness-check.mjs`（機械検証は全てpass。manual 24行は人の確認待ち）
 - [x] HTMLParserでカンプ13を解析する（299 start-tags / errorsなし）
 - [x] `git diff --check`
-- [ ] 375px実寸のHTTPブラウザ表示（ローカルHTTPサーバーが実行上限で拒否されたため未確認）
+- **未実施:** 375px実寸のHTTPブラウザ表示（ローカルHTTPサーバーが実行上限で拒否されたため未確認）
+
+> **2026-09-09 追記。**上の未実施項目は、当時ローカルHTTPサーバーが動かせず
+> 実行できなかったものです。**いまも「実行した」ことにはしません。**
+> 対象だったカンプ本体は同日削除済みで、この形での確認はもう行えません。
+> 実画面での確認は本番の index.html に対して行い、結果は
+> `docs/exec-plans/completed/lp-adjust-p1-p6.md` に記録しています。
 
 ## Result
 

@@ -1,5 +1,7 @@
 # 内容デザインカンプ17の決定
 
+> **canvas は 2026-09-09 に削除済みです。**この文書は判断の記録として残しています。
+
 - **Date:** 2026-09-08
 - **Status:** チャイムセクションへFV素材の仮写真を追加。375pxのHTTP表示確認待ち
 - **Comp:** `design/mix-lp-content-design-comp-17.dc.html`

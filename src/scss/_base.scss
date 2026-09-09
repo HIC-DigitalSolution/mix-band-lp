@@ -33,6 +33,12 @@ img { max-width: 100%; }
   // **overflow: hidden を置かないこと。**祖先に overflow:hidden があると
   // position:sticky が効かず、ヘッダーがスクロールで流れていく（2026-09-08 に踏んだ）。
   // 装飾のはみ出しは各セクションが自分で clip している。
+  //
+  // x方向だけは clip する。FVが 50vw の負マージンで列の外へ出るため、
+  // **縦スクロールバーの幅ぶんだけ横にはみ出す**（50vw はスクロールバーを含む）。
+  // clip はスクロールコンテナを作らないので sticky は生きたまま（hidden との違い:
+  // docs/gotchas/sticky-was-declared-not-verified.md）。
+  overflow-x: clip;
 }
 
 // 各セクション共通。背景アートは position:absolute で敷き、本文は .z で上に載せる。
@@ -47,15 +53,6 @@ img { max-width: 100%; }
 
 .z { position: relative; z-index: 3; }
 
-.kicker {
-  font-size: 10px;
-  line-height: 1.4;
-  letter-spacing: .2em;
-  font-weight: 800;
-  margin: 0 0 12px;
-  text-transform: uppercase;
-}
-
 .title {
   font-size: 24px;
   line-height: 1.38;
@@ -65,8 +62,9 @@ img { max-width: 100%; }
 }
 
 .body {
-  font-size: 13px;
-  line-height: 1.95;
+  // 2026-09-09: 13px は読みづらいという指摘。15pxへ。
+  font-size: 15px;
+  line-height: 1.9;
   margin: 0;
   color: inherit;
 
@@ -177,21 +175,17 @@ img { max-width: 100%; }
 // 本文18px・行間1.9・字間0.9px / 横並びを基本にする。
 // **節は増やしていない。**6区間のまま、並べ方だけ変えている。
 @media (min-width: 900px) {
+  // **背景は全幅、中身だけ 1120px の列に留める。**
+  // ここを max-width: 1280px で切ると、外側に body の地色（--ramp-01 の濃紫）が
+  // 帯で出る（2026-09-09 の指摘。1440で左右80px、1920で左右320px）。
+  // コンテナ1280 は捨てていない —— 中身の列は --pc-edge が 1120px に留めるので、
+  // 1280px 以下では以前と1pxも変わらない。全幅にするのは節の背景だけ。
   .page {
-    max-width: var(--page-max-pc);
+    max-width: none;
   }
 
   .hero, .intro, .benefits, .mechanism, .info, .cta {
-    padding: 120px var(--pc-gutter);
-  }
-
-  // 英字ラベルが節の見出しになる（futuretrain は96px）。
-  .kicker {
-    font-size: 58px;
-    line-height: 1;
-    letter-spacing: .01em;
-    font-weight: 900;
-    margin-bottom: 22px;
+    padding: 120px var(--pc-edge);
   }
 
   .title {

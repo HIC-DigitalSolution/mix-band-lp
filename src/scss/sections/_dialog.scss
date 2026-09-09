@@ -15,8 +15,6 @@
     backdrop-filter: blur(8px);
   }
 
-  .kicker { color: #9b235e; margin-bottom: 8px; }
-
   h2 { font-size: 18px; line-height: 1.45; margin: 0 0 5px; }
 }
 
@@ -44,7 +42,7 @@
 }
 
 .store-dialog__help {
-  font-size: 10.5px;
+  font-size: 12px;
   line-height: 1.65;
   color: var(--muted);
   margin: 0 0 17px;
@@ -70,10 +68,10 @@
   border: 1px solid #ead8e2;
   border-radius: var(--radius);
 
-  b { font-size: 12px; }
+  b { font-size: 13.5px; }
 
   span {
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 900;
     color: var(--raspberry);
 
@@ -82,7 +80,7 @@
 }
 
 .store-dialog__note {
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.6;
   color: #957b89;
   margin: 13px 2px 0;

@@ -1,5 +1,15 @@
 # コードを書く前のLP設計
 
+> **2026-09-09、依頼者の指示でカンプ（`../../design/mix-lp-*.dc.html`・描画PNG・配色スタディ・
+> ワイヤーフレーム・`../../design/references/`・`../../img/mix-lp-content-design-reference.{pdf,webp}`）を
+> 全部削除しました。以下に出てくるそれらのパスは、もう存在しません。**判断の記録として
+> 読み、ファイルを開こうとしないでください。カンプにしか無かった知識は
+> `../../harness/contracts/mix-lp.yaml` の `banner-measurements-decide-the-cta` /
+> `japanese-headings-cap-at-24px-on-sp` / `ribbon-vocabulary-if-it-ever-returns` /
+> `content-funnel-order-and-what-was-dropped` /
+> `comps-were-deleted-implementation-is-the-reference` へ移してあります。
+> いまの基準は本番の `../../index.html` と `../../src/scss/` です。
+
 - **Date:** 2026-09-07
 - **Status:** 2026-09-08の内容カンプ09を作成。配色方向は比較06。構成ベースはSOUND TRIP。リボンは不採用。支給バナーは仮置き
 - **対象:** ミックス交流上等バンド単独LP

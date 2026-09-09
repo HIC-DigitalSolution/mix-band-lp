@@ -48,35 +48,35 @@
     <span class="outline-word" aria-hidden="true">AFTER<br>DARK</span>
 
     <figure class="hero__keyart">
-      <!-- alt は焼き込み文字の逐語ではありません。
-           バナーに写っている開催頻度の言い回しは依頼者が取り下げたもので（AGENTS.md「いま決まっていること」）、
-           実際の開催は日〜木曜日限定です。写っている文字をそのまま書くと、
-           読み上げ利用者にだけ誤情報が届くので、その一句だけ外しています。
+      <!-- 2026-09-09、依頼者からPC用の 1920x1080 が支給された。SPは従来の 750x583 の
+           クロップのまま（PC版は16:9で、SP幅だと帯のように潰れて焼き込み文字が読めない）。
+           alt は焼き込み文字の逐語ではありません。PC版の上部一行にある期間の言い回しは
+           **1晩が完結するという意味**で、開催頻度ではありません（AGENTS.md「いま決まって
+           いること」）。実際の開催は 2026年10月1日〜31日の日〜木曜日限定なので、
+           そのまま読み上げると読み上げ利用者にだけ誤情報が届きます。altからは外し、
+           HTMLの訴求にも流用していません（この語をコード中に書くとハーネスが落ちる。
+           それが正しい挙動なので、検査ではなくこちらの書き方を変えること）。
            harness: no-superseded-or-invented-facts / key-art-is-a-supplied-banner -->
-      <img src="img/mix-band-key-fv-crop.webp" width="750" height="583"
-           alt="ASOBIBARの店内で、オレンジのリストバンドを付けた8人が集まっている。焼き込みの文字は「MIX交流上等」「今日出会った最大4〜6組のグループが交差する」「ゲームで指名。気持ちが揺れ動く。」「全員オレンジバンド」">
+      <picture>
+        <source media="(min-width: 900px)" srcset="img/mix-band-key-pc.webp" width="1920" height="1080">
+        <img src="img/mix-band-key-fv-crop.webp" width="750" height="583"
+             alt="ASOBIBARの店内で、オレンジのリストバンドを付けた8人が集まっている。焼き込みの文字は「MIX交流上等」「今日出会った最大4〜6組のグループが交差する」「ゲームで指名。気持ちが揺れ動く。」「全員オレンジバンド」">
+      </picture>
       <span class="hero__glow" aria-hidden="true"></span>
       <span class="hero__beam hero__beam--one" aria-hidden="true"></span>
       <span class="hero__beam hero__beam--two" aria-hidden="true"></span>
     </figure>
 
-    <!-- 必須訴求3点の短い要約。**消さないこと。**
-         依頼者指定の3語（恋愛リアリティ体験／最大4〜6組／日〜木曜日限定）を
-         「読める文字」として掲載する枠で、支給バナーの焼き込みだけに頼らないために置いている。
-         SPでは焼き込みの小さい2行が約8pxで読めない。
+    <!-- **要約3点と開催期間は 2026-09-09、依頼者の指示でFVから外した**（「CTAの左のところは
+         全部消してください」）。FVはバナーと予約ボタンだけにする。
+         **3語が消えたわけではない** —— 「恋愛リアリティ体験」は概要、「最大4〜6組」は仕組み、
+         「日〜木曜日限定」と「2026年10月1日〜31日」は開催情報セクションに読める文字で残っている。
+         依頼者指定の必須訴求3点そのものは有効なので、**本文側の3箇所を消さないこと。**
          docs/design-docs/pre-code-design-blueprint.md「必須訴求3点」／
-         harness: facts-are-client-confirmed-only
-         2026-09-08、FV直下の「開催情報（日付）」を消す指示のときに、
-         この3点まで一緒に消してしまったので戻した。**日付は開催情報セクションと
-         重複するので戻していない。** -->
-    <ul class="hero__signals">
-      <li><b>01</b>恋愛リアリティ体験</li>
-      <li><b>02</b>最大4〜6組</li>
-      <li><b>03</b>日〜木曜日限定</li>
-    </ul>
+         harness: facts-are-client-confirmed-only -->
 
     <div class="hero__act">
-      <button class="cta__button cta__button--hero" type="button" data-open-dialog>予約はこちら<small>参加する店舗を選ぶ</small></button>
+      <button class="cta__button cta__button--hero" type="button" data-open-dialog>予約はこちら<small>選んだ店舗の公式LINEへ</small></button>
     </div>
 
   </section>
@@ -88,10 +88,12 @@
     <span class="outline-word" aria-hidden="true">REALITY<br>NIGHT</span>
 
     <div class="z">
-      <p class="kicker">WHAT IS MIX</p>
       <h2 id="intro-title" class="title">見るだけじゃない<br>あなたが参加する<br>恋愛リアリティショー</h2>
-      <p class="body">恋愛リアリティショーを ASOBIBARで実際に体験できるイベントです。</p>
-      <p class="body"><strong>いつもと違う刺激</strong>のなかで ASOBIBARならではの感動体験と 関係が動くきっかけ 非日常の一夜を楽しめます。</p>
+      <!-- **「恋愛リアリティ体験」はこの1文にしか無い。**依頼者指定の必須訴求3語の1つで、
+           2026-09-09 にFVの3点要約を削除した結果、読める文字としてはここだけになった。
+           言い換えたり消したりしない（sr-onlyの見出しとmetaは読める文字に数えない）。
+           harness: facts-are-client-confirmed-only -->
+      <p class="body">ASOBIBARで実際に参加できる、恋愛リアリティ体験です。</p>
     </div>
   </section>
 
@@ -100,9 +102,7 @@
     <svg class="art-layer" viewBox="0 0 375 690" preserveAspectRatio="none" aria-hidden="true"><use href="#art-benefits"></use></svg>
 
     <div class="z">
-      <p class="kicker">YOUR NIGHT</p>
-      <h2 id="benefits-title" class="title">いつもの夜を<br>予定外に</h2>
-      <p class="body benefits__lead">このイベントで感じてほしいことを 3つに絞ります。</p>
+      <h2 id="benefits-title" class="title">いつもと違う夜に<br>物語を</h2>
     </div>
     <!-- スクロールでカードが1枚ずつ現れる。仕様は docs/design-docs/overview-motion-spec.md。
          futuretrain.jp の Future Imagination Course と同じ作りで、**JavaScriptは使わない** ——
@@ -138,7 +138,6 @@
     <span class="outline-word" aria-hidden="true">CHIME</span>
 
     <div class="z">
-      <p class="kicker">THE CHIME</p>
       <h2 id="mechanism-title" class="title">チャイムが鳴ったら<br>物語が動き出す</h2>
       <p class="body">チャイムが鳴ると そこからお題が出されます。何が始まるかは その瞬間まで分かりません。</p>
     </div>
@@ -147,7 +146,8 @@
       <!-- 2026-09-08 に依頼者から支給、同日「02を使う」と指定。
            原本は design/assets/MIXBAND-02.png（1902x827・1947KB）で、
            img/ には表示サイズ 1000x435・37KB のWebPだけを置いています（image-budget は1枚400KBまで）。
-           別テイクの 01（img/mix-band-chime01.webp）も残してありますが未使用です。 -->
+           別テイク01は未使用だったので 2026-09-09 に削除した。必要なら原本
+           design/assets/MIXBAND-CHIME01.png から切り直す。 -->
       <figure class="chime__photo">
         <img src="img/mix-band-chime02.webp" width="1000" height="435"
              alt="ASOBIBARの店内。オレンジのリストバンドを付けた4人が並び、左の男性がお題のカードを見せ、隣の男性は目を見開き、女性は口を手で覆い、右の女性は笑っている。背景にダーツとビリヤード台">
@@ -160,7 +160,7 @@
       <p class="chime__cross"><b>4〜6</b><span>GROUPS CROSS</span></p>
     </div>
 
-    <p class="body z">最大4〜6組のグループが交差する 恋愛リアリティ体験です。</p>
+    <p class="body z">そこから、最大4〜6組のグループが交差します。</p>
   </section>
 
   <!-- ======================== 05 info / 開催情報 ====================== -->
@@ -169,7 +169,6 @@
     <span class="outline-word" aria-hidden="true">OCT<br>2026</span>
 
     <div class="info__card">
-      <p class="kicker">EVENT INFO</p>
       <h2 id="info-title" class="title">開催情報</h2>
       <p class="info__period"><small>2026 OCTOBER</small>10.01 — 10.31</p>
       <dl class="info__facts">
@@ -187,10 +186,9 @@
     <span class="outline-word" aria-hidden="true">STEP<br>IN</span>
 
     <div class="z">
-      <p class="kicker">STEP INTO THE NIGHT</p>
       <h2 id="cta-title" class="title">今夜の舞台へ</h2>
       <p class="body">店舗を選ぶと その店舗の公式LINEが開きます。</p>
-      <button class="cta__button" type="button" data-open-dialog>参加する店舗を選ぶ<small>店舗選択ダイアログを開く</small></button>
+      <button class="cta__button" type="button" data-open-dialog>参加する店舗を選ぶ<small>選んだ店舗の公式LINEへ</small></button>
     </div>
   </section>
 
@@ -202,7 +200,6 @@
 <dialog class="store-dialog" id="store-dialog" aria-labelledby="store-dialog-title">
   <div class="store-dialog__top">
     <div>
-      <p class="kicker">SELECT STORE</p>
       <h2 id="store-dialog-title">参加する店舗を<br>選んでください</h2>
     </div>
     <button class="store-dialog__close" type="button" data-close-dialog aria-label="閉じる">×</button>
@@ -223,25 +220,26 @@
 <!-- カンプ17から取った、セクションごとの専用SVG。大きな色面 → 輪郭線・ゼブラ → 火花・点の3段階。 -->
 <svg class="sprite" aria-hidden="true" focusable="false">
   <defs>
-    <!-- ゼブラ柄。**縞をオレンジ、地を濃紫**にしています（2026-09-08）。
-         白×黒だとページ最大のコントラスト（白 S×V 0.039 × 黒 0.125）になり、
-         CTAより目を引いてしまっていた。オレンジは縞なので実効面積が約半分で、
-         濃紫の地に乗るぶんコントラストも落ちる。**べた面にはしない** ——
-         オレンジ単体は S×V 0.878 で、CTA のネオンピンク 0.824 より強い。
-         4案を描いて見比べた記録は docs/design-docs/zebra-goes-orange.md。 -->
+    <!-- ゼブラ柄。**縞の色は周囲の紫・ピンクに寄せる**（2026-09-09 の指摘）。
+         以前はオレンジの縞にしていたが、反復が強く「小さな旗や紙片の繰り返し」に見えた。
+         **オレンジは火花・点・短い罫だけに戻した**（.micro / .spark / .contour--orange / .rule）。
+         縞も細くして、面ではなく肌理として効かせる。
+         **べた面にしない** —— 柄が本文より強い面になると、CTAが一番強い面でなくなる。
+         比較06の配色バランス（濃紫 → 電気紫 → ラズベリーピンク）に寄せている。
+         経緯は docs/design-docs/zebra-goes-orange.md。 -->
     <pattern id="zebra" width="30" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(22)">
-      <rect width="30" height="30" fill="#2a1030"/>
-      <path d="M-5 2 C4 8 2 19 12 32 L20 32 C11 18 13 7 3-3 Z" fill="#ff8a1f"/>
-      <path d="M18-3 C27 8 23 18 34 31 L41 31 C32 18 35 7 26-3 Z" fill="#ff8a1f"/>
+      <rect width="30" height="30" fill="#24102e"/>
+      <path d="M-2-3 C3 6 1 18 6 33 L9 33 C4 18 6 6 1-3 Z" fill="#c91f70" opacity=".82"/>
+      <path d="M12-3 C17 6 15 18 20 33 L22.5 33 C17.5 18 19.5 6 14.5-3 Z" fill="#8d1b58" opacity=".9"/>
+      <path d="M24-3 C29 6 27 18 32 33 L34.5 33 C29.5 18 31.5 6 26.5-3 Z" fill="#c91f70" opacity=".62"/>
     </pattern>
 
-    <!-- 明るいセクション（benefits / info）用。**地を淡いピンクにして、縞を細くする。**
-         濃紫の地のまま明るい面に置くと、そこがセクションで一番強い面になってしまう。
-         柄のコントラストは、乗る地に合わせる。 -->
+    <!-- 明るいセクション（benefits / info）用。地は淡いピンク、縞はさらに薄く。 -->
     <pattern id="zebra-light" width="30" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(22)">
       <rect width="30" height="30" fill="#f2d6df"/>
-      <path d="M-3 2 C4 8 3 19 11 32 L16 32 C9 18 10 7 3-3 Z" fill="#ff8a1f" opacity=".92"/>
-      <path d="M19-3 C26 8 23 18 32 31 L36 31 C29 18 30 7 25-3 Z" fill="#ff8a1f" opacity=".92"/>
+      <path d="M-2-3 C3 6 1 18 6 33 L8.5 33 C3.5 18 5.5 6 0.5-3 Z" fill="#c91f70" opacity=".38"/>
+      <path d="M12-3 C17 6 15 18 20 33 L22 33 C17 18 19 6 14-3 Z" fill="#8d1b58" opacity=".3"/>
+      <path d="M24-3 C29 6 27 18 32 33 L34 33 C29 18 31 6 26-3 Z" fill="#c91f70" opacity=".26"/>
     </pattern>
   </defs>
 

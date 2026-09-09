@@ -1,5 +1,7 @@
 # 内容デザインカンプ10の決定
 
+> **canvas は 2026-09-09 に削除済みです。**この文書は判断の記録として残しています。
+
 - **Date:** 2026-09-08
 - **Status:** SOUND TRIPを基準に背景を再設計。依頼者確認待ち
 - **Comp:** `design/mix-lp-content-design-comp-10.dc.html`

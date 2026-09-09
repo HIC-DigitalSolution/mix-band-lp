@@ -86,7 +86,7 @@
 
 // ===== PC幅 =====
 @media (min-width: 900px) {
-  .site-header { padding: 16px var(--pc-gutter); }
+  .site-header { padding: 16px var(--pc-edge); }
   .site-header__logo { width: 150px; }
   .site-nav__btn { font-size: 12px; padding: 11px 14px; }
 }

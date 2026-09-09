@@ -41,7 +41,13 @@
 - [x] `node scripts/harness/harness-check.mjs`（all machine-verified invariants passed。manual 24行は人の確認待ち）
 - [x] HTMLParserでカンプ17を解析する（298 start-tags / errorsなし）
 - [x] `git diff --check`（問題なし）
-- [ ] 375px実寸のHTTPブラウザ表示（環境上の制限により未確認）
+- **未実施:** 375px実寸のHTTPブラウザ表示（環境上の制限により未確認）
+
+> **2026-09-09 追記。**上の未実施項目は、当時ローカルHTTPサーバーが動かせず
+> 実行できなかったものです。**いまも「実行した」ことにはしません。**
+> 対象だったカンプ本体は同日削除済みで、この形での確認はもう行えません。
+> 実画面での確認は本番の index.html に対して行い、結果は
+> `docs/exec-plans/completed/lp-adjust-p1-p6.md` に記録しています。
 
 ## Result
 

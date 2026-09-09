@@ -41,10 +41,16 @@ Paradox Live 5th Anniversaryの全面KVを実画面で確認し、MIXのFVを横
 
 ## Verification
 
-- [ ] `node scripts/harness/harness-check.mjs`（FV変更後に再実行）
+- **未実施:** `node scripts/harness/harness-check.mjs`（FV変更後に再実行）
 - [x] HTMLParserでカンプ11を解析する
-- [ ] 375px実寸のブラウザ表示（ローカルHTTPサーバーが実行上限で拒否されたため未確認）
+- **未実施:** 375px実寸のブラウザ表示（ローカルHTTPサーバーが実行上限で拒否されたため未確認）
 - [x] 既存カンプ09・10のPNGと目視比較する
+
+> **2026-09-09 追記。**上の未実施項目は、当時ローカルHTTPサーバーが動かせず
+> 実行できなかったものです。**いまも「実行した」ことにはしません。**
+> 対象だったカンプ本体は同日削除済みで、この形での確認はもう行えません。
+> 実画面での確認は本番の index.html に対して行い、結果は
+> `docs/exec-plans/completed/lp-adjust-p1-p6.md` に記録しています。
 
 ## Result
 

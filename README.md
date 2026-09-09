@@ -7,7 +7,7 @@
 参考にするのは、KBC創立70周年サイトから取ったリボンの形・浮遊の物理と、
 FUTURE TRAINから取った1本の色ランプによる遷移です。数値と採用範囲は
 `docs/design-docs/reference-sites.md`、最新の配色決定は同資料の§3と
-`design/mix-lp-comp-07.dc.html`にあります。
+却下済みカンプに残していましたが、2026-09-09 にカンプごと削除しました。理由は `harness/contracts/mix-lp.yaml` の `rejected-directions-not-reproposed` にあります。
 
 ## ファイル構成
 
@@ -28,7 +28,7 @@ src/
     _base.scss             共通スタイル
     sections/              セクションごとのSCSS
 scripts/build.mjs          HTML結合・Sassコンパイル・変更監視
-design/                    却下済みカンプとデザイン引き継ぎ
+design/                    依頼者支給の素材原本（カンプは2026-09-09に削除）
 docs/                      判断の記録
 harness/・tools/            既存の検証ツール
 ```

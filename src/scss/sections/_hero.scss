@@ -45,21 +45,25 @@
   order: 1;
   position: relative;
   z-index: 2;
-  margin: 0;
-  width: 100%;
-  aspect-ratio: 750 / 583;
+  // **画面幅いっぱいに出す**（2026-09-09 の指示）。ページは1280pxの中央寄せの列なので、
+  // FVだけ列から抜け出させる。50% は自分の領域幅、50vw は画面幅なので、左右へ
+  // (画面幅 - 領域幅) / 2 だけはみ出して、ちょうど画面幅になる。
+  // **width は auto のまま** —— 明示すると負マージンと二重に効いて倍幅になる。
+  margin: 0 calc(50% - 50vw);
   overflow: hidden;
   background: #12081c;
 
   img {
     display: block;
     width: 100%;
-    height: 100%;
-    // 素材（750x583）と枠の比が一致しているので、cover でも1pxも切れない。
+    // **枠に比を固定しないこと。**SPは 750x583、PCは 1920x1080 と素材の比が違い、
+    // 枠側を決め打ちにすると cover が焼き込み文字を切る。画像に高さを決めさせれば
+    // どちらが読まれても切れない（2026-09-09）。読み込み前の高さは
+    // img / source の width・height 属性から確保される。
+    height: auto;
     // **ズームを掛けないこと。**scale(1.07)→1.11 を入れていたときは
     // 最大9.9%が枠外へ出て、transform-origin が 50% 72% だったため上側に偏って切れた。
     // 支給バナーの上部を切る判断は素材ファイル側（-fv-crop）で済んでいる。
-    object-fit: cover;
     // 動きは参考にした Paradox Live と同じ「明るさの呼吸」。拡大しないので何も切れない。
     animation: hero-breathe 6s ease-in-out infinite alternate;
   }
@@ -115,48 +119,11 @@
   img { display: block; width: 100%; height: auto; }
 }
 
-// FVの「予約はこちら」。動きは下のCTAと同じで、店舗選択ダイアログを開く。
 .hero__act {
   order: 3;
   position: relative;
   z-index: 6;
   margin: 16px 16px 0;
-}
-
-// 必須訴求3点の短い要約。FV直下に置く枠（pre-code-design-blueprint.md）。
-// 対象文（20〜30代の男女へ）と開催期間の日付は 2026-09-08 の指示で外した。
-.hero__signals {
-  order: 2;
-  position: relative;
-  z-index: 3;
-  margin: 18px 16px 0;
-  display: grid;
-  grid-template-columns: 1.45fr .9fr 1.15fr;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(255, 245, 247, .28);
-  border-bottom: 1px solid rgba(255, 245, 247, .28);
-
-  li {
-    padding: 12px 8px 12px 0;
-    border-right: 1px solid rgba(255, 245, 247, .2);
-    font-size: 10px;
-    line-height: 1.55;
-    font-weight: 800;
-    color: #ffe9f2;
-
-    + li { padding-left: 8px; }
-    &:last-child { border-right: 0; }
-  }
-
-  b {
-    display: block;
-    font-size: 8px;
-    letter-spacing: .15em;
-    color: var(--orange);
-    margin-bottom: 3px;
-  }
 }
 
 @keyframes hero-breathe {
@@ -173,43 +140,34 @@
 }
 
 // ===== PC幅 =====
-// 支給バナーは 750x583。**それ以上に引き伸ばさない**（粗くなる）。
-// 右にテキスト列を置いて横並びにする。
+// PC。バナーは画面幅いっぱい、その下に予約ボタンだけ。
 @media (min-width: 900px) {
+  // **2026-09-09、依頼者の指示でFVはバナーと予約ボタンだけにした**
+  //（「CTAの左のところは全部消してください」）。要約3点と開催期間はここから外し、
+  // 3語は概要・仕組み・開催情報の各セクションに読める文字で残している。
+  // ボタンが1つだけになったので、右寄せの列組みをやめて中央に置いている。
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 720px) minmax(320px, 1fr);
-    align-items: center;
-    column-gap: 56px;
-    padding: 96px var(--pc-gutter) 104px;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    padding: 0 var(--pc-edge) 76px;
 
     .outline-word { right: -40px; bottom: 40px; font-size: 96px; }
   }
 
-  .hero__keyart { order: 0; border-radius: var(--radius); }
-
-  .hero__signals {
+  .hero__keyart {
     order: 0;
-    margin: 0;
-    grid-template-columns: 1fr;
-    border: 0;
-
-    li {
-      padding: 16px 0;
-      border-right: 0;
-      border-bottom: 1px solid rgba(255, 245, 247, .22);
-      font-size: 15px;
-
-      + li { padding-left: 0; }
-      &:last-child { border-bottom: 0; }
-    }
-
-    b { font-size: 10px; margin-bottom: 5px; }
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: auto;
+    min-width: 0;
+    border-radius: 0;
   }
 
-  .hero__act { order: 0; margin: 22px 0 0; grid-column: 2; }
-
-  // 2列目に「要約 → CTA」を縦に積む。
-  .hero__signals, .hero__act { grid-column: 2; }
-  .hero__keyart { grid-column: 1; grid-row: 1 / span 2; }
+  .hero__act {
+    order: 0;
+    width: 100%;
+    max-width: 420px;
+    margin: 44px 0 0;
+  }
 }

@@ -5,7 +5,7 @@
 # 2026-09-07、描画を確認せずに publish して2回続けて差し戻した
 # （docs/gotchas/read-the-css-not-the-artwork.md）。
 #
-# 使い方: tools/render.sh <file.html|file.svg> [幅]
+# 使い方: tools/render.sh <file> [出力幅] [分割数] [ビューポート幅] [ビューポート高]
 #   出力は tmp/render/<name>.png（tmp/ は .gitignore 済み）
 #
 # 経路は qlmanage（QuickLook / WebKit）。**この環境のヘッドレスChromeは戻ってこない**
@@ -18,6 +18,18 @@ W="${2:-1500}"
 # 縦に長いページは、全体を1枚にすると縮んで何も判断できない。
 # slices を渡すと、その枚数に縦分割して <name>-1.png … を出す。
 SLICES="${3:-1}"
+# ビューポート幅。**メディアクエリはこの幅で評価される。**
+# qlmanage は自前の幅で描画してから縮小するので、-s の値では効かない
+# （2026-09-09 に踏んだ。PC用の分岐を入れた途端、SPの確認が全部PC表示になっていた）。
+# 指定すると、その幅の iframe に入れてから描画する。
+VIEW_W="${4:-}"
+# iframe の高さ。**足りないとページの下が黙って切れる**（2026-09-09、PC幅の確認で
+# 4000px 固定のまま下半分を見落とした）。ページの実高さを渡すこと。
+VIEW_H="${5:-4000}"
+# 表示を開始する縦位置。**qlmanage は高さ1400px前後で描画を打ち切る**ので、
+# 縦に長いページは VIEW_H を画面1枚分にして OFFSET を送りながら帯で見る
+# （2026-09-09、5600pxのPCページを1枚で出そうとしてFVしか写らなかった）。
+OFFSET="${6:-0}"
 OUT_DIR="tmp/render"; mkdir -p "$OUT_DIR"
 NAME="$(basename "$SRC" | sed 's/\.[^.]*$//')"
 OUT="$OUT_DIR/$NAME.png"
@@ -38,6 +50,18 @@ case "$SRC" in
       printf '</body></html>'; } > "$WRAP"
     TARGET="$WRAP" ;;
 esac
+
+if [ -n "$VIEW_W" ]; then
+  FRAME="$SRC_DIR/.render-frame-$$.tmp.html"
+  trap 'rm -rf "$TMP"; rm -f "$WRAP" "$FRAME"' EXIT
+  printf '<!doctype html><meta charset="utf-8"><body style="margin:0;background:#241c20">' > "$FRAME"
+  printf '<div style="width:%spx;height:%spx;overflow:hidden;position:relative">' \
+    "$VIEW_W" "$VIEW_H" >> "$FRAME"
+  printf '<iframe src="%s" width="%s" height="%s" scrolling="no" style="border:0;display:block;position:absolute;top:-%spx"></iframe></div>' \
+    "$(basename "$TARGET")" "$VIEW_W" "$(( OFFSET + VIEW_H ))" "$OFFSET" >> "$FRAME"
+  printf '</body>' >> "$FRAME"
+  TARGET="$FRAME"
+fi
 
 qlmanage -t -s "$W" -o "$TMP" "$TARGET" >/dev/null 2>&1 || true
 SHOT="$TMP/$(basename "$TARGET").png"
