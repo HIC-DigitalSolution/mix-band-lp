@@ -122,7 +122,13 @@
           <img class="stack__photo" src="img/night-01.webp" width="660" height="495"
              alt="ASOBIBARのカウンターで、オレンジのリストバンドを付けた男性がカードを手に笑みを浮かべている">
         </picture>
-        <div class="stack__body"><span class="card__num">01</span><div><h3>いつもと違う刺激</h3><p>普段の来店とは違う高揚感を楽しむ。</p></div></div>
+        <div class="stack__body">
+          <h3 class="stack__head"><span class="card__num">01</span>いつもと違う刺激</h3>
+          <div class="stack__text">
+            <p>いつものように飲んで話す夜に<br class="br-pc">「次はどうなる？」というワクワクを。</p>
+            <p>思わず笑ったり 予想外の展開に驚いたり。<br class="br-pc">先が読めないからこそ夢中になる<br class="br-pc">いつもとひと味違う夜をASOBIBARで。</p>
+          </div>
+        </div>
       </article>
       <article class="stack__card">
         <picture>
@@ -130,7 +136,13 @@
           <img class="stack__photo" src="img/night-02.webp" width="660" height="495"
              alt="声を上げて笑う男性と、口を手で覆って驚く女性。ふたりともオレンジのリストバンドを付けている">
         </picture>
-        <div class="stack__body"><span class="card__num">02</span><div><h3>関係が動くきっかけ</h3><p>気持ちが揺れ動く瞬間に出会う。</p></div></div>
+        <div class="stack__body">
+          <h3 class="stack__head"><span class="card__num">02</span>関係が動くきっかけ</h3>
+          <div class="stack__text">
+            <p>一緒に笑った瞬間や<br class="br-pc">ふと見えた相手の意外な表情。</p>
+            <p>何気ない会話だけでは気づかなかった魅力に<br class="br-pc">ドキッとすることも。<br class="br-pc">「もう少し話してみたい」<br class="br-pc">そんな気持ちが生まれるきっかけに。</p>
+          </div>
+        </div>
       </article>
       <article class="stack__card">
         <picture>
@@ -138,7 +150,13 @@
           <img class="stack__photo" src="img/night-03.webp" width="660" height="495"
              alt="カウンターで頬づえをついて微笑む女性。背景にダーツボードのネオン">
         </picture>
-        <div class="stack__body"><span class="card__num">03</span><div><h3>非日常を体験</h3><p>恋愛リアリティショーの中へ入る。</p></div></div>
+        <div class="stack__body">
+          <h3 class="stack__head"><span class="card__num">03</span>非日常を体験</h3>
+          <div class="stack__text">
+            <p>画面越しに見ていた恋愛リアリティショー。<br class="br-pc">今夜は あなた自身がその中へ。</p>
+            <p>誰かの展開を見守るドキドキを<br class="br-pc">自分の気持ちが動くドキドキへ。<br class="br-pc">いつもの日常から少し離れて<br class="br-pc">思わず誰かに話したくなる一夜を。</p>
+          </div>
+        </div>
       </article>
     </div>
     </div>
@@ -205,6 +223,17 @@
   </section>
 
   <footer class="footer">ASOBIBAR　MIX交流上等バンド</footer>
+</div>
+
+<!-- ===================== 追従CTA ===================== -->
+<!-- FVのCTAが画面から外れている間だけ出す（2026-09-09 の指示）。
+     **下のCTAセクションが見えている間は出さない** —— 同じボタンが2つ並ぶ。
+     既定は非表示で、JSが動いたときだけ visible になる。JSが無い環境では
+     出ないだけで、FVと下のCTAは今までどおり押せる。
+     本文のカードには見せず、独立したレイヤーとして外周に置く
+     （harness: sound-trip-composition-frames-the-page）。 -->
+<div class="sticky-cta" id="sticky-cta" hidden>
+  <button class="cta__button cta__button--sticky" type="button" data-open-dialog>予約はこちら<small>選んだ店舗の公式LINEへ</small></button>
 </div>
 
 <!-- ===================== 店舗選択ダイアログ ===================== -->
@@ -322,5 +351,6 @@
 </svg>
 
 <script src="js/store-dialog.js" defer></script>
+<script src="js/sticky-cta.js" defer></script>
 </body>
 </html>

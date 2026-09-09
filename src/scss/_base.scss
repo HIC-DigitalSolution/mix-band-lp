@@ -7,7 +7,12 @@ body {
   font-family: var(--jp);
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
-  overflow-wrap: anywhere;
+  // **anywhere にしないこと。**どの文字の間でも折れるようになり、日本語の禁則が
+  // 効かなくなる（2026-09-09、「恋愛リアリテ / ィ体験です。」と小書きカナが行頭へ
+  // 来ていた）。break-word でも、収まらない長い英数字列のはみ出しは防げる。
+  overflow-wrap: break-word;
+  // 小書きカナと長音符も行頭へ送らない。既定の auto では拗促音が行頭に来る。
+  line-break: strict;
 }
 
 img { max-width: 100%; }

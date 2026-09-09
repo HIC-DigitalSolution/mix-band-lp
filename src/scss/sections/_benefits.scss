@@ -78,13 +78,35 @@
 
 .stack__body {
   display: grid;
-  grid-template-columns: 42px 1fr;
-  gap: 13px;
-  align-items: center;
+  // PCで縦中央に置くための指定。SPは高さが内容なりなので効かない。
+  align-content: center;
+  gap: 14px;
   padding: 20px;
+}
 
-  h3 { font-size: 16px; line-height: 1.5; margin: 0 0 6px; }
-  p { font-size: 13px; line-height: 1.8; margin: 0; color: var(--muted); }
+// **番号は見出しの行に置く。**本文が長くなったので、以前のように
+// 「番号 ｜ 見出し＋本文」の2カラムにすると番号が本文の中央へ落ちる
+// （2026-09-09 の指示）。SPでも同じ並びで、本文はその下でカード幅を使う。
+.stack__head {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.stack__text {
+  // text-wrap: pretty —— 最終行が1〜2文字だけになるのを避ける。
+  // 2026-09-09、375pxで「に。」「を。」が2文字だけ落ちていた。
+  // 非対応ブラウザでは無視されるだけ（レイアウトは壊れない）。
+  p { font-size: 15px; line-height: 1.9; margin: 0; color: var(--muted); text-wrap: pretty; }
+  p + p { margin-top: 13px; }
+
+  // **支給された改行はPCの行取り。**375px幅では1行が入り切らず、
+  // 「〜驚いたり。」が2文字だけ次の行に落ちるなど、かえって読みにくくなる
+  // （2026-09-09、3箇所で確認）。SPでは改行を無効にして自然に流す。
+  .br-pc { display: none; }
 }
 
 
@@ -168,13 +190,16 @@
   .stack__body {
     grid-column: 1;
     grid-row: 1;
-    align-content: center;
-    grid-template-columns: 54px 1fr;
-    gap: 20px 22px;
+    gap: 20px;
     padding: 0 48px 0 var(--pc-edge);
+  }
 
-    h3 { font-size: 28px; margin-bottom: 14px; }
-    p { font-size: 16px; }
+  .stack__head { font-size: 28px; gap: 18px; }
+
+  .stack__text {
+    p { font-size: 18px; }
+    // PCは支給された改行のとおりに折る（全行が列幅に収まることを確認済み）。
+    .br-pc { display: inline; }
   }
 
   .card__num { width: 54px; height: 54px; font-size: 14px; }
